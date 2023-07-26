@@ -1,10 +1,10 @@
 package com.shinhan.sunInCloud.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -18,17 +18,21 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor  
-@Table(name = "users")
 @Entity
-public class User {
+public class WMS {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long userNo;
+	private Long wmsNo;
+	
+	@MapsId
+	@OneToOne
+	@JoinColumn(name = "wms_no")
+	private User user;
+	
 	@NotNull
-	private String id;
+	private String name;
 	@NotNull
-	private String password;
+	private String phone;
 	@NotNull
-	private UserType userType;
+	private String email;
 }

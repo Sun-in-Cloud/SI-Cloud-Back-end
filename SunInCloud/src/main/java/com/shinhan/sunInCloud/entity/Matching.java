@@ -1,10 +1,12 @@
 package com.shinhan.sunInCloud.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -17,18 +19,22 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor  
-@Table(name = "users")
+@NoArgsConstructor
 @Entity
-public class User {
+public class Matching {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long userNo;
+	private Long matchingNo;
+	
 	@NotNull
-	private String id;
+	@ManyToOne
+	private Warehouse warehouse;
+	
 	@NotNull
-	private String password;
+	@ManyToOne
+	private Seller seller;
+	
 	@NotNull
-	private UserType userType;
+	private Timestamp endDate;
 }

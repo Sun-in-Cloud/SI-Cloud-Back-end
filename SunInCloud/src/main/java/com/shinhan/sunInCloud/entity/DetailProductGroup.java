@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -17,18 +17,18 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor  
-@Table(name = "users")
+@NoArgsConstructor
 @Entity
-public class User {
+public class DetailProductGroup {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long userNo;
+	private Long detailProductGroupNo;
+	
 	@NotNull
-	private String id;
+	private String name;
+	
+	@ManyToOne
 	@NotNull
-	private String password;
-	@NotNull
-	private UserType userType;
+	private ProductGroup productGroup;
 }

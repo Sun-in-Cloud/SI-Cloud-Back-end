@@ -1,11 +1,16 @@
 package com.shinhan.sunInCloud.entity;
 
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,18 +22,31 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor  
-@Table(name = "users")
+@NoArgsConstructor
 @Entity
-public class User {
+@Table(name = "wms_history")
+public class WMSHistory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long userNo;
+	@Column(name = "history_wms_no")
+	private Long historyWMSNo;
+
 	@NotNull
-	private String id;
+	private Long wmsNo;
+	
+	@CreationTimestamp
+	private Timestamp updatedDate;
+	
 	@NotNull
-	private String password;
+	private UpdatedType updatedType;
+	
 	@NotNull
-	private UserType userType;
+	private String name;
+	
+	@NotNull
+	private String phone;
+	
+	@NotNull
+	private String email;
 }

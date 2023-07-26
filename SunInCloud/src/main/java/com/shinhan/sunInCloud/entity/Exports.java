@@ -1,10 +1,11 @@
 package com.shinhan.sunInCloud.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -17,18 +18,23 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor  
-@Table(name = "users")
+@NoArgsConstructor
 @Entity
-public class User {
+public class Exports {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long userNo;
+	private Long exportNo;
+	
 	@NotNull
-	private String id;
+	private String channel;
+	
 	@NotNull
-	private String password;
+	private String ordererName;
+
 	@NotNull
-	private UserType userType;
+	private String address;
+	
+	@NotNull
+	private Timestamp orderDate;
 }
