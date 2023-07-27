@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -26,9 +27,10 @@ public class DetailProductGroup {
 	private Long detailProductGroupNo;
 	
 	@NotNull
-	private String name;
+	private String groupName;
 	
 	@ManyToOne
 	@NotNull
+	@JoinColumn(name="product_group_no")
 	private ProductGroup productGroup;
 }

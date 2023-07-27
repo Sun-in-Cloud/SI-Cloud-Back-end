@@ -34,6 +34,7 @@ public class ThreePL {
 	
 	@ManyToOne
 	@NotNull
+	@JoinColumn(name="product_group_no")
 	private ProductGroup productGroup;
 	
 	@NotNull

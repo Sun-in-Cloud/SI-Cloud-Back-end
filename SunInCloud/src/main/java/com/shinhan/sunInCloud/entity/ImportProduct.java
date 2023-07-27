@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -29,10 +30,12 @@ public class ImportProduct {
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="import_no")
 	private Imports imports;
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="product_no")
 	private Product product;
 	
 	@NotNull

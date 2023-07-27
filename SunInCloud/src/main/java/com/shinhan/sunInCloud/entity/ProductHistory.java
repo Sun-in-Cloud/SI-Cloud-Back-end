@@ -3,6 +3,8 @@ package com.shinhan.sunInCloud.entity;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,6 +34,7 @@ public class ProductHistory {
 	private Timestamp updatedDate;
 	
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private UpdatedType updatedType;
 	
 	@NotNull
@@ -41,7 +44,7 @@ public class ProductHistory {
 	private Long sellerNo;
 
 	@NotNull
-	private String name;
+	private String productName;
 
 	@NotNull
 	private Integer safetyStock;

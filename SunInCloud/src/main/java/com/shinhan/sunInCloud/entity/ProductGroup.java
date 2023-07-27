@@ -22,8 +22,8 @@ public class ProductGroup {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long productNo;
+	private Long productGroupNo;
 	
 	@NotNull
-	private String name;
+	private String groupName;
 }

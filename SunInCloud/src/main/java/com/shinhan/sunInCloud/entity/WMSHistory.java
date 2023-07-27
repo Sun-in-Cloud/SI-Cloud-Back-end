@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,13 +41,14 @@ public class WMSHistory {
 	private Timestamp updatedDate;
 	
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private UpdatedType updatedType;
 	
 	@NotNull
-	private String name;
+	private String wmsName;
 	
 	@NotNull
-	private String phone;
+	private String wmsPhone;
 	
 	@NotNull
 	private String email;

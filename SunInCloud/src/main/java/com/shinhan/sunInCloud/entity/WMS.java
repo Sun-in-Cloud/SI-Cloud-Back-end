@@ -30,7 +30,7 @@ public class WMS {
 	private User user;
 	
 	@NotNull
-	private String name;
+	private String wmsName;
 	@NotNull
 	private String phone;
 	@NotNull

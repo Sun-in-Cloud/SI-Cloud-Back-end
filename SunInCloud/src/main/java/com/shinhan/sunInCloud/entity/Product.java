@@ -2,6 +2,7 @@ package com.shinhan.sunInCloud.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -24,10 +25,11 @@ public class Product {
 
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="seller_no")
 	private Seller seller;
 
 	@NotNull
-	private String name;
+	private String productName;
 
 	@NotNull
 	private Integer safetyStock;
@@ -37,6 +39,7 @@ public class Product {
 
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="detail_product_group_no")
 	private DetailProductGroup detailProductGroup;
 
 	@NotNull

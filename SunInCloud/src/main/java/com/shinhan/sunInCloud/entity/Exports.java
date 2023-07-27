@@ -27,7 +27,7 @@ public class Exports {
 	private Long exportNo;
 	
 	@NotNull
-	private String channel;
+	private String salesChannel;
 	
 	@NotNull
 	private String ordererName;

@@ -1,6 +1,8 @@
 package com.shinhan.sunInCloud.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,9 +28,10 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long userNo;
 	@NotNull
-	private String id;
+	private String loginId;
 	@NotNull
-	private String password;
+	private String loginPassword;
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private UserType userType;
 }

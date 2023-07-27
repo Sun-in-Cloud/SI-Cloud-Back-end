@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -29,23 +30,25 @@ public class ExportProduct {
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="export_no")
 	private Exports exports;
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="product_no")
 	private Product product;
 	
 	@NotNull
 	private Integer amount;
 	
 	@NotNull
-	private String status;
+	private String orderStatus;
 	
 	@NotNull
 	private Timestamp exportDate;
 	
 	@NotNull
-	private Integer sellinPrice;
+	private Integer sellingPrice;
 	
 	@NotNull
 	private String invoiceNo;
