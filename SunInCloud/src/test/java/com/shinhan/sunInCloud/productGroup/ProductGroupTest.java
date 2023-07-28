@@ -24,4 +24,17 @@ public class ProductGroupTest {
 		Assertions.assertThat(savedProductGroup.getProductGroupNo()).isNotNull();
 		Assertions.assertThat(savedProductGroup.getGroupName()).isEqualTo(productGroup.getGroupName());
 	}
+	
+	@Test
+	void findProductGroupByName() {
+		ProductGroup productGroup = productGroupService.findByGroupName("화장품");
+		Assertions.assertThat(productGroup.getProductGroupNo()).isEqualTo(1L);
+		Assertions.assertThat(productGroup.getGroupName()).isEqualTo("화장품");
+	}
+	
+	@Test
+	void cannotFindUnregisteredProductByName() {
+		ProductGroup productGroup = productGroupService.findByGroupName("마우스");
+		Assertions.assertThat(productGroup).isNull();
+	}
 }
