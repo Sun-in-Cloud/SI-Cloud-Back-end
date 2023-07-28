@@ -21,4 +21,13 @@ public class ProductGroupService {
 	public ProductGroup register(ProductGroup productGroup) {
 		return productGroupRepository.save(productGroup);
 	}
+	
+	/**
+	 * groupName 기반 상품군 검색
+	 * @param groupName
+	 * @return productGroup or null
+	 */
+	public ProductGroup findByGroupName(String groupName) {
+		return productGroupRepository.findByGroupName(groupName);
+	}
 }
