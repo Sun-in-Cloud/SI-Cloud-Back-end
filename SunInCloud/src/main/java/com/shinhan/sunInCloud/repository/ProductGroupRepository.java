@@ -6,4 +6,5 @@ import com.shinhan.sunInCloud.entity.ProductGroup;
 
 public interface ProductGroupRepository extends JpaRepository<ProductGroup, Long>{
 
+	ProductGroup findByGroupName(String groupName);
 }
