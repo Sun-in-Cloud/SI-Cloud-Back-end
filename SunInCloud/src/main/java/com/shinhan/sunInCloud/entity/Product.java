@@ -42,10 +42,8 @@ public class Product {
 	@JoinColumn(name="detail_product_group_no")
 	private DetailProductGroup detailProductGroup;
 
-	@NotNull
 	private Integer importPrice;
 
-	@NotNull
 	private Integer consumerPrice;
 
 	@NotNull
