@@ -21,4 +21,14 @@ public class DetailProductGroupService {
 	public DetailProductGroup register(DetailProductGroup detailProductGroup) {
 		return detailProductGroupRepository.save(detailProductGroup);
 	}
+	
+	/**
+	 * groupName 기반 세부 상품군 검색
+	 * 
+	 * @param groupName
+	 * @return
+	 */
+	public DetailProductGroup findByGroupName(String groupName) {
+		return detailProductGroupRepository.findByGroupName(groupName);
+	}
 }
