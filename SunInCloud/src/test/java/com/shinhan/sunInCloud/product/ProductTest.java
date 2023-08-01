@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
@@ -62,5 +63,17 @@ public class ProductTest {
 		List<Product> savedProducts = productService.registerAll(products);
 
 		Assertions.assertThat(savedProducts.size()).isEqualTo(products.size());
+	}
+	
+	@Test
+	void findAllinPage() {
+		int pageSize = 5;
+		int pageNumber = 1;
+		Seller seller = sellerService.findByBusinessNo("135-81-05033");
+		Page<Product> products = productService.findProductBySellerNo(seller.getSellerNo(), pageNumber, pageSize);
+		for (Product product : products) {
+			System.out.println(product.getProductName());
+		}
+		Assertions.assertThat(products.getSize()).isEqualTo(5);
 	}
 }

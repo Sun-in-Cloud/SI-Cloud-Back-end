@@ -6,10 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,18 +22,25 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Imports {
-
+public class Shopping {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long importNo;
+	private String exportNo;
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="seller_no")
 	private Seller seller;
 	
-	@CreationTimestamp
-	private Timestamp requestDate;
+	@NotNull
+	private String salesChannel;
 	
-	private Timestamp importDate;
+	@NotNull
+	private String orderName;
+	
+	@NotNull
+	private String address;
+	
+	@NotNull
+	private Timestamp orderDate;
 }

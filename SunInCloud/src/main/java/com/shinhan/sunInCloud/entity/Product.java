@@ -35,7 +35,11 @@ public class Product {
 	private Integer safetyStock;
 
 	@NotNull
-	private Integer currentStock;
+	@Builder.Default
+	private Integer currentStock = 0;
+	
+	@NotNull
+	private Integer enoughStock;
 
 	@NotNull
 	@ManyToOne
