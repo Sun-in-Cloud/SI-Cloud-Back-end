@@ -26,6 +26,12 @@ public class ProductService {
 		return productRepository.save(product);
 	}
 	
+	/**
+	 * 상품 일괄 등록 메서드
+	 * 
+	 * @param products
+	 * @return 등록된 상품 리스트
+	 */
 	public List<Product> registerAll(List<Product> products) {
 		return productRepository.saveAll(products);
 	}
@@ -39,5 +45,9 @@ public class ProductService {
 	 */
 	public Page<Product> findProductBySellerNo(Long sellerNo, int pageNumber, int pageSize) {
 		return productRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
+	}
+	
+	public Product findByProductNo(String productNo) {
+		return productRepository.findById(productNo).orElse(null);
 	}
 }

@@ -8,9 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.ColumnDefault;
+import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,16 +23,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ExportProduct {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long exportProductNo;
+public class ShoppingProduct {
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name="export_no")
-	private Exports exports;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private String exportProductNo;
 	
 	@NotNull
 	@ManyToOne
@@ -41,16 +35,18 @@ public class ExportProduct {
 	private Product product;
 	
 	@NotNull
-	private Integer amount;
+	@ManyToOne
+	@JoinColumn(name="export_no")
+	private Shopping shopping;
 	
-	@ColumnDefault(value = "출고대기")
-	@Builder.Default
-	private String orderStatus = "출고대기";
-
+	@NotNull
+	private String orderStatus;
+	
 	private Timestamp exportDate;
 	
 	@NotNull
-	private Integer sellingPrice;
-
+	private int sellingPrice;
+	
 	private String invoiceNo;
+	
 }
