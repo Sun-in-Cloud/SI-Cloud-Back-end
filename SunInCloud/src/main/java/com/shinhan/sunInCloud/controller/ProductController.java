@@ -2,6 +2,7 @@ package com.shinhan.sunInCloud.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,5 +40,10 @@ public class ProductController {
 	@PutMapping("/seller/product/edit")
 	public ProductDTO update(@RequestBody ProductDTO productDTO) {
 		return productService.update(productDTO);
+	}
+	
+	@DeleteMapping("/seller/product/delete")
+	public boolean delete(@RequestBody ProductDTO productDTO) {
+		return productService.delete(productDTO.getProductNo());
 	}
 }

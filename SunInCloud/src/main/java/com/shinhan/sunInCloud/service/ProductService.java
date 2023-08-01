@@ -3,6 +3,8 @@ package com.shinhan.sunInCloud.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -112,5 +114,21 @@ public class ProductService {
 		product.updateProductByProductDTO(productDTO);
 		Product savedProduct = productRepository.save(product);
 		return savedProduct.toProductDTO();
+	}
+
+	/**
+	 * 바코드 번호로 delete하는 메서드
+	 * 해당 상품의 존재 여부를 확인하고, 있으면 삭제
+	 * @param productNo
+	 * @return 삭제 성공시 true, 실패시 false
+	 */
+	@Transactional
+	public boolean delete(String productNo) {
+		Product product = findByProductNo(productNo);
+		if (product == null) {
+			return false;
+		}
+		product.setIsActive(false);
+		return true;
 	}
 }
