@@ -8,7 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ProductDTO;
+import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
+import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
+	
+	private final SellerService sellerService;
+	private final DetailProductGroupService detailProductGroupService;
+	
 	private final ProductRepository productRepository;
 
 	/**
@@ -26,6 +32,21 @@ public class ProductService {
 	 */
 	public Product register(Product product) {
 		return productRepository.save(product);
+	}
+	
+	/**
+	 * 상품 등록 메서드
+	 * @param productDTO
+	 * @return 상품이 정상적으로 등록되면 true, 아니면 false
+	 */
+	public boolean register(ProductDTO productDTO) {
+		Seller seller = sellerService.findById(productDTO.getSellerNo());
+		DetailProductGroup detailProductGroup = detailProductGroupService.findByGroupName(productDTO.getProductGroup());
+		Product product = productDTO.toProduct(seller, detailProductGroup);
+		if (productRepository.save(product) == null) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
