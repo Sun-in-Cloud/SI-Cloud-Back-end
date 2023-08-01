@@ -99,4 +99,18 @@ public class ProductService {
 				.currentStock(product.getCurrentStock()).enoughStock(product.getEnoughStock())
 				.importPrice(product.getImportPrice()).consumerPrice(product.getConsumerPrice()).build();
 	}
+
+	/**
+	 * 입력받은 수정 사항을 update해주는 메서드
+	 * @param productDTO
+	 * @return update된 DTO
+	 * 작성자: 손준범
+	 */
+	public ProductDTO update(ProductDTO productDTO) {
+		// 이미 있는 상품을 update하는 것이기 때문에 null이 오지 않음을 보장함
+		Product product = findByProductNo(productDTO.getProductNo());
+		product.updateProductByProductDTO(productDTO);
+		Product savedProduct = productRepository.save(product);
+		return savedProduct.toProductDTO();
+	}
 }
