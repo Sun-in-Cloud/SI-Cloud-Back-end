@@ -16,7 +16,7 @@ public class ProductController {
 
 	private final ProductService productService;
 	
-	@GetMapping("/3pl/product/list")
+	@GetMapping(value = {"/3pl/product/list", "/seller/product/list"})
 	public List<ProductDTO> findProductBySellerNo(Long sellerNo, int pageNum, int countPerPage) {
 		return productService.findProductBySellerNo(sellerNo, pageNum, countPerPage);
 	}
