@@ -50,7 +50,7 @@ public class ProductService {
 		Page<Product> products = productRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
 		for (Product product : products) {
 			productDTOs.add(ProductDTO.builder().productNo(product.getProductNo())
-					.productGroupName(product.getDetailProductGroup().getGroupName())
+					.productGroup(product.getDetailProductGroup().getGroupName())
 					.productName(product.getProductName()).safetyStock(product.getSafetyStock())
 					.currentStock(product.getCurrentStock()).enoughStock(product.getEnoughStock()).build());
 		}

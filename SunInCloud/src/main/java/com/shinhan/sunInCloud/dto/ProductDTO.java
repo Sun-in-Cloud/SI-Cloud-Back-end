@@ -10,7 +10,7 @@ import lombok.Setter;
 public class ProductDTO {
 
 	private String productNo;
-	private String productGroupName;
+	private String productGroup;
 	private String productName;
 	private int safetyStock;
 	private int currentStock;
