@@ -51,6 +51,9 @@ public class ProductHistory {
 
 	@NotNull
 	private Integer currentStock;
+	
+	@NotNull
+	private Integer enoughStock;
 
 	@NotNull
 	private Long detailProductGroupNo;

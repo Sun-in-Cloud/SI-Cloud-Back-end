@@ -32,6 +32,10 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long orderNo;
 	
+	@NotNull
+	@ManyToOne
+	private Seller seller;
+	
 	@CreationTimestamp
 	private Timestamp orderDate;
 	
