@@ -63,4 +63,12 @@ public class Product {
 		importPrice = productDTO.getImportPrice();
 		consumerPrice = productDTO.getConsumerPrice();
 	}
+	
+	public ProductDTO toProductDTO() {
+		return ProductDTO.builder().productNo(productNo)
+				.productGroup(detailProductGroup.getGroupName())
+				.productName(productName).safetyStock(safetyStock)
+				.currentStock(currentStock).enoughStock(enoughStock)
+				.importPrice(importPrice).consumerPrice(consumerPrice).build();
+	}
 }
