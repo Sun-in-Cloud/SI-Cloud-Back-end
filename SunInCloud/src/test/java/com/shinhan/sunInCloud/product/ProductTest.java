@@ -7,8 +7,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 
+import com.shinhan.sunInCloud.dto.ProductDTO;
 import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
@@ -55,7 +55,9 @@ public class ProductTest {
 		for (int i = 0; i < productNo.length; i++) {
 			Product product = Product.builder().consumerPrice(consumerPrice[i]).currentStock(0)
 					.detailProductGroup(group[i]).importPrice(importPrice[i]).isActive(true).productName(productName[i])
-					.productNo(productNo[i]).safetyStock(safetyStock[i]).seller(i < 10 ? etudehome : outsfree).build();
+					.productNo(productNo[i]).safetyStock(safetyStock[i])
+					.enoughStock((int)(safetyStock[i] * 1.5))
+					.seller(i < 10 ? etudehome : outsfree).build();
 
 			products.add(product);
 		}
@@ -70,10 +72,41 @@ public class ProductTest {
 		int pageSize = 5;
 		int pageNumber = 1;
 		Seller seller = sellerService.findByBusinessNo("135-81-05033");
-		Page<Product> products = productService.findProductBySellerNo(seller.getSellerNo(), pageNumber, pageSize);
-		for (Product product : products) {
+		List<ProductDTO> products = productService.findProductBySellerNo(seller.getSellerNo(), pageNumber, pageSize);
+		for (ProductDTO product : products) {
 			System.out.println(product.getProductName());
 		}
-		Assertions.assertThat(products.getSize()).isEqualTo(5);
+		Assertions.assertThat(products.size()).isEqualTo(5);
+	}
+	
+	@Test
+	void findByProductNo() {
+		String productNo = "8806165967330";
+		ProductDTO product = productService.findById(productNo);
+		Assertions.assertThat(product.getProductNo()).isEqualTo(productNo);
+		Assertions.assertThat(product.getProductName()).isEqualTo("룩엣마이아이즈 샤이닝베이지");
+		Assertions.assertThat(product.getProductGroup()).isEqualTo("메이크업");
+	}
+	
+	@Test
+	void updateProduct() {
+		String productNo = "8806165967330";
+		ProductDTO product = productService.findById(productNo);
+		product.setConsumerPrice(10);
+		productService.update(product);
+		ProductDTO updatedProduct = productService.findById(productNo);
+		Assertions.assertThat(updatedProduct.getConsumerPrice()).isEqualTo(10);
+	}
+	
+	@Test
+	void deleteProduct() {
+		String productNo = "8806165967330";
+		boolean deleted = productService.delete(productNo);
+		Product product = productService.findByProductNo(productNo);
+		if (deleted) {
+			Assertions.assertThat(product.getIsActive()).isFalse();
+		} else {
+			Assertions.assertThat(product.getIsActive()).isTrue();
+		}
 	}
 }
