@@ -97,4 +97,16 @@ public class ProductTest {
 		ProductDTO updatedProduct = productService.findById(productNo);
 		Assertions.assertThat(updatedProduct.getConsumerPrice()).isEqualTo(10);
 	}
+	
+	@Test
+	void deleteProduct() {
+		String productNo = "8806165967330";
+		boolean deleted = productService.delete(productNo);
+		Product product = productService.findByProductNo(productNo);
+		if (deleted) {
+			Assertions.assertThat(product.getIsActive()).isFalse();
+		} else {
+			Assertions.assertThat(product.getIsActive()).isTrue();
+		}
+	}
 }
