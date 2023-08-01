@@ -36,6 +36,9 @@ public class Product {
 
 	@NotNull
 	private Integer currentStock;
+	
+	@NotNull
+	private Integer enoughStock;
 
 	@NotNull
 	@ManyToOne
