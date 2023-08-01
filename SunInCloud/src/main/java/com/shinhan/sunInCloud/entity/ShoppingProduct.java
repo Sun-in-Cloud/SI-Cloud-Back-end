@@ -1,27 +1,22 @@
 package com.shinhan.sunInCloud.entity;
 
 import java.sql.Timestamp;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.sun.istack.NotNull;
-
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 public class ShoppingProduct {
 	
@@ -40,7 +35,8 @@ public class ShoppingProduct {
 	private Shopping shopping;
 	
 	@NotNull
-	private String orderStatus;
+	@Builder.Default
+	private String orderStatus="상품준비중";
 	
 	private Timestamp exportDate;
 	
@@ -48,5 +44,8 @@ public class ShoppingProduct {
 	private int sellingPrice;
 	
 	private String invoiceNo;
+	
+	@NotNull
+	private int amount;
 	
 }

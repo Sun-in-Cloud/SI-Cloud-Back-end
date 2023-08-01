@@ -29,10 +29,10 @@ public class ThreePLService {
 	
 	
 	//입고등록에서 입고 등록 조회
-	public ImportProduct selectImportProduct(List<Product> product) {
-		return threePLRepository.findByProduct
-	}
-	
+//	public ImportProduct selectImportProduct(List<Product> product) {
+//		return threePLRepository.findByProduct
+//	}
+//	
 	//입고등록에서 입고 등록 수정
 	
 	
