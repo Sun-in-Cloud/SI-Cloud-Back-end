@@ -7,4 +7,5 @@ import com.shinhan.sunInCloud.entity.Seller;
 public interface SellerRepository extends CrudRepository<Seller, Long>{
 	
 	public Seller findByBusinessNo(String businessNo);
+	
 }
