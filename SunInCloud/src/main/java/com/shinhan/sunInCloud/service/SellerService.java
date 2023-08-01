@@ -30,15 +30,15 @@ public class SellerService {
 	
 	//1.입고 예정 리스트 등록
 	//1.1 발주 조회->목록
-	public List<Order> findByOrderNo(String orderNo){
-		return (List<Order>) orderRepo.findByOrderNo(orderNo);
-	}
+//	public List<Order> findByOrderNo(String orderNo){
+//		return (List<Order>) orderRepo.findByOrderNo(orderNo);
+//	}
 	
 	//1.2 발주 조회->상세
-	public Order findByOrderProductNo(Long orderProductNo) {
-		return orderRepo.findByOrderProductNo(orderProductNo);
-	}
-	
+//	public Order findByOrderProductNo(Long orderProductNo) {
+//		return orderRepo.findByOrderProductNo(orderProductNo);
+//	}
+//	
 	//1.3 발주 조회->등록
 	//public Product saveProduct(Product ) {
 		

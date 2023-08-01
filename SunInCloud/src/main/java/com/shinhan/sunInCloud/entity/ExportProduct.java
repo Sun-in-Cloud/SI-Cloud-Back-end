@@ -43,7 +43,7 @@ public class ExportProduct {
 	@NotNull
 	private Integer amount;
 	
-	@ColumnDefault(value = "출고대기")
+	
 	@Builder.Default
 	private String orderStatus = "출고대기";
 
