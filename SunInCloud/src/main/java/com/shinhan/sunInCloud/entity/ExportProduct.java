@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,15 +43,14 @@ public class ExportProduct {
 	@NotNull
 	private Integer amount;
 	
-	@NotNull
-	private String orderStatus;
 	
-	@NotNull
+	@Builder.Default
+	private String orderStatus = "출고대기";
+
 	private Timestamp exportDate;
 	
 	@NotNull
 	private Integer sellingPrice;
-	
-	@NotNull
+
 	private String invoiceNo;
 }

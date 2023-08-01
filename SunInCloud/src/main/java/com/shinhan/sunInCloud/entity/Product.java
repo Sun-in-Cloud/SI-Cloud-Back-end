@@ -35,17 +35,19 @@ public class Product {
 	private Integer safetyStock;
 
 	@NotNull
-	private Integer currentStock;
+	@Builder.Default
+	private Integer currentStock = 0;
+	
+	@NotNull
+	private Integer enoughStock;
 
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="detail_product_group_no")
 	private DetailProductGroup detailProductGroup;
 
-	@NotNull
 	private Integer importPrice;
 
-	@NotNull
 	private Integer consumerPrice;
 
 	@NotNull
