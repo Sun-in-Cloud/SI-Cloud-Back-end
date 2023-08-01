@@ -87,4 +87,14 @@ public class ProductTest {
 		Assertions.assertThat(product.getProductName()).isEqualTo("룩엣마이아이즈 샤이닝베이지");
 		Assertions.assertThat(product.getProductGroup()).isEqualTo("메이크업");
 	}
+	
+	@Test
+	void updateProduct() {
+		String productNo = "8806165967330";
+		ProductDTO product = productService.findById(productNo);
+		product.setConsumerPrice(10);
+		productService.update(product);
+		ProductDTO updatedProduct = productService.findById(productNo);
+		Assertions.assertThat(updatedProduct.getConsumerPrice()).isEqualTo(10);
+	}
 }
