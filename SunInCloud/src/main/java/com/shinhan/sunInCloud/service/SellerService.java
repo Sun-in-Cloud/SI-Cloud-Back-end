@@ -28,6 +28,16 @@ public class SellerService {
 		return sellerRepo.findByBusinessNo(no);
 	}
 	
+	/**
+	 * PK로 조회 (sellerNo)
+	 * 
+	 * @param sellerNo
+	 * @return
+	 */
+	public Seller findById(Long sellerNo) {
+		return sellerRepo.findById(sellerNo).orElse(null);
+	}
+	
 	//1.입고 예정 리스트 등록
 	//1.1 발주 조회->목록
 //	public List<Order> findByOrderNo(String orderNo){
