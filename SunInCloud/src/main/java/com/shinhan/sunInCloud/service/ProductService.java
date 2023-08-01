@@ -67,7 +67,7 @@ public class ProductService {
 	 * @return 없으면 null, 있으면 변환된 ProductDTO
 	 * 작성자 : 손준범
 	 */
-	public ProductDTO findDTOByProductNo(String productNo) {
+	public ProductDTO findById(String productNo) {
 		Product product = productRepository.findById(productNo).orElse(null);
 		if (product == null) {
 			return null;

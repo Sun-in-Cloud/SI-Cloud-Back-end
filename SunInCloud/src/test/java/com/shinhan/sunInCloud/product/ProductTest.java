@@ -82,7 +82,7 @@ public class ProductTest {
 	@Test
 	void findByProductNo() {
 		String productNo = "8806165967330";
-		ProductDTO product = productService.findDTOByProductNo(productNo);
+		ProductDTO product = productService.findById(productNo);
 		Assertions.assertThat(product.getProductNo()).isEqualTo(productNo);
 		Assertions.assertThat(product.getProductName()).isEqualTo("룩엣마이아이즈 샤이닝베이지");
 		Assertions.assertThat(product.getProductGroup()).isEqualTo("메이크업");

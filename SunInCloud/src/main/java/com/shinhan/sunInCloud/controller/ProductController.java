@@ -24,6 +24,6 @@ public class ProductController {
 	
 	@GetMapping("/seller/product/{productNo}")
 	public ProductDTO findByProductNo(@PathVariable String productNo) {
-		return productService.findDTOByProductNo(productNo);
+		return productService.findById(productNo);
 	}
 }
