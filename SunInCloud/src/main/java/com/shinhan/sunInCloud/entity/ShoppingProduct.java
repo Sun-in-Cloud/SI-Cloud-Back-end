@@ -22,7 +22,7 @@ public class ShoppingProduct {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String exportProductNo;
+	private Long exportProductNo;
 	
 	@NotNull
 	@ManyToOne
