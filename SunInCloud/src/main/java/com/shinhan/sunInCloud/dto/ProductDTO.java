@@ -1,6 +1,8 @@
 package com.shinhan.sunInCloud.dto;
 
+import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
+import com.shinhan.sunInCloud.entity.Seller;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -26,11 +28,13 @@ public class ProductDTO {
 	 * @return product
 	 * 작성자: 손준범
 	 */
-	public Product toProduct() {
+	public Product toProduct(Seller seller, DetailProductGroup detailProductGroup) {
 		return Product.builder()
+				.seller(seller)
 				.productName(productName)
 				.safetyStock(safetyStock)
 				.enoughStock(enoughStock)
+				.detailProductGroup(detailProductGroup)
 				.importPrice(importPrice)
 				.consumerPrice(consumerPrice)
 				.isActive(true)
