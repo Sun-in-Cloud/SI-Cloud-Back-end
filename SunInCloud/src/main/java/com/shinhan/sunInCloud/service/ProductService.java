@@ -60,4 +60,22 @@ public class ProductService {
 	public Product findByProductNo(String productNo) {
 		return productRepository.findById(productNo).orElse(null);
 	}
+	
+	/**
+	 * productNo를 기반으로 product를 검색하고, ProductDTO로 변환후 리턴
+	 * @param productNo
+	 * @return 없으면 null, 있으면 변환된 ProductDTO
+	 * 작성자 : 손준범
+	 */
+	public ProductDTO findDTOByProductNo(String productNo) {
+		Product product = productRepository.findById(productNo).orElse(null);
+		if (product == null) {
+			return null;
+		}
+		return ProductDTO.builder().productNo(product.getProductNo())
+				.productGroup(product.getDetailProductGroup().getGroupName())
+				.productName(product.getProductName()).safetyStock(product.getSafetyStock())
+				.currentStock(product.getCurrentStock()).enoughStock(product.getEnoughStock())
+				.importPrice(product.getImportPrice()).consumerPrice(product.getConsumerPrice()).build();
+	}
 }
