@@ -15,4 +15,6 @@ public class ProductDTO {
 	private int safetyStock;
 	private int currentStock;
 	private int enoughStock;
+	private int importPrice;
+	private int consumerPrice;
 }
