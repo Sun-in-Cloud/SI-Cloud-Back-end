@@ -3,9 +3,8 @@ package com.shinhan.sunInCloud.entity;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -23,8 +22,11 @@ import lombok.Setter;
 public class Exports {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long exportNo;
+	private String exportNo;
+	
+	@NotNull
+	@ManyToOne
+	private Seller seller;
 	
 	@NotNull
 	private String salesChannel;
