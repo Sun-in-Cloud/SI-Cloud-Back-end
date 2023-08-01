@@ -78,4 +78,13 @@ public class ProductTest {
 		}
 		Assertions.assertThat(products.size()).isEqualTo(5);
 	}
+	
+	@Test
+	void findByProductNo() {
+		String productNo = "8806165967330";
+		ProductDTO product = productService.findDTOByProductNo(productNo);
+		Assertions.assertThat(product.getProductNo()).isEqualTo(productNo);
+		Assertions.assertThat(product.getProductName()).isEqualTo("룩엣마이아이즈 샤이닝베이지");
+		Assertions.assertThat(product.getProductGroup()).isEqualTo("메이크업");
+	}
 }
