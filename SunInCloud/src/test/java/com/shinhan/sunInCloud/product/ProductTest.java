@@ -55,7 +55,9 @@ public class ProductTest {
 		for (int i = 0; i < productNo.length; i++) {
 			Product product = Product.builder().consumerPrice(consumerPrice[i]).currentStock(0)
 					.detailProductGroup(group[i]).importPrice(importPrice[i]).isActive(true).productName(productName[i])
-					.productNo(productNo[i]).safetyStock(safetyStock[i]).seller(i < 10 ? etudehome : outsfree).build();
+					.productNo(productNo[i]).safetyStock(safetyStock[i])
+					.enoughStock((int)(safetyStock[i] * 1.5))
+					.seller(i < 10 ? etudehome : outsfree).build();
 
 			products.add(product);
 		}
