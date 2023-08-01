@@ -1,12 +1,18 @@
 package com.shinhan.sunInCloud.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.shinhan.sunInCloud.dto.ProductDTO;
+import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
+import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +20,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
+	
+	private final SellerService sellerService;
+	private final DetailProductGroupService detailProductGroupService;
+	
 	private final ProductRepository productRepository;
 
 	/**
@@ -24,6 +34,21 @@ public class ProductService {
 	 */
 	public Product register(Product product) {
 		return productRepository.save(product);
+	}
+	
+	/**
+	 * 상품 등록 메서드
+	 * @param productDTO
+	 * @return 상품이 정상적으로 등록되면 true, 아니면 false
+	 */
+	public boolean register(ProductDTO productDTO) {
+		Seller seller = sellerService.findById(productDTO.getSellerNo());
+		DetailProductGroup detailProductGroup = detailProductGroupService.findByGroupName(productDTO.getProductGroup());
+		Product product = productDTO.toProduct(seller, detailProductGroup);
+		if (productRepository.save(product) == null) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -41,13 +66,69 @@ public class ProductService {
 	 * @param sellerNo
 	 * @param pageNumber
 	 * @param pageSize
-	 * @return page에 해당하는 상품
+	 * @return page에 해당하는 상품 리스트
 	 */
-	public Page<Product> findProductBySellerNo(Long sellerNo, int pageNumber, int pageSize) {
-		return productRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
+	public List<ProductDTO> findProductBySellerNo(Long sellerNo, int pageNumber, int pageSize) {
+		List<ProductDTO> productDTOs = new ArrayList<>();
+		Page<Product> products = productRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
+		for (Product product : products) {
+			productDTOs.add(ProductDTO.builder().productNo(product.getProductNo())
+					.productGroup(product.getDetailProductGroup().getGroupName())
+					.productName(product.getProductName()).safetyStock(product.getSafetyStock())
+					.currentStock(product.getCurrentStock()).enoughStock(product.getEnoughStock()).build());
+		}
+		return productDTOs;
 	}
 	
 	public Product findByProductNo(String productNo) {
 		return productRepository.findById(productNo).orElse(null);
+	}
+	
+	/**
+	 * productNo를 기반으로 product를 검색하고, ProductDTO로 변환후 리턴
+	 * @param productNo
+	 * @return 없으면 null, 있으면 변환된 ProductDTO
+	 * 작성자 : 손준범
+	 */
+	public ProductDTO findById(String productNo) {
+		Product product = productRepository.findById(productNo).orElse(null);
+		if (product == null) {
+			return null;
+		}
+		return ProductDTO.builder().productNo(product.getProductNo())
+				.productGroup(product.getDetailProductGroup().getGroupName())
+				.productName(product.getProductName()).safetyStock(product.getSafetyStock())
+				.currentStock(product.getCurrentStock()).enoughStock(product.getEnoughStock())
+				.importPrice(product.getImportPrice()).consumerPrice(product.getConsumerPrice()).build();
+	}
+
+	/**
+	 * 입력받은 수정 사항을 update해주는 메서드
+	 * @param productDTO
+	 * @return update된 DTO
+	 * 작성자: 손준범
+	 */
+	public ProductDTO update(ProductDTO productDTO) {
+		// 이미 있는 상품을 update하는 것이기 때문에 null이 오지 않음을 보장함
+		Product product = findByProductNo(productDTO.getProductNo());
+		product.updateProductByProductDTO(productDTO);
+		Product savedProduct = productRepository.save(product);
+		return savedProduct.toProductDTO();
+	}
+
+	/**
+	 * 바코드 번호로 delete하는 메서드
+	 * 해당 상품의 존재 여부를 확인하고, 있으면 삭제
+	 * @param productNo
+	 * @return 삭제 성공시 true, 실패시 false
+	 */
+	@Transactional
+	public boolean delete(String productNo) {
+		Product product = findByProductNo(productNo);
+		if (product == null) {
+			return false;
+		}
+		product.setIsActive(false);
+		return true;
 	}
 }
