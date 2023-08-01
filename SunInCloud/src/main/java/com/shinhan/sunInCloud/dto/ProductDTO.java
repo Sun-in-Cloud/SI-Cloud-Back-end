@@ -1,5 +1,7 @@
 package com.shinhan.sunInCloud.dto;
 
+import com.shinhan.sunInCloud.entity.Product;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,4 +19,20 @@ public class ProductDTO {
 	private int enoughStock;
 	private int importPrice;
 	private int consumerPrice;
+	
+	/**
+	 * ProductDTO -> Product
+	 * @return product
+	 * 작성자: 손준범
+	 */
+	public Product toProduct() {
+		return Product.builder()
+				.productName(productName)
+				.safetyStock(safetyStock)
+				.enoughStock(enoughStock)
+				.importPrice(importPrice)
+				.consumerPrice(consumerPrice)
+				.isActive(true)
+				.build();
+	}
 }
