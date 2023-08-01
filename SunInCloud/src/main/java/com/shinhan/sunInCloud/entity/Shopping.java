@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +43,9 @@ public class Shopping {
 	@NotNull
 	private String address;
 	
-	@NotNull
+	@CreationTimestamp
 	private Timestamp orderDate;
+	
+	@Builder.Default
+	private Boolean isCollected = false;
 }
