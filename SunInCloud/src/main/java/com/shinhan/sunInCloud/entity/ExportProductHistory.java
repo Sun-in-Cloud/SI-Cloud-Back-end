@@ -41,7 +41,7 @@ public class ExportProductHistory {
 	private Long exportProductNo;
 	
 	@NotNull
-	private Long exportNo;
+	private String exportNo;
 	
 	@NotNull
 	private Long productNo;
