@@ -144,4 +144,13 @@ public class ProductService {
 	public Page<Product> findNeededToOrderBySellerNo(Long sellerNo, Pageable pageable) {
 		return productRepository.findByNeededToOrder(sellerNo, pageable);
 	}
+	
+	/**
+	 * 발주가 필요한 상품을 전부 조회하는 메서드
+	 * @param sellerNo
+	 * @return 발주가 필요한 상품 리스트
+	 */
+	public List<Product> findNeededToOrderBySellerNo(Long sellerNo) {
+		return productRepository.findByNeededToOrder(sellerNo);
+	}
 }
