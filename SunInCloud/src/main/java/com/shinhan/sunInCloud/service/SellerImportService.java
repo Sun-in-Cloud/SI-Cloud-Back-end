@@ -13,6 +13,7 @@ import com.shinhan.sunInCloud.dto.ImportsDTO;
 import com.shinhan.sunInCloud.entity.ImportProduct;
 import com.shinhan.sunInCloud.entity.Imports;
 import com.shinhan.sunInCloud.entity.Order;
+import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.ImportsProductRepository;
 import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.OrderRepository;
@@ -23,7 +24,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SellerImportService {
 	
+	private final SellerService sellerService;
 	private final ImportsRepository importRepository;
+	private final ImportsProductRepository importProductRepository;
 	private final OrderRepository orderRepository;
 	
 	//1.입고 예정 리스트 등록
@@ -49,19 +52,28 @@ public class SellerImportService {
 		
 		//3.입고 예정 리스트
 		//3.1 입고 예정 리스트 목록
-		public List<ImportsDTO> seePreList(Long sellerNo, int pageNumber, int pageSize) {
-			List<Imports> imports=new ArrayList<>();
-			imports= importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
-			
+		public List<ImportsDTO> seePreList(ImportsDTO importDTO, Long sellerNo, int pageNumber, int pageSize) {
 			//dto로 변환해줘서 반환
-			
-			return imports;
+			List<ImportsDTO> importsDTOs = new ArrayList<>();
+			Page<Imports> page = importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
+			for(Imports imports : page) {
+				importsDTOs.add(importDTO.builder().importDate(imports.getImportDate())
+						.importNo(imports.getImportNo())
+						.requestDate(imports.getRequestDate())
+						.sellerNo(imports.getSeller().getSellerNo())
+						.build());
+			}	
+			return importsDTOs;
 		}
 		
 		//3.2 입고 예정 리스트 상세
-		public List<ImportProductDTO> seePreDetail(Long importNo) {
-			List<ImportProductDTO> imports=new ArrayList<>();
-			imports= importRepository.findByImports_importsNo(importNo);
+		public List<ImportProductDTO> seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
+			List<ImportProductDTO> importsProductDTOs=new ArrayList<>();
+			List<ImportProduct> im= importProductRepository.findByImportNo(importNo);
+			for(ImportProduct imp: im) {
+				importsProductDTOs.add(importProductDTO.builder().
+						.builder());
+			}
 			return imports;
 		}
 		

@@ -15,10 +15,8 @@ public interface ImportsRepository extends JpaRepository<Imports, Long> {
 	Imports findByImportProduct_ImportNo(Long sellerNo, Pageable pageable);
 	
 	//2. 입고 예정, 내역 리스트 목록 sellerNo로 찾기
-	List<Imports> findBySellerNo(Long sellerNo, Pageable pageables);
-	
-	//3. 입고 예정 리스트 상세 새로만들기
-	//List<ImportProduct> findByImports_importsNo(Long importNo);
+	Page<Imports> findBySellerNo(Long sellerNo, Pageable pageables);
+
 	
 	//4.리턴값 List이고, Id로 입고 상세 내역 찾기
 	List<Imports> findByImportNo(Long importNo);
