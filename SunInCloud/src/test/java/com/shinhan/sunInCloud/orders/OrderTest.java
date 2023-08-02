@@ -58,4 +58,11 @@ public class OrderTest {
 		List<OrderDTO> orders = orderService.findOrders(sellerNo, 0, 10);
 		Assertions.assertThat(orders.size()).isEqualTo(1);
 	}
+	
+	@Test 
+	void findOrderAndOrderProducts() {
+		Long orderNo = 26L;
+		List<OrderProductDTO> orderProducts = orderService.findByOrderNo(orderNo);
+		Assertions.assertThat(orderProducts.size()).isEqualTo(10);
+	}
 }
