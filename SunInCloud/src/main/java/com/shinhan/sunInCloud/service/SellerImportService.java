@@ -22,21 +22,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SellerImportService {
 	
-	private final ImportsRepository importRepo;
-	private final OrderRepository orderRepo;
-	private final ImportsProductRepository importsProductRepo;
+	private final ImportsRepository importRepository;
+	private final OrderRepository orderRepository;
 	
 	//1.입고 예정 리스트 등록
 	//1.1 발주 조회->목록
 	public Optional<Order> findByOrderNo(Long orderNo){
-		return orderRepo.findById(orderNo);
+		return orderRepository.findById(orderNo);
 	}
 		
 		//1.2 발주 조회->상세
 //		public Order findByOrderProductNo(Long orderProductNo) {
 //			return orderRepo.findByOrderProductNo(orderProductNo);
 //		}
-	//	
+	
 		//1.3 발주 조회->등록
 		//public Product saveProduct(Product ) {
 			
@@ -44,21 +43,21 @@ public class SellerImportService {
 		
 		//2.입고 예정 리스트 등록
 		public Imports savePreImport(String importNo) {
-			return orderRepo.saveAll(importNo);
+			return orderRepository.saveAll(importNo);
 		}
 		
 		//3.입고 예정 리스트
 		//3.1 입고 예정 리스트 목록
 		public List<ImportsDTO> seePreList(Long sellerNo, int pageNumber, int pageSize) {
 			List<ImportsDTO> imports=new ArrayList<>();
-			imports= importRepo.findBySellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
+			imports= importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
 			return imports;
 		}
 		
 		//3.2 입고 예정 리스트 상세
 		public List<ImportProductDTO> seePreDetail(Long importNo) {
 			List<ImportProductDTO> imports=new ArrayList<>();
-			imports= importRepo.findByImports_importsNo(importNo);
+			imports= importRepository.findByImports_importsNo(importNo);
 			return imports;
 		}
 		
@@ -66,14 +65,14 @@ public class SellerImportService {
 		//4.1 목록
 		public List<ImportsDTO> seeList(Long sellerNo, int pageNum, int countPerPage){
 			List<ImportsDTO> imports =new ArrayList<>();
-			imports=importRepo.findBySellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
+			imports=importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
 			return imports;
 		}
 		
 		//4.2 상세
 		public List<ImportsDTO> seeDetail(Long importNo){
 			List<ImportsDTO> imports=new ArrayList<>();
-			imports = importRepo.findByImportNo(importNo);
+			imports = importRepository.findByImportNo(importNo);
 			return imports;	
 		}
 
