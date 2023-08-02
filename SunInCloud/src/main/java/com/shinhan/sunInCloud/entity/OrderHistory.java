@@ -6,10 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -25,21 +21,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
-public class Order {
+public class OrderHistory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long orderNo;
+	private Long historyOrderNo;
 	
-	@NotNull
-	@ManyToOne
-	private Seller seller;
-	
-	@CreationTimestamp
 	private Timestamp orderDate;
 	
-	@ManyToOne
-	@JoinColumn(name="import_no")
-	private Imports imports;
+	@CreationTimestamp
+	private Timestamp deletedDate;
+	
+	private Long sellerNo;
+	private String productNo;
+	private Integer amount;
 }
