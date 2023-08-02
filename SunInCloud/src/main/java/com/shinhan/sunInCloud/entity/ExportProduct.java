@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.ColumnDefault;
+import com.shinhan.sunInCloud.dto.ExportProductDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,4 +53,21 @@ public class ExportProduct {
 	private Integer sellingPrice;
 
 	private String invoiceNo;
+	
+	/**
+	 * ExportProduct -> ExportProductDTO
+	 * @return
+	 */
+	public ExportProductDTO toExportProductDTO() {
+		return ExportProductDTO
+				.builder()
+				.amount(amount)
+				.exportDate(exportDate)
+				.invoiceNo(invoiceNo)
+				.orderStatus(orderStatus)
+				.productName(product.getProductName())
+				.productNo(product.getProductNo())
+				.sellingPrice(sellingPrice)
+				.build();
+	}
 }
