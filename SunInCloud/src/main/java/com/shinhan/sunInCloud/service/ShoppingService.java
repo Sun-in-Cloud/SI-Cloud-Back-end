@@ -35,6 +35,9 @@ public class ShoppingService {
 	 */
 	@Transactional
 	public boolean register(Long sellerNo, List<ShoppingProductDTO> orderedProducts) {
+		// 수집된 주문이 없는 경우
+		if(orderedProducts.size() == 0) return false;
+		
 		List<ShoppingProduct> products = new ArrayList<>();
 		Seller seller = sellerService.findById(sellerNo);
 		StringBuilder exportNo = new StringBuilder("S");
@@ -80,4 +83,13 @@ public class ShoppingService {
 		return shoppingRepository.findBySeller_SellerNoAndIsCollected(sellerNo, false);
 	}
 
+	/**
+	 * 주문번호에 해당하는 상품 가져오는 메서드
+	 * 
+	 * @param exportNo
+	 * @return
+	 */
+	public List<ShoppingProduct> findShoppingProduct(String exportNo) {
+		return shoppingProductRepository.findByShopping_ExportNo(exportNo);
+	}
 }
