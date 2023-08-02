@@ -105,4 +105,25 @@ public class OrderService {
 		}
 		return orderDTOs;
 	}
+
+	/**
+	 * 발주 상세조회
+	 * 1. 발주 번호로 발주 상품 조회
+	 * 2. DTO로 Convert 후 return
+	 * @param orderNo
+	 * @return 해당 발주에 포함된 모든 상품 리스트
+	 * 작성자: 손준범
+	 */
+	public List<OrderProductDTO> findByOrderNo(Long orderNo) {
+		List<OrderProduct> orderProducts = orderProductRepository.findAllByOrder_OrderNo(orderNo);
+		List<OrderProductDTO> orderProductDTOs = new ArrayList<>();
+		for (OrderProduct orderProduct : orderProducts) {
+			orderProductDTOs.add(OrderProductDTO.builder()
+					.productNo(orderProduct.getProduct().getProductNo())
+					.productName(orderProduct.getProduct().getProductName())
+					.amount(orderProduct.getAmount())
+					.build());
+		}
+		return orderProductDTOs;
+	}
 }

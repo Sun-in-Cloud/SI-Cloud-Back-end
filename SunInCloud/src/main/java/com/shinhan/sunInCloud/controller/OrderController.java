@@ -33,4 +33,9 @@ public class OrderController {
 	public List<OrderDTO> findOrders(Long sellerNo, int pageNum, int countPerPage) {
 		return orderService.findOrders(sellerNo, pageNum, countPerPage);
 	}
+	
+	@GetMapping("/3pl/order/{orderNo}")
+	public List<OrderProductDTO> findByOrderNo(@PathVariable Long orderNo) {
+		return orderService.findByOrderNo(orderNo);
+	}
 }
