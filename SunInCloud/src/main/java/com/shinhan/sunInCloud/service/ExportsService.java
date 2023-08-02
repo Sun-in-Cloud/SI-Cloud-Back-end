@@ -79,8 +79,8 @@ public class ExportsService {
 			}
 		}
 		
-		// 주문 수집하면 무조건 1페이지로 이동
-		return findExports(sellerNo, 1, countPerPage);
+		// 주문 수집하면 무조건 첫 페이지로 이동
+		return findExports(sellerNo, 0, countPerPage);
 	}
 	
 	/**
@@ -94,6 +94,7 @@ public class ExportsService {
 	public List<ExportsDTO> findExports(Long sellerNo, int pageNum, int countPerPage) {
 		List<ExportsDTO> exports = new ArrayList<>();
 		Page<Exports> exps = exportsRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
+		
 		for(Exports exp: exps) {
 			ExportsDTO export = ExportsDTO
 					.builder()

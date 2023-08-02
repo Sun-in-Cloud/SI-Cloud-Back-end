@@ -15,20 +15,20 @@ public class ExportsTest {
 	@Autowired
 	private ExportsService exportsService;
 
-	@Test
+//	@Test
 	void registerExport() {
 		Long sellerNo = 8L;
-		List<ExportsDTO> exports = exportsService.register(sellerNo, 1, 10);
+		List<ExportsDTO> exports = exportsService.register(sellerNo, 0, 10);
 		
-		System.out.println(exports.size());
+		Assertions.assertThat(exports.size()).isNotZero();
 	}
 	
-//	@Test
+	@Test
 	void findAllExport() {
 		Long sellerNo = 8L;
-		List<ExportsDTO> exports = exportsService.findExports(sellerNo, 1, 10);
+		List<ExportsDTO> exports = exportsService.findExports(sellerNo, 0, 10);
 		
-		Assertions.assertThat(exports.size());
-		System.out.println(exports.size());
+		Assertions.assertThat(exports.size()).isNotZero();
+		System.out.println(exports);
 	}
 }
