@@ -26,6 +26,7 @@ public class SellerImportService {
 	
 	private final SellerService sellerService;
 	private final ImportsRepository importRepository;
+	private final ImportsProductRepository importProductRepository;
 	private final OrderRepository orderRepository;
 	
 	//1.입고 예정 리스트 등록
@@ -66,9 +67,13 @@ public class SellerImportService {
 		}
 		
 		//3.2 입고 예정 리스트 상세
-		public List<ImportProductDTO> seePreDetail(Long importNo) {
-			List<ImportProductDTO> imports=new ArrayList<>();
-			imports= importRepository.findByImports_importsNo(importNo);
+		public List<ImportProductDTO> seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
+			List<ImportProductDTO> importsProductDTOs=new ArrayList<>();
+			List<ImportProduct> im= importProductRepository.findByImportNo(importNo);
+			for(ImportProduct imp: im) {
+				importsProductDTOs.add(importProductDTO.builder().
+						.builder());
+			}
 			return imports;
 		}
 		
