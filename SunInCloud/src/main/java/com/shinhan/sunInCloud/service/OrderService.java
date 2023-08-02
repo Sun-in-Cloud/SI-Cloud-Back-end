@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.shinhan.sunInCloud.dto.OrderDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.entity.OrderProduct;
@@ -81,5 +82,27 @@ public class OrderService {
 		}
 		List<OrderProduct> savedOrderProducts = orderProductRepository.saveAll(orderProducts);
 		return savedOrderProducts.size() == orderProducts.size() ? true : false;
+	}
+
+	/**
+	 * 발주 내역 조회
+	 * 1. sellerNo를 기반으로 입력으로 주어진 page에 해당하는 발주 내역 조회
+	 * 2. DTO로 변경후 리스트 반환
+	 * @param sellerNo
+	 * @param pageNum
+	 * @param countPerPage
+	 * @return 주문내역 리스트
+	 * 작성자: 손준범
+	 */
+	public List<OrderDTO> findOrders(Long sellerNo, int pageNum, int countPerPage) {
+		Page<Order> orders = orderRepository.findBySeller_SellerNoOrderByOrderDateDesc(sellerNo, PageRequest.of(pageNum, countPerPage));
+		List<OrderDTO> orderDTOs = new ArrayList<>();
+		for (Order order : orders) {
+			orderDTOs.add(OrderDTO.builder()
+					.orderDate(order.getOrderDate())
+					.orderNo(order.getOrderNo())
+					.build());
+		}
+		return orderDTOs;
 	}
 }
