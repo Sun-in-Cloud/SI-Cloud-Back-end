@@ -25,9 +25,11 @@ import lombok.RequiredArgsConstructor;
 public class SellerImportService {
 	
 	private final SellerService sellerService;
+	private final ProductService productService;
 	private final ImportsRepository importRepository;
 	private final ImportsProductRepository importProductRepository;
 	private final OrderRepository orderRepository;
+
 	
 	//1.입고 예정 리스트 등록
 	//1.1 발주 조회->목록
@@ -46,10 +48,10 @@ public class SellerImportService {
 		//}
 		
 		//2.입고 예정 리스트 등록
-		public Imports savePreImport(String importNo) {
-			return orderRepository.saveAll(importNo);
-		}
-		
+//		public Imports savePreImport(String importNo) {
+//			return orderRepository.saveAll(importNo);
+//		}
+//		
 		//3.입고 예정 리스트
 		//3.1 입고 예정 리스트 목록
 		public List<ImportsDTO> seePreList(ImportsDTO importDTO, Long sellerNo, int pageNumber, int pageSize) {
@@ -66,15 +68,18 @@ public class SellerImportService {
 			return importsDTOs;
 		}
 		
-		//3.2 입고 예정 리스트 상세
+		//3.2 입고 예정 리스트 상세->입고 등록 후 입고가 확정된 상태이므로 실제 입고 수량을 보는것임!
 		public List<ImportProductDTO> seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
 			List<ImportProductDTO> importsProductDTOs=new ArrayList<>();
 			List<ImportProduct> im= importProductRepository.findByImportNo(importNo);
 			for(ImportProduct imp: im) {
-				importsProductDTOs.add(importProductDTO.builder().
-						.builder());
+				importsProductDTOs.add(importProductDTO.builder()
+						.productNo(imp.getProduct().getProductNo())
+						.productName(imp.getProduct().getProductName())
+						.importAmount(imp.getImportAmount())
+						.build());
 			}
-			return imports;
+			return importsProductDTOs;
 		}
 		
 		//4.입고 내역 리스트
@@ -86,10 +91,10 @@ public class SellerImportService {
 		}
 		
 		//4.2 상세
-		public List<ImportsDTO> seeDetail(Long importNo){
-			List<ImportsDTO> imports=new ArrayList<>();
-			imports = importRepository.findByImportNo(importNo);
-			return imports;	
-		}
+//		public List<ImportsDTO> seeDetail(Long importNo){
+//			List<ImportsDTO> imports=new ArrayList<>();
+//			imports = importRepository.findByImportNo(importNo);
+//			return imports;	
+//		}
 
 }
