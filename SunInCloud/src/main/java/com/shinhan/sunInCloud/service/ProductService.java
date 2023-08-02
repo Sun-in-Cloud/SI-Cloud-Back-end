@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 import com.shinhan.sunInCloud.dto.ProductDTO;
 import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
+import com.shinhan.sunInCloud.entity.ProductHistory;
 import com.shinhan.sunInCloud.entity.Seller;
+import com.shinhan.sunInCloud.entity.UpdatedType;
+import com.shinhan.sunInCloud.repository.ProductHistoryRepository;
 import com.shinhan.sunInCloud.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ public class ProductService {
 	private final DetailProductGroupService detailProductGroupService;
 	
 	private final ProductRepository productRepository;
+	private final ProductHistoryRepository productHistoryRepository;
 
 	/**
 	 * 상품 등록 메서드
@@ -105,13 +109,18 @@ public class ProductService {
 
 	/**
 	 * 입력받은 수정 사항을 update해주는 메서드
+	 * 1. 현재 상품을 history 테이블에 먼저 저장
+	 * 2. update진행
 	 * @param productDTO
 	 * @return update된 DTO
 	 * 작성자: 손준범
 	 */
+	@Transactional
 	public ProductDTO update(ProductDTO productDTO) {
 		// 이미 있는 상품을 update하는 것이기 때문에 null이 오지 않음을 보장함
 		Product product = findByProductNo(productDTO.getProductNo());
+		ProductHistory productHistory = new ProductHistory(product, UpdatedType.UPDATED);
+		productHistoryRepository.save(productHistory);
 		product.updateProductByProductDTO(productDTO);
 		Product savedProduct = productRepository.save(product);
 		return savedProduct.toProductDTO();
