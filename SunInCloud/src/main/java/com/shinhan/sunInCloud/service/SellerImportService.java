@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -49,8 +50,11 @@ public class SellerImportService {
 		//3.입고 예정 리스트
 		//3.1 입고 예정 리스트 목록
 		public List<ImportsDTO> seePreList(Long sellerNo, int pageNumber, int pageSize) {
-			List<ImportsDTO> imports=new ArrayList<>();
+			List<Imports> imports=new ArrayList<>();
 			imports= importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
+			
+			//dto로 변환해줘서 반환
+			
 			return imports;
 		}
 		
@@ -64,9 +68,9 @@ public class SellerImportService {
 		//4.입고 내역 리스트
 		//4.1 목록
 		public List<ImportsDTO> seeList(Long sellerNo, int pageNum, int countPerPage){
-			List<ImportsDTO> imports =new ArrayList<>();
-			imports=importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
-			return imports;
+			Page<Imports> imports=importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
+			List<ImportsDTO> importDTO =new ArrayList<>();
+			return importDTO;
 		}
 		
 		//4.2 상세
