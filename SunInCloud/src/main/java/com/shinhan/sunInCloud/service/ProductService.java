@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ProductDTO;
@@ -121,6 +122,7 @@ public class ProductService {
 	 * 해당 상품의 존재 여부를 확인하고, 있으면 삭제
 	 * @param productNo
 	 * @return 삭제 성공시 true, 실패시 false
+	 * 작성자: 손준범
 	 */
 	@Transactional
 	public boolean delete(String productNo) {
@@ -130,5 +132,16 @@ public class ProductService {
 		}
 		product.setIsActive(false);
 		return true;
+	}
+	
+	/**
+	 * 안전재고보다 현재재고가 더 낮은 상품을 화주사 번호로 조회하는 메서드
+	 * @param sellerNo
+	 * @param pageable
+	 * @return
+	 * 작성자: 손준범
+	 */
+	public Page<Product> findNeededToOrderBySellerNo(Long sellerNo, Pageable pageable) {
+		return productRepository.findByNeededToOrder(sellerNo, pageable);
 	}
 }
