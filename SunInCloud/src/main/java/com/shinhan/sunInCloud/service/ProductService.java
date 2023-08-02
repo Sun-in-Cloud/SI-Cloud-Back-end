@@ -139,6 +139,8 @@ public class ProductService {
 		if (product == null) {
 			return false;
 		}
+		ProductHistory productHistory = new ProductHistory(product, UpdatedType.DELETED);
+		productHistoryRepository.save(productHistory);
 		product.setIsActive(false);
 		return true;
 	}
