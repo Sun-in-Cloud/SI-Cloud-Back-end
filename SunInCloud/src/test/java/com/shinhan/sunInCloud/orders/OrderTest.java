@@ -34,6 +34,15 @@ public class OrderTest {
 	}
 	
 	@Test
+	void findNeededOrderProductsZero() {
+		Long sellerNo = 8L;
+		int pageNum = 1;
+		int countPerPage = 7;
+		List<OrderProductDTO> orderProducts = orderService.findNeededOrderProducts(sellerNo, pageNum, countPerPage);
+		Assertions.assertThat(orderProducts.size()).isEqualTo(0);
+	}
+	
+	@Test
 	void registerOrder() {
 		Long sellerNo = 8L;
 		boolean registered = orderService.register(sellerNo);
