@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shinhan.sunInCloud.dto.OrderDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.service.OrderService;
 
@@ -26,5 +27,15 @@ public class OrderController {
 	@PostMapping("/3pl/order/register/{sellerNo}")
 	public boolean register(@PathVariable Long sellerNo) {
 		return orderService.register(sellerNo);
+	}
+	
+	@GetMapping(value = {"/3pl/order/list", "/seller/order/list"})
+	public List<OrderDTO> findOrders(Long sellerNo, int pageNum, int countPerPage) {
+		return orderService.findOrders(sellerNo, pageNum, countPerPage);
+	}
+	
+	@GetMapping(value = {"/3pl/order/{orderNo}", "/seller/order/{orderNo}"})
+	public List<OrderProductDTO> findByOrderNo(@PathVariable Long orderNo) {
+		return orderService.findByOrderNo(orderNo);
 	}
 }
