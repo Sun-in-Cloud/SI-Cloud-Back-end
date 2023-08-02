@@ -17,8 +17,8 @@ public class OrderProductDTO {
 
 	private String productNo;
 	private String productName;
-	private int safetyStock;
-	private int currentStock;
-	private int enoughStock;
-	private int amount;
+	private Integer safetyStock;
+	private Integer currentStock;
+	private Integer enoughStock;
+	private Integer amount;
 }
