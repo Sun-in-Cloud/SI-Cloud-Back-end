@@ -101,6 +101,8 @@ public class OrderService {
 			orderDTOs.add(OrderDTO.builder()
 					.orderDate(order.getOrderDate())
 					.orderNo(order.getOrderNo())
+					.importNo(order.getImports() == null ? null : order.getImports().getImportNo())
+					.isImported(order.getImports() == null ? false : true)
 					.build());
 		}
 		return orderDTOs;

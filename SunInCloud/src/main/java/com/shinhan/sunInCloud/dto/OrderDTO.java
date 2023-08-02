@@ -17,4 +17,6 @@ public class OrderDTO {
 
 	private Long orderNo;
 	private Timestamp orderDate;
+	private Long importNo;
+	private Boolean isImported;
 }
