@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
 import com.shinhan.sunInCloud.entity.ExportProduct;
 import com.shinhan.sunInCloud.entity.Exports;
@@ -41,48 +42,35 @@ public class ExportsService {
 		List<Exports> exports = new ArrayList<>();
 		List<Shopping> shoppings = shoppingService.findNotCollected(sellerNo);
 		Seller seller = sellerService.findById(sellerNo);
-		
+
 		// 수집된 주문이 있는 경우에만 출고 목록 만듦
-		if(shoppings.size() > 0) {
+		if (shoppings.size() > 0) {
 			// 출고 목록 만들기
-			for(Shopping shopping: shoppings) {
-				Exports exp = Exports
-						.builder()
-						.address(shopping.getAddress())
-						.exportNo(shopping.getExportNo())
-						.orderDate(shopping.getOrderDate())
-						.ordererName(shopping.getOrderName())
-						.salesChannel(shopping.getSalesChannel())
-						.seller(seller)
-						.build();
-				exports.add(exp);
+			for (Shopping shopping : shoppings) {
+				exports.add(shopping.toExports(seller));
 			}
-			
+
 			// 출고 상품 만들기
-			for(Exports exp: exports) {
-				List<ExportProduct> products = new ArrayList<>();
-				Exports savedExport = exportsRepository.save(exp);
-				List<ShoppingProduct> shopping = shoppingService.findShoppingProduct(savedExport.getExportNo());
-				
-				for(ShoppingProduct shop: shopping) {
-					ExportProduct product = ExportProduct
-							.builder()
-							.amount(shop.getAmount())
-							.exports(savedExport)
-							.product(shop.getProduct())
-							.sellingPrice(shop.getSellingPrice())
-							.build();
-					products.add(product);
+			for (Exports exp : exports) {
+				List<ExportProduct> exportProducts = new ArrayList<>();
+				Exports savedExports = exportsRepository.save(exp);
+				List<ShoppingProduct> shoppingProducts = shoppingService
+						.findShoppingProduct(savedExports.getExportNo());
+
+				for (ShoppingProduct shoppingProduct : shoppingProducts) {
+					exportProducts.add(shoppingProduct.toExportProduct(savedExports));
 				}
+
+				List<ExportProduct> savedExportProducts = exportProductRepository.saveAll(exportProducts);
 				
-				List<ExportProduct> savedProduct = exportProductRepository.saveAll(products);
+				if(savedExports == null || savedExportProducts == null) findExports(sellerNo, 0, countPerPage);
 			}
 		}
-		
+
 		// 주문 수집하면 무조건 첫 페이지로 이동
 		return findExports(sellerNo, 0, countPerPage);
 	}
-	
+
 	/**
 	 * 출고 목록 조회 메서드
 	 * 
@@ -92,43 +80,34 @@ public class ExportsService {
 	 * @return
 	 */
 	public List<ExportsDTO> findExports(Long sellerNo, int pageNum, int countPerPage) {
-		List<ExportsDTO> exports = new ArrayList<>();
-		Page<Exports> exps = exportsRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
-		
-		for(Exports exp: exps) {
-			ExportsDTO export = ExportsDTO
-					.builder()
-					.address(exp.getAddress())
-					.exportNo(exp.getExportNo())
-					.orderDate(exp.getOrderDate())
-					.ordererName(exp.getOrdererName())
-					.orderStatus(setOrderStatus(exp.getExportNo()))
-					.salesChannel(exp.getSalesChannel())
-					.sellerNo(sellerNo)
-					.build();
-			exports.add(export);
+		List<ExportsDTO> exportsDTOs = new ArrayList<>();
+		Page<Exports> exports = exportsRepository.findAllBySeller_SellerNoOrderByOrderDateDesc(sellerNo,
+				PageRequest.of(pageNum, countPerPage));
+
+		for (Exports exp : exports) {
+			exportsDTOs.add(exp.toExportsDTO(exportProductRepository));
 		}
-		return exports;
+		return exportsDTOs;
 	}
-	
+
 	/**
-	 * 주문 상태 얻기 위한 메서드
-	 * 주문이 취소된 경우: 주문취소
-	 * 모든 물건이 출고됨: 출고완료
-	 * 나머지: 준비중
+	 * 출고 목록 상세 메서드
 	 * 
 	 * @param exportNo
+	 * @param pageNum
+	 * @param countPerPage
 	 * @return
 	 */
-	private String setOrderStatus(String exportNo) {
-		String status = "출고완료";
-		
-		Long cancelCnt = exportProductRepository.countByExports_ExportNoAndOrderStatus(exportNo, "주문취소");
-		Long waitingCnt = exportProductRepository.countByExports_ExportNoAndOrderStatus(exportNo, "출고대기");
-		
-		if(cancelCnt > 0) status = "주문취소";
-		else if(waitingCnt > 0) status = "준비중";
-		
-		return status;		
+	public List<ExportProductDTO> exportDetail(String exportNo, int pageNum, int countPerPage) {
+		List<ExportProductDTO> exportProductDTOs = new ArrayList<>();
+		Page<ExportProduct> exportProducts = exportProductRepository
+				.findByExports_ExportNoOrderByProduct_ProductName(exportNo, PageRequest.of(pageNum, countPerPage));
+
+		for (ExportProduct exportProduct : exportProducts) {
+			exportProductDTOs.add(exportProduct.toExportProductDTO());
+		}
+
+		return exportProductDTOs;
 	}
+
 }

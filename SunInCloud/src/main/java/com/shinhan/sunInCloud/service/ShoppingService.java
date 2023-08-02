@@ -30,45 +30,32 @@ public class ShoppingService {
 	 * 주문 생성하는 메서드
 	 * 
 	 * @param sellerNo
-	 * @param orderedProducts
+	 * @param shoppingProductDTOs
 	 * @return
 	 */
 	@Transactional
-	public boolean register(Long sellerNo, List<ShoppingProductDTO> orderedProducts) {
+	public boolean register(Long sellerNo, List<ShoppingProductDTO> shoppingProductDTOs) {
 		// 수집된 주문이 없는 경우
-		if(orderedProducts.size() == 0) return false;
+		if(shoppingProductDTOs.size() == 0) return false;
 		
-		List<ShoppingProduct> products = new ArrayList<>();
+		List<ShoppingProduct> shoppingProducts = new ArrayList<>();
 		Seller seller = sellerService.findById(sellerNo);
 		StringBuilder exportNo = new StringBuilder("S");
 		exportNo.append(sellerNo);
 		exportNo.append("-");
-		exportNo.append(new Date().getTime() % 100000);
+		exportNo.append(new Date().getTime() % 10000000);
 		
-		Shopping shopping = Shopping
-				.builder()
-				.exportNo(exportNo.toString())
-				.seller(seller)
-				.salesChannel("11번가")
-				.orderName(orderedProducts.get(0).getOrdererName())
-				.address(orderedProducts.get(0).getAddress())
-				.build();
+		Shopping shopping = shoppingProductDTOs.get(0)
+				.toShopping(exportNo.toString(), "11번가", seller); 
 		
 		Shopping savedShopping = shoppingRepository.save(shopping);
 
-		for(ShoppingProductDTO tmp: orderedProducts) {
-			Product findedProduct = productService.findByProductNo(tmp.getProductNo());
-			ShoppingProduct product = ShoppingProduct
-					.builder()
-					.amount(tmp.getAmount())
-					.product(findedProduct)
-					.sellingPrice(tmp.getSellingPrice())
-					.shopping(savedShopping)
-					.build();
-			products.add(product);
+		for(ShoppingProductDTO shoppingProductDTO: shoppingProductDTOs) {
+			Product findedProduct = productService.findByProductNo(shoppingProductDTO.getProductNo());
+			shoppingProducts.add(shoppingProductDTO.toShoppingProduct(findedProduct, savedShopping));
 		}
 		
-		List<ShoppingProduct> savedProduct = shoppingProductRepository.saveAll(products);
+		List<ShoppingProduct> savedProduct = shoppingProductRepository.saveAll(shoppingProducts);
 		
 		return (savedShopping != null && savedProduct != null);
 	}

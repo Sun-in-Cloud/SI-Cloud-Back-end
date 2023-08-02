@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.shinhan.sunInCloud.entity.Exports;
 
 public interface ExportsRepository extends JpaRepository<Exports, Long>{
-	Page<Exports> findAllBySeller_SellerNo(Long sellerNo, Pageable pageable);
+	Page<Exports> findAllBySeller_SellerNoOrderByOrderDateDesc(Long sellerNo, Pageable pageable);
 }
