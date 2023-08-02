@@ -29,12 +29,12 @@ public class OrderController {
 		return orderService.register(sellerNo);
 	}
 	
-	@GetMapping("/3pl/order/list")
+	@GetMapping(value = {"/3pl/order/list", "/seller/order/list"})
 	public List<OrderDTO> findOrders(Long sellerNo, int pageNum, int countPerPage) {
 		return orderService.findOrders(sellerNo, pageNum, countPerPage);
 	}
 	
-	@GetMapping("/3pl/order/{orderNo}")
+	@GetMapping(value = {"/3pl/order/{orderNo}", "/seller/order/{orderNo}"})
 	public List<OrderProductDTO> findByOrderNo(@PathVariable Long orderNo) {
 		return orderService.findByOrderNo(orderNo);
 	}
