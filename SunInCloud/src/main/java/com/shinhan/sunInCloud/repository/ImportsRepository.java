@@ -10,8 +10,17 @@ import com.shinhan.sunInCloud.dto.ImportsDTO;
 import com.shinhan.sunInCloud.entity.ImportProduct;
 import com.shinhan.sunInCloud.entity.Imports;
 
-public interface ImportsRepository extends JpaRepository<ImportProduct, Long> {
+public interface ImportsRepository extends JpaRepository<Imports, Long> {
+	
+	//1.입고 얘정 리스트 상세 조회
 	Imports findByImportProduct_ImportNo(Long sellerNo, Pageable pageable);
-	List<ImportProductDTO> findByImportNo(Long importNo);	
-	List<ImportsDTO> findBySellerNo(Long sellerNo);
+	
+	//2. 입고 예정, 내역 리스트 목록 sellerNo로 찾기
+	List<ImportsDTO> findBySellerNo(Long sellerNo, Pageable pageable);
+	
+	//3. 입고 예정 리스트 상세
+	List<ImportProductDTO> findByImports_importsNo(Long importNo);
+	
+	//4.리턴값 List이고, Id로 입고 상세 내역 찾기
+	List<ImportsDTO> findByImportNo(Long importNo);
 }
