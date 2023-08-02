@@ -2,16 +2,24 @@ package com.shinhan.sunInCloud.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.shinhan.sunInCloud.dto.ImportProductDTO;
-import com.shinhan.sunInCloud.dto.ImportsDTO;
 import com.shinhan.sunInCloud.entity.ImportProduct;
 import com.shinhan.sunInCloud.entity.Imports;
 
-public interface ImportsRepository extends JpaRepository<ImportProduct, Long> {
+public interface ImportsRepository extends JpaRepository<Imports, Long> {
+	
+	//1.입고 얘정 리스트 상세 조회
 	Imports findByImportProduct_ImportNo(Long sellerNo, Pageable pageable);
-	List<ImportProductDTO> findByImportNo(Long importNo);	
-	List<ImportsDTO> findBySellerNo(Long sellerNo);
+	
+	//2. 입고 예정, 내역 리스트 목록 sellerNo로 찾기
+	List<Imports> findBySellerNo(Long sellerNo, Pageable pageables);
+	
+	//3. 입고 예정 리스트 상세 새로만들기
+	//List<ImportProduct> findByImports_importsNo(Long importNo);
+	
+	//4.리턴값 List이고, Id로 입고 상세 내역 찾기
+	List<Imports> findByImportNo(Long importNo);
 }
