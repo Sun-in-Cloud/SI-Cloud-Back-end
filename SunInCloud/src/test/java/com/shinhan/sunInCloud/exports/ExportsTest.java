@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
 import com.shinhan.sunInCloud.service.ExportsService;
 
@@ -29,6 +30,14 @@ public class ExportsTest {
 		List<ExportsDTO> exports = exportsService.findExports(sellerNo, 0, 10);
 		
 		Assertions.assertThat(exports.size()).isNotZero();
-		System.out.println(exports);
+	}
+	
+//	@Test
+	void exportDetail() {
+		String exportNo = "S8-63592";
+		List<ExportProductDTO> products = exportsService.exportDetail(exportNo, 0, 10);
+		
+		Assertions.assertThat(products.size()).isNotZero();
+		
 	}
 }
