@@ -1,5 +1,6 @@
 package com.shinhan.sunInCloud.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.dto.ImportsDTO;
+import com.shinhan.sunInCloud.entity.ImportProduct;
 import com.shinhan.sunInCloud.entity.Imports;
 import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.repository.ImportsProductRepository;
@@ -47,24 +49,32 @@ public class SellerImportService {
 		
 		//3.입고 예정 리스트
 		//3.1 입고 예정 리스트 목록
-		public Imports seePreList(Long sellerNo, int pageNumber, int pageSize) {
-			return importRepo.findByImportProduct_ImportNo(sellerNo, PageRequest.of(pageNumber, pageSize));
+		public List<ImportsDTO> seePreList(Long sellerNo, int pageNumber, int pageSize) {
+			List<ImportsDTO> imports=new ArrayList<>();
+			imports= importRepo.findBySellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
+			return imports;
 		}
 		
 		//3.2 입고 예정 리스트 상세
-		public List<ImportProductDTO> seePreDetail(Long ImportNo) {
-			return importRepo.findByImportNo(ImportNo);
+		public List<ImportProductDTO> seePreDetail(Long importNo) {
+			List<ImportProductDTO> imports=new ArrayList<>();
+			imports= importRepo.findByImports_importsNo(importNo);
+			return imports;
 		}
 		
 		//4.입고 내역 리스트
 		//4.1 목록
 		public List<ImportsDTO> seeList(Long sellerNo, int pageNum, int countPerPage){
-			return importRepo.findBySellerNo(sellerNo);
+			List<ImportsDTO> imports =new ArrayList<>();
+			imports=importRepo.findBySellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
+			return imports;
 		}
 		
 		//4.2 상세
-//		public List<ImportsDTO> seeDetail(){
-//			
-//		}
+		public List<ImportsDTO> seeDetail(Long importNo){
+			List<ImportsDTO> imports=new ArrayList<>();
+			imports = importRepo.findByImportNo(importNo);
+			return imports;	
+		}
 
 }
