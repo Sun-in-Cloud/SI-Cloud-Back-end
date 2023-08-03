@@ -16,11 +16,13 @@ import com.shinhan.sunInCloud.entity.ImportProduct;
 import com.shinhan.sunInCloud.entity.Imports;
 import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.entity.OrderProduct;
+import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.ImportsProductRepository;
 import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.OrderProductRepository;
 import com.shinhan.sunInCloud.repository.OrderRepository;
+import com.shinhan.sunInCloud.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +36,7 @@ public class SellerImportService {
 	private final ImportsProductRepository importProductRepository;
 	private final OrderRepository orderRepository;
 	private final OrderProductRepository orderProductRepository;
+	private final ProductRepository productRepository;
 	
 	/**
 	 * 1.입고 예정 리스트 등록
@@ -41,8 +44,8 @@ public class SellerImportService {
 	 * @param sellerNo
 	 * @return orders의 발주번호, 발주일자
 	 */
-	public Optional<Order> findBySellerNo(String sellerNo){
-		return orderRepository.findBySellerNo(sellerNo);
+	public List<Order> findBySellerNo(Long sellerNo){
+		return orderRepository.findBySeller_SellerNo(sellerNo);
 	}
 	
 		
@@ -51,9 +54,9 @@ public class SellerImportService {
 	 * @param orderNo
 	 * @return 바코드 번호, 상품 이름, 발주 수량
 	 */
-		public List<OrderProductDTO> findByProductNo(String orderNo) {
+		public List<OrderProductDTO> findByOrderNo(Long orderNo) {
 			List<OrderProductDTO> orderDTOs = new ArrayList<>();
-			List<OrderProduct> order = orderProductRepository.findByOrderNo(orderNo);
+			List<OrderProduct> order = orderProductRepository.findByOrder_OrderNo(orderNo);
 			//entity를 dto로 변환하기	
 			for(OrderProduct orders: order) {
 				orderDTOs.add(OrderProductDTO.builder().productNo(orders.getProduct().getProductNo())
@@ -66,10 +69,14 @@ public class SellerImportService {
 			
 		}
 	
-		//1.3 발주 조회->등록
-		//public Product saveProduct(Product ) {
+		/**1.3 발주 조회->검색
+		 * @param productName
+		 * @return
+		 */
+		public List<Product> searchOrder(String productName) {
+			return productRepository.findByProductName(productName);
 			
-		//}
+		}
 		
 		//2.입고 예정 리스트 등록
 //		public Imports savePreImport(String importNo) {
