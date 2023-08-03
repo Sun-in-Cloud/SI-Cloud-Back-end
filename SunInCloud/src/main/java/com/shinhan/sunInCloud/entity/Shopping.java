@@ -1,6 +1,7 @@
 package com.shinhan.sunInCloud.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.shinhan.sunInCloud.dto.ShoppingDTO;
+import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,22 +53,41 @@ public class Shopping {
 	@Builder.Default
 	private Boolean isCollected = false;
 	
+//	/**
+//	 * Shopping -> Exports
+//	 * 쇼핑몰 주문 목록을 출고 목록으로 가져오기 위함
+//	 * 
+//	 * @param seller
+//	 * @return
+//	 */
+//	public Exports toExports(Seller seller) {
+//		return Exports
+//				.builder()
+//				.address(address)
+//				.exportNo(exportNo)
+//				.orderDate(orderDate)
+//				.ordererName(orderName)
+//				.salesChannel(salesChannel)
+//				.seller(seller)
+//				.build();
+//	}
+	
 	/**
-	 * Shopping -> Exports
-	 * 쇼핑몰 주문 목록을 출고 목록으로 가져오기 위함
-	 * 
-	 * @param seller
+	 * Shopping -> ShoppingDTO
+	 * 주문건 전달을 위함
+	 * @param shopingProductDTOs
 	 * @return
 	 */
-	public Exports toExports(Seller seller) {
-		return Exports
+	public ShoppingDTO toShoppingDTO(List<ShoppingProductDTO> shopingProductDTOs) {
+		return ShoppingDTO
 				.builder()
+				.sellerNo(seller.getSellerNo())
 				.address(address)
 				.exportNo(exportNo)
 				.orderDate(orderDate)
 				.ordererName(orderName)
 				.salesChannel(salesChannel)
-				.seller(seller)
+				.orderedProducts(shopingProductDTOs)
 				.build();
 	}
 }

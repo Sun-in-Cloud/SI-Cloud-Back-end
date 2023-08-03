@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shinhan.sunInCloud.dto.ShoppingDTO;
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
 import com.shinhan.sunInCloud.entity.Shopping;
 import com.shinhan.sunInCloud.service.ShoppingService;
@@ -46,10 +47,20 @@ public class ShoppingTest {
 		Assertions.assertThat(result).isEqualTo(true);
 	}
 	
-	@Test
+//	@Test
 	public void findNotCollected() {
 		Long sellerNo = 8L;
 		List<Shopping> shoppings = shoppingService.findNotCollected(sellerNo);
 		Assertions.assertThat(shoppings.size()).isNotNull();
+	}
+	
+	@Test
+	public void sendToWMS() {
+		Long sellerNo = 8L;
+		List<ShoppingDTO> shoppings = shoppingService.sendOrderToWMS(sellerNo);
+		
+		for(ShoppingDTO shopping: shoppings) {
+			System.out.println(shopping);
+		}
 	}
 }

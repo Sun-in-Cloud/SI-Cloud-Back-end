@@ -8,7 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.OrderDTO;
+import com.shinhan.sunInCloud.dto.OrderListDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
+import com.shinhan.sunInCloud.dto.OrderProductListDTO;
 import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.entity.OrderProduct;
 import com.shinhan.sunInCloud.entity.Product;
@@ -34,10 +36,10 @@ public class OrderService {
 	 * @param sellerNo
 	 * @param pageNum
 	 * @param countPerPage
-	 * @return 발주가 필요한 상품 List
+	 * @return OrderProductListDTO
 	 * 작성자: 손준범
 	 */
-	public List<OrderProductDTO> findNeededOrderProducts(Long sellerNo, int pageNum, int countPerPage) {
+	public OrderProductListDTO findNeededOrderProducts(Long sellerNo, int pageNum, int countPerPage) {
 		Page<Product> neededToOrderProducts = productService.findNeededToOrderBySellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
 		List<OrderProductDTO> products = new ArrayList<>();
 		for (Product product : neededToOrderProducts) {
@@ -50,7 +52,9 @@ public class OrderService {
 					.amount(product.getEnoughStock() - product.getCurrentStock())
 					.build());
 		}
-		return products;
+		Long neededToOrderCount = productService.countNeededToOrder(sellerNo);
+		Long totalPage = calculatePageCount(neededToOrderCount, countPerPage);
+		return OrderProductListDTO.builder().totalPage(totalPage).products(products).build();
 	}
 
 	/**
@@ -94,7 +98,7 @@ public class OrderService {
 	 * @return 주문내역 리스트
 	 * 작성자: 손준범
 	 */
-	public List<OrderDTO> findOrders(Long sellerNo, int pageNum, int countPerPage) {
+	public OrderListDTO findOrders(Long sellerNo, int pageNum, int countPerPage) {
 		Page<Order> orders = orderRepository.findBySeller_SellerNoOrderByOrderDateDesc(sellerNo, PageRequest.of(pageNum, countPerPage));
 		List<OrderDTO> orderDTOs = new ArrayList<>();
 		for (Order order : orders) {
@@ -105,7 +109,9 @@ public class OrderService {
 					.isImported(order.getImports() == null ? false : true)
 					.build());
 		}
-		return orderDTOs;
+		Long count = orderRepository.countBySeller_SellerNo(sellerNo);
+		Long totalPage = calculatePageCount(count, countPerPage);
+		return OrderListDTO.builder().totalPage(totalPage).orders(orderDTOs).build();
 	}
 
 	/**
@@ -127,5 +133,13 @@ public class OrderService {
 					.build());
 		}
 		return orderProductDTOs;
+	}
+	
+	private Long calculatePageCount(Long count, int countPerPage) {
+		Long totalPage = count / countPerPage;
+		if (count % countPerPage > 0) {
+			++totalPage;
+		}
+		return totalPage;
 	}
 }

@@ -3,14 +3,13 @@ package com.shinhan.sunInCloud.entity;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,38 +23,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ExportProductHistory {
-
+public class CurrentStockHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long historyExportProductNo;
+	private Long currentStockHistoryNo;
+	
+	@NotNull
+	private String productNo;
 	
 	@CreationTimestamp
 	private Timestamp updatedDate;
 	
 	@NotNull
-	@Enumerated(EnumType.STRING)
-	private UpdatedType updatedType;
+	private int preStock;
 	
 	@NotNull
-	private Long exportProductNo;
+	private int currentStock;
 	
 	@NotNull
-	private String exportNo;
-	
-	@NotNull
-	private String productNo;
-	
-	@NotNull
-	private Integer amount;
-	
-	@NotNull
-	private String orderStatus;
-	
-	private Timestamp exportDate;
-	
-	@NotNull
-	private Integer sellingPrice;
-	
-	private String invoiceNo;
+	private int updatedCount;
 }

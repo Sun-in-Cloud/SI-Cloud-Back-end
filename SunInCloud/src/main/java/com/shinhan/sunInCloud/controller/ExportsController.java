@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
+import com.shinhan.sunInCloud.dto.ExportInvoiceRequestDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
 import com.shinhan.sunInCloud.service.ExportsService;
@@ -30,5 +34,10 @@ public class ExportsController {
 	@GetMapping(value = {"/3pl/export/{exportNo}", "/seller/export/{exportNo}"})
 	public List<ExportProductDTO> exportsDetail(@PathVariable String exportNo, Long sellerNo, int pageNum, int countPerPage) {
 		return exportsService.exportDetail(exportNo, pageNum, countPerPage);
+	}
+	
+	@PutMapping("/3pl/export/invoice")
+	public List<ExportInvoiceDTO> printInvoice(@RequestBody ExportInvoiceRequestDTO exportInvoiceRequestDTO) {
+		return exportsService.printInvoice(exportInvoiceRequestDTO.getExportNo(), exportInvoiceRequestDTO.getInvoiceProducts());
 	}
 }
