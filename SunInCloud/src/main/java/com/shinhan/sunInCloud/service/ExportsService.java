@@ -1,6 +1,7 @@
 package com.shinhan.sunInCloud.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -9,13 +10,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
 import com.shinhan.sunInCloud.entity.ExportProduct;
+import com.shinhan.sunInCloud.entity.ExportProductHistory;
 import com.shinhan.sunInCloud.entity.Exports;
+import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.Shopping;
 import com.shinhan.sunInCloud.entity.ShoppingProduct;
+import com.shinhan.sunInCloud.repository.ExportProductHistoryRepository;
 import com.shinhan.sunInCloud.repository.ExportProductRepository;
 import com.shinhan.sunInCloud.repository.ExportsRepository;
 
@@ -26,8 +31,10 @@ import lombok.RequiredArgsConstructor;
 public class ExportsService {
 	private final ExportsRepository exportsRepository;
 	private final ExportProductRepository exportProductRepository;
+	private final ExportProductHistoryRepository exportProductHistoryRepository;
 	private final ShoppingService shoppingService;
 	private final SellerService sellerService;
+	private final ProductService productService;
 
 	/**
 	 * 주문건 수집한 후 주문 목록 리턴하는 메서드
@@ -108,6 +115,58 @@ public class ExportsService {
 		}
 
 		return exportProductDTOs;
+	}
+	
+	/**
+	 * 현재 재고가 남은 경우에만 송장 출력하는 메서드
+	 * 
+	 * @param exportNo
+	 * @param invoiceProducts
+	 * @return
+	 */
+	@Transactional
+	public List<ExportInvoiceDTO> printInvoice(String exportNo, List<ExportInvoiceDTO> invoiceProducts) {
+		List<ExportInvoiceDTO> exportInvoiceDTOs = new ArrayList<>();
+		List<ExportProduct> exportProducts = new ArrayList<>();
+		String invoiceNo = String.valueOf(new Date().getTime());
+		
+		// 송장 출력
+		for(ExportInvoiceDTO invoiceProduct : invoiceProducts) {
+			int amount = invoiceProduct.getAmount();
+			String productNo = invoiceProduct.getProductNo();
+			ExportInvoiceDTO exportInvoiceDTO = ExportInvoiceDTO
+					.builder()
+					.amount(amount)
+					.invoiceNo(isAvailableForExport(productNo, amount) ? invoiceNo : null)
+					.productNo(invoiceProduct.getProductNo())
+					.build();
+			
+			// 재고가 남은 경우에만 ExportProduct 업데이트 
+			if(exportInvoiceDTO.getInvoiceNo() != null) {
+				ExportProduct exportProduct = exportProductRepository.findByExports_ExportNoAndProduct_ProductNo(exportNo, productNo);
+				ExportProductHistory exportProductHistory = exportProduct.toExportProductHistory();
+				
+				exportProduct.updateExportProductByExportInvoiceDTO(exportInvoiceDTO);
+				exportProducts.add(exportProduct);
+			}
+			exportInvoiceDTOs.add(exportInvoiceDTO);
+		}
+		
+		exportProductRepository.saveAll(exportProducts);
+		
+		return exportInvoiceDTOs;
+	}
+	
+	/**
+	 * 현재 재고가 주문수량보다 많은지 확인하는 메서드
+	 * @param productNo
+	 * @param amount
+	 * @return
+	 */
+	private boolean isAvailableForExport (String productNo, int amount) {
+		Product product = productService.findByProductNo(productNo);
+		
+		return amount <= product.getCurrentStock();
 	}
 
 }
