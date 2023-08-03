@@ -17,6 +17,7 @@ import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.entity.OrderProduct;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
+import com.shinhan.sunInCloud.repository.ProductRepository;
 import com.shinhan.sunInCloud.service.OrderService;
 import com.shinhan.sunInCloud.service.SellerImportService;
 
@@ -31,6 +32,9 @@ public class ImportsTest {
 	
 	@Autowired
 	SellerImportService sellerImportService;
+	
+	@Autowired
+	ProductRepository productRepository;
 	
 	//발주 목록 조회
 	//@Test
@@ -58,6 +62,17 @@ public class ImportsTest {
 		}	
 	}
 	
+//	@Test
+//	void saveImports() {
+//		Long sellerNo=8L;
+//		List<Product> product = productRepository.findAllBySeller_SellerNo(sellerNo );
+//				new ArrayList<>();
+//		
+//		for(Product product : products) {
+//			
+//		}
+//		Imports imports = sellerImportService.saveImport(8L, );
+//	}
 //	@Test
 //	void seePreList() {
 //		List<Imports> imports = new ArrayList<>();

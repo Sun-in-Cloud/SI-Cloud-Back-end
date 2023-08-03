@@ -11,9 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ProductDTO;
+import com.shinhan.sunInCloud.dto.ProductListDTO;
 import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
+import com.shinhan.sunInCloud.entity.ProductHistory;
 import com.shinhan.sunInCloud.entity.Seller;
+import com.shinhan.sunInCloud.entity.UpdatedType;
+import com.shinhan.sunInCloud.repository.ProductHistoryRepository;
 import com.shinhan.sunInCloud.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,7 @@ public class ProductService {
 	private final DetailProductGroupService detailProductGroupService;
 	
 	private final ProductRepository productRepository;
+	private final ProductHistoryRepository productHistoryRepository;
 
 	/**
 	 * 상품 등록 메서드
@@ -69,7 +74,7 @@ public class ProductService {
 	 * @param pageSize
 	 * @return page에 해당하는 상품 리스트
 	 */
-	public List<ProductDTO> findProductBySellerNo(Long sellerNo, int pageNumber, int pageSize) {
+	public ProductListDTO findProductBySellerNo(Long sellerNo, int pageNumber, int pageSize) {
 		List<ProductDTO> productDTOs = new ArrayList<>();
 		Page<Product> products = productRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
 		for (Product product : products) {
@@ -78,7 +83,12 @@ public class ProductService {
 					.productName(product.getProductName()).safetyStock(product.getSafetyStock())
 					.currentStock(product.getCurrentStock()).enoughStock(product.getEnoughStock()).build());
 		}
-		return productDTOs;
+		Long count = productRepository.countBySeller_SellerNo(sellerNo);
+		Long totalPage = count / pageSize;
+		if (count % pageSize > 0) {
+			++totalPage;
+		}
+		return ProductListDTO.builder().totalPage(totalPage).products(productDTOs).build();
 	}
 	
 	public Product findByProductNo(String productNo) {
@@ -109,6 +119,7 @@ public class ProductService {
 	 * @return update된 DTO
 	 * 작성자: 손준범
 	 */
+	@Transactional
 	public ProductDTO update(ProductDTO productDTO) {
 		// 이미 있는 상품을 update하는 것이기 때문에 null이 오지 않음을 보장함
 		Product product = findByProductNo(productDTO.getProductNo());
@@ -152,5 +163,14 @@ public class ProductService {
 	 */
 	public List<Product> findNeededToOrderBySellerNo(Long sellerNo) {
 		return productRepository.findByNeededToOrder(sellerNo);
+	}
+	
+	/**
+	 * 발주가 필요한 상품의 개수 조회 메서드
+	 * @param sellerNo
+	 * @return 총 상품의 개수
+	 */
+	public Long countNeededToOrder(Long sellerNo) {
+		return productRepository.countNeededToOrder(sellerNo);
 	}
 }
