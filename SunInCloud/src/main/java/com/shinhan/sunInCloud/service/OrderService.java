@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.OrderDTO;
+import com.shinhan.sunInCloud.dto.OrderListDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.dto.OrderProductListDTO;
 import com.shinhan.sunInCloud.entity.Order;
@@ -100,7 +101,7 @@ public class OrderService {
 	 * @return 주문내역 리스트
 	 * 작성자: 손준범
 	 */
-	public List<OrderDTO> findOrders(Long sellerNo, int pageNum, int countPerPage) {
+	public OrderListDTO findOrders(Long sellerNo, int pageNum, int countPerPage) {
 		Page<Order> orders = orderRepository.findBySeller_SellerNoOrderByOrderDateDesc(sellerNo, PageRequest.of(pageNum, countPerPage));
 		List<OrderDTO> orderDTOs = new ArrayList<>();
 		for (Order order : orders) {
@@ -111,7 +112,12 @@ public class OrderService {
 					.isImported(order.getImports() == null ? false : true)
 					.build());
 		}
-		return orderDTOs;
+		Long count = orderRepository.countBySeller_SellerNo(sellerNo);
+		Long totalPage = count / countPerPage;
+		if (count % countPerPage > 0) {
+			++totalPage;
+		}
+		return OrderListDTO.builder().totalPage(totalPage).orders(orderDTOs).build();
 	}
 
 	/**

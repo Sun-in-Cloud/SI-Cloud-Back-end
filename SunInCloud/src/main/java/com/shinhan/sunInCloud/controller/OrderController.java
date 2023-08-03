@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shinhan.sunInCloud.dto.OrderDTO;
+import com.shinhan.sunInCloud.dto.OrderListDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.dto.OrderProductListDTO;
 import com.shinhan.sunInCloud.service.OrderService;
@@ -31,8 +31,8 @@ public class OrderController {
 	}
 	
 	@GetMapping(value = {"/3pl/order/list", "/seller/order/list"})
-	public List<OrderDTO> findOrders(Long sellerNo, int pageNum, int countPerPage) {
-		return orderService.findOrders(sellerNo, pageNum, countPerPage);
+	public OrderListDTO findOrders(Long sellerNo, int pageNum, int countPerPage) {
+		return orderService.findOrders(sellerNo, pageNum - 1, countPerPage);
 	}
 	
 	@GetMapping(value = {"/3pl/order/{orderNo}", "/seller/order/{orderNo}"})
