@@ -1,5 +1,8 @@
 package com.shinhan.sunInCloud.dto;
 
+import com.shinhan.sunInCloud.entity.OrderProduct;
+import com.shinhan.sunInCloud.entity.Product;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,4 +24,12 @@ public class OrderProductDTO {
 	private Integer currentStock;
 	private Integer enoughStock;
 	private Integer amount;
+	
+	//바코드 번호, 발주 수량, 상품명
+	public OrderProduct toOrderProductDTO(Product product) {
+		return OrderProduct.builder()
+				.product(product)
+				.amount(amount)
+				.build();
+	}
 }
