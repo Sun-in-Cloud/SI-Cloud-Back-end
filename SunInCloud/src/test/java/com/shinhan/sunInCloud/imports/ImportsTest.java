@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
+import com.shinhan.sunInCloud.dto.ProductDTO;
 import com.shinhan.sunInCloud.entity.Imports;
 import com.shinhan.sunInCloud.entity.Order;
+import com.shinhan.sunInCloud.entity.OrderProduct;
+import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.service.OrderService;
 import com.shinhan.sunInCloud.service.SellerImportService;
@@ -30,7 +33,7 @@ public class ImportsTest {
 	SellerImportService sellerImportService;
 	
 	//발주 목록 조회
-	@Test
+	//@Test
 	void seeOrderList() {
 		Long seller=8L;
 		List<Order> order = sellerImportService.findBySellerNo(8L);
@@ -38,11 +41,21 @@ public class ImportsTest {
 	}
 	
 	//발주 내역 상세 조회
-	@Test
+	//@Test
 	void seeOrdersDetail() {
 		Long orderNo = 26L;
 		List<OrderProductDTO> orderProducts = orderService.findByOrderNo(orderNo);
 		Assertions.assertThat(orderProducts.size()).isEqualTo(10);
+	}
+	
+	//발주 조회 ->검색
+	@Test
+	void searchOrder() {
+		String productName="룩엣마이아이즈 샤이닝베이지";
+		List<Product> product  = sellerImportService.searchOrder(productName);
+		for (Product products : product) {
+			System.out.println(products.getSafetyStock());
+		}	
 	}
 	
 //	@Test
