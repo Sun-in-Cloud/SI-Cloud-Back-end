@@ -85,17 +85,27 @@ public class SellerImportService {
 		 * @param sellerNo
 		 * @return 
 		 */
-//		public boolean saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
-//			//입고 등록 -> 입고 번호 필요함
-//			Imports imports = importRepository.findByImportProduct_ImportNo(sellerNo);
-//			
-//			//각 입고 상품 목록 ->입고 번호 부여
-//			
-//			
-//			//각 입고 상품 저장
-////			if(imports.getImportNo()==null) return false;
-////				return importProduct.savePreImport(importProductDTOs);
-////		}
+		public boolean saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
+			//입고 등록 -> 입고 번호 필요함
+			Imports imports = importRepository.findByImportProduct_ImportNo(sellerNo);
+			
+			//각 입고 상품 목록 ->입고 번호 부여
+			
+			for(ImportProductDTO importProductDTO :importProductDTOs) {
+				importProductDTOs.add(ImportProductDTO.builder()
+						.importAmount(importProductDTO.getImportAmount())
+						.importNo(imports.getImportNo())
+						.productNo(importProductDTO.getProductNo())
+						.importProductNo(importProductDTO.getImportProductNo())
+						.productName(importProductDTO.getProductName())
+						.requestAmount(importProductDTO.getRequestAmount())
+						.build());
+			}
+			
+			//각 입고 상품 저장
+			if(imports.getImportNo()==null) return false;
+			return true;
+		}
 //		
 //		
 //		//3.입고 예정 리스트
