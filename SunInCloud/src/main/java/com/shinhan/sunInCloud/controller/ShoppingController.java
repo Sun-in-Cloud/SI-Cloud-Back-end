@@ -18,7 +18,7 @@ public class ShoppingController {
 	private final ShoppingService shoppingService;
 	
 	@PostMapping("/shop/order")
-	public boolean register(@RequestBody ShoppingDTO shopping) {
-		return shoppingService.register(shopping.getSellerNo(), shopping.getOrderedProducts());
+	public boolean register(@RequestBody ShoppingDTO shoppingDTO) {
+		return shoppingService.register(shoppingDTO.getSellerNo(), shoppingDTO.getOrderedProducts());
 	}
 }
