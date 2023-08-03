@@ -109,8 +109,6 @@ public class ProductService {
 
 	/**
 	 * 입력받은 수정 사항을 update해주는 메서드
-	 * 1. 현재 상품을 history 테이블에 먼저 저장
-	 * 2. update진행
 	 * @param productDTO
 	 * @return update된 DTO
 	 * 작성자: 손준범
@@ -119,8 +117,6 @@ public class ProductService {
 	public ProductDTO update(ProductDTO productDTO) {
 		// 이미 있는 상품을 update하는 것이기 때문에 null이 오지 않음을 보장함
 		Product product = findByProductNo(productDTO.getProductNo());
-		ProductHistory productHistory = new ProductHistory(product, UpdatedType.UPDATED);
-		productHistoryRepository.save(productHistory);
 		product.updateProductByProductDTO(productDTO);
 		Product savedProduct = productRepository.save(product);
 		return savedProduct.toProductDTO();
@@ -139,8 +135,6 @@ public class ProductService {
 		if (product == null) {
 			return false;
 		}
-		ProductHistory productHistory = new ProductHistory(product, UpdatedType.DELETED);
-		productHistoryRepository.save(productHistory);
 		product.setIsActive(false);
 		return true;
 	}
