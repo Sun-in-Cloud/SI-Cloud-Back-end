@@ -77,11 +77,16 @@ public class SellerImportService {
 			return productRepository.findByProductName(productName);
 			
 		}
-		
-		//2.입고 예정 리스트 등록
-//		public Imports savePreImport(String importNo) {
+
+		/**
+		 * 2.입고 예정 리스트 등록
+		 * @param sellerNo
+		 * @return 
+		 */
+//		public Imports saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
 //			return orderRepository.saveAll(importNo);
 //		}
+//		
 //		
 //		//3.입고 예정 리스트
 //		//3.1 입고 예정 리스트 목록
