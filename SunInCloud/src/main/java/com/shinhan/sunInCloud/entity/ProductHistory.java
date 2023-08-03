@@ -48,9 +48,6 @@ public class ProductHistory {
 
 	@NotNull
 	private Integer safetyStock;
-
-	@NotNull
-	private Integer currentStock;
 	
 	@NotNull
 	private Integer enoughStock;
@@ -58,10 +55,8 @@ public class ProductHistory {
 	@NotNull
 	private Long detailProductGroupNo;
 
-	@NotNull
 	private Integer importPrice;
 
-	@NotNull
 	private Integer consumerPrice;
 
 	@NotNull

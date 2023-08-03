@@ -1,5 +1,6 @@
 package com.shinhan.sunInCloud.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,18 +10,18 @@ import javax.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
+import com.shinhan.sunInCloud.dto.ShoppingDTO;
+import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
 import com.shinhan.sunInCloud.entity.ExportProduct;
 import com.shinhan.sunInCloud.entity.ExportProductHistory;
 import com.shinhan.sunInCloud.entity.Exports;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
-import com.shinhan.sunInCloud.entity.Shopping;
-import com.shinhan.sunInCloud.entity.ShoppingProduct;
-import com.shinhan.sunInCloud.repository.ExportProductHistoryRepository;
 import com.shinhan.sunInCloud.repository.ExportProductRepository;
 import com.shinhan.sunInCloud.repository.ExportsRepository;
 
@@ -31,8 +32,6 @@ import lombok.RequiredArgsConstructor;
 public class ExportsService {
 	private final ExportsRepository exportsRepository;
 	private final ExportProductRepository exportProductRepository;
-	private final ExportProductHistoryRepository exportProductHistoryRepository;
-	private final ShoppingService shoppingService;
 	private final SellerService sellerService;
 	private final ProductService productService;
 
@@ -43,38 +42,72 @@ public class ExportsService {
 	 * @param pageNum
 	 * @param countPerPage
 	 * @return
+	 * @throws IOException 
 	 */
+//	@Transactional
+//	public List<ExportsDTO> register(Long sellerNo, int pageNum, int countPerPage) {
+//		List<Exports> exports = new ArrayList<>();
+//		
+//		List<Shopping> shoppings = shoppingService.findNotCollected(sellerNo);
+//		
+//		Seller seller = sellerService.findById(sellerNo);
+//
+//		// 수집된 주문이 있는 경우에만 출고 목록 만듦
+//		if (shoppings.size() > 0) {
+//			// 출고 목록 만들기
+//			for (Shopping shopping : shoppings) {
+//				exports.add(shopping.toExports(seller));
+//			}
+//
+//			// 출고 상품 만들기
+//			for (Exports exp : exports) {
+//				List<ExportProduct> exportProducts = new ArrayList<>();
+//				Exports savedExports = exportsRepository.save(exp);
+//				List<ShoppingProduct> shoppingProducts = shoppingService
+//						.findShoppingProduct(savedExports.getExportNo());
+//
+//				for (ShoppingProduct shoppingProduct : shoppingProducts) {
+//					exportProducts.add(shoppingProduct.toExportProduct(savedExports));
+//				}
+//
+//				List<ExportProduct> savedExportProducts = exportProductRepository.saveAll(exportProducts);
+//				
+//				if(savedExports == null || savedExportProducts == null) findExports(sellerNo, 0, countPerPage);
+//			}
+//		}
+//
+//		// 주문 수집하면 무조건 첫 페이지로 이동
+//		return findExports(sellerNo, 0, countPerPage);
+//	}
 	@Transactional
 	public List<ExportsDTO> register(Long sellerNo, int pageNum, int countPerPage) {
-		List<Exports> exports = new ArrayList<>();
-		List<Shopping> shoppings = shoppingService.findNotCollected(sellerNo);
 		Seller seller = sellerService.findById(sellerNo);
-
-		// 수집된 주문이 있는 경우에만 출고 목록 만듦
-		if (shoppings.size() > 0) {
-			// 출고 목록 만들기
-			for (Shopping shopping : shoppings) {
-				exports.add(shopping.toExports(seller));
-			}
-
-			// 출고 상품 만들기
-			for (Exports exp : exports) {
-				List<ExportProduct> exportProducts = new ArrayList<>();
-				Exports savedExports = exportsRepository.save(exp);
-				List<ShoppingProduct> shoppingProducts = shoppingService
-						.findShoppingProduct(savedExports.getExportNo());
-
-				for (ShoppingProduct shoppingProduct : shoppingProducts) {
-					exportProducts.add(shoppingProduct.toExportProduct(savedExports));
-				}
-
-				List<ExportProduct> savedExportProducts = exportProductRepository.saveAll(exportProducts);
+		WebClient webClient = WebClient.builder().baseUrl("http://localhost:4885").build();
+		List<ShoppingDTO> shoppingDTOs = webClient
+				.get()
+				.uri(UriBuilder -> UriBuilder.path("/shop/order/send/" + sellerNo).build())
+				.retrieve()
+				.bodyToMono(List.class)
+				.block();
+		
+		for(ShoppingDTO shoppingDTO: shoppingDTOs) {
+			List<ExportProduct> exportProducts = new ArrayList<>();
+			Exports exports = shoppingDTO.toExports(seller);
+			
+			Exports savedExports = exportsRepository.save(exports);
+			
+			for(ShoppingProductDTO shoppingProductDTO : shoppingDTO.getOrderedProducts()) {
+				Product product = productService.findByProductNo(shoppingProductDTO.getProductNo());
+				ExportProduct exportProduct = shoppingProductDTO.toExportProduct(savedExports, product);
 				
-				if(savedExports == null || savedExportProducts == null) findExports(sellerNo, 0, countPerPage);
+				exportProducts.add(exportProduct);
 			}
+			
+			List<ExportProduct> savedExportProducts = exportProductRepository.saveAll(exportProducts);
+			if(savedExports == null || savedExportProducts == null) findExports(sellerNo, 0, countPerPage);
+			
 		}
-
-		// 주문 수집하면 무조건 첫 페이지로 이동
+		
 		return findExports(sellerNo, 0, countPerPage);
 	}
 
