@@ -2,16 +2,22 @@ package com.shinhan.sunInCloud.dto;
 
 import java.sql.Timestamp;
 
+import com.shinhan.sunInCloud.entity.ExportProduct;
+import com.shinhan.sunInCloud.entity.Exports;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.Shopping;
 import com.shinhan.sunInCloud.entity.ShoppingProduct;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ShoppingProductDTO {
 	private String exportNo;
 
@@ -68,6 +74,16 @@ public class ShoppingProductDTO {
 				.product(product)
 				.sellingPrice(sellingPrice)
 				.shopping(shopping)
+				.build();
+	}
+	
+	public ExportProduct toExportProduct(Exports exports, Product product) {
+		return ExportProduct
+				.builder()
+				.amount(amount)
+				.exports(exports)
+				.product(product)
+				.sellingPrice(sellingPrice)
 				.build();
 	}
 }
