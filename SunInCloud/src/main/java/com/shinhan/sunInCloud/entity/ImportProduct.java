@@ -49,7 +49,23 @@ public class ImportProduct {
 	private Integer importAmount;
 	
 	
-	public ImportProductDTO toImports() {
+	public ImportProductDTO toImportProductDTO() {
+		return ImportProductDTO.builder()
+				.importAmount(importAmount)
+				.importNo(imports.getImportNo())
+				.importProductNo(importProductNo)
+				.productNo(product.getProductNo())
+				.requestAmount(requestAmount)
+				.build();
 		
 	}
 }
+
+
+
+
+
+
+
+
+
