@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.shinhan.sunInCloud.dto.ShoppingDTO;
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
@@ -59,16 +60,6 @@ public class ShoppingService {
 		
 		return (savedShopping != null && savedProduct != null);
 	}
-	
-	/**
-	 * 수집되지 않은 주문 내역 가져오는 메서드
-	 * 
-	 * @param sellerNo
-	 * @return
-	 */
-	public List<Shopping> findNotCollected(Long sellerNo) {
-		return shoppingRepository.findBySeller_SellerNoAndIsCollected(sellerNo, false);
-	}
 
 	/**
 	 * 주문번호에 해당하는 상품 가져오는 메서드
@@ -78,5 +69,38 @@ public class ShoppingService {
 	 */
 	public List<ShoppingProduct> findShoppingProduct(String exportNo) {
 		return shoppingProductRepository.findByShopping_ExportNo(exportNo);
+	}
+	
+	/**
+	 * 수집되지 않은 주문건을 WMS으로 전송
+	 * @param sellerNo
+	 * @return
+	 */
+	public List<ShoppingDTO> sendOrderToWMS(Long sellerNo) {
+		List<ShoppingDTO> shoppingDTOs = new ArrayList<>();
+		List<Shopping> shoppings = findNotCollected(sellerNo);
+		
+		for(Shopping shopping: shoppings) {
+			List<ShoppingProductDTO> shopingProductDTOs = new ArrayList<>();
+			List<ShoppingProduct> shoppingProducts = findShoppingProduct(shopping.getExportNo());
+			
+			for(ShoppingProduct shoppingProduct : shoppingProducts) {
+				shopingProductDTOs.add(shoppingProduct.toShoppingProductDTO());
+			}
+			
+			shoppingDTOs.add(shopping.toShoppingDTO(shopingProductDTOs));
+		}
+		
+		return shoppingDTOs;
+	}
+	
+	/**
+	 * 수집되지 않은 주문 내역 가져오는 메서드
+	 * 
+	 * @param sellerNo
+	 * @return
+	 */
+	public List<Shopping> findNotCollected(Long sellerNo) {
+		return shoppingRepository.findBySeller_SellerNoAndIsCollected(sellerNo, false);
 	}
 }
