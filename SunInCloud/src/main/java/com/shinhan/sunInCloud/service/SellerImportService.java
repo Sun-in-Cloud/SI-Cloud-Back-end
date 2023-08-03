@@ -32,11 +32,13 @@ public class SellerImportService {
 	
 	private final SellerService sellerService;
 	private final ProductService productService;
+	private final SellerImportService sellerImportService;
 	private final ImportsRepository importRepository;
 	private final ImportsProductRepository importProductRepository;
 	private final OrderRepository orderRepository;
 	private final OrderProductRepository orderProductRepository;
 	private final ProductRepository productRepository;
+	private final OrderService orderService;
 	
 	/**
 	 * 1.입고 예정 리스트 등록
@@ -54,20 +56,20 @@ public class SellerImportService {
 	 * @param orderNo
 	 * @return 바코드 번호, 상품 이름, 발주 수량
 	 */
-		public List<OrderProductDTO> findByOrderNo(Long orderNo) {
-			List<OrderProductDTO> orderDTOs = new ArrayList<>();
-			List<OrderProduct> order = orderProductRepository.findByOrder_OrderNo(orderNo);
-			//entity를 dto로 변환하기	
-			for(OrderProduct orders: order) {
-				orderDTOs.add(OrderProductDTO.builder().productNo(orders.getProduct().getProductNo())
-						.amount(orders.getAmount())
-						.productName(orders.getProduct().getProductName())
-						.build());
-			}
-			
-			return orderDTOs;
-			
-		}
+//		public List<OrderProductDTO> findByOrderNo(Long orderNo) {
+//			List<OrderProductDTO> orderDTOs = new ArrayList<>();
+//			List<OrderProduct> order = orderProductRepository.findByOrder_OrderNo(orderNo);
+//			//entity를 dto로 변환하기	
+//			for(OrderProduct orders: order) {
+//				orderDTOs.add(OrderProductDTO.builder().productNo(orders.getProduct().getProductNo())
+//						.amount(orders.getAmount())
+//						.productName(orders.getProduct().getProductName())
+//						.build());
+//			}
+//			
+//			return orderDTOs;
+//			
+//		}
 	
 		/**1.3 발주 조회->검색
 		 * @param productName
@@ -83,9 +85,27 @@ public class SellerImportService {
 		 * @param sellerNo
 		 * @return 
 		 */
-//		public Imports saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
-//			return orderRepository.saveAll(importNo);
-//		}
+		public boolean saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
+			//입고 등록 -> 입고 번호 필요함
+			Imports imports = importRepository.findByImportProduct_ImportNo(sellerNo);
+			
+			//각 입고 상품 목록 ->입고 번호 부여
+			
+			for(ImportProductDTO importProductDTO :importProductDTOs) {
+				importProductDTOs.add(ImportProductDTO.builder()
+						.importAmount(importProductDTO.getImportAmount())
+						.importNo(imports.getImportNo())
+						.productNo(importProductDTO.getProductNo())
+						.importProductNo(importProductDTO.getImportProductNo())
+						.productName(importProductDTO.getProductName())
+						.requestAmount(importProductDTO.getRequestAmount())
+						.build());
+			}
+			
+			//각 입고 상품 저장
+			if(imports.getImportNo()==null) return false;
+			return true;
+		}
 //		
 //		
 //		//3.입고 예정 리스트
