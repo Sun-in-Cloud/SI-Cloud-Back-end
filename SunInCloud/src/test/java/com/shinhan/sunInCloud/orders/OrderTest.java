@@ -27,7 +27,7 @@ public class OrderTest {
 		Long sellerNo = 8L;
 		int pageNum = 1;
 		int countPerPage = 7;
-		List<OrderProductDTO> orderProducts = orderService.findNeededOrderProducts(sellerNo, pageNum, countPerPage);
+		List<OrderProductDTO> orderProducts = orderService.findNeededOrderProducts(sellerNo, pageNum, countPerPage).getProducts();
 		for (OrderProductDTO orderProduct : orderProducts) {
 			System.out.println(orderProduct);
 			Assertions.assertThat(orderProduct.getAmount()).isEqualTo(orderProduct.getEnoughStock() - orderProduct.getCurrentStock());
@@ -39,7 +39,7 @@ public class OrderTest {
 		Long sellerNo = 8L;
 		int pageNum = 1;
 		int countPerPage = 7;
-		List<OrderProductDTO> orderProducts = orderService.findNeededOrderProducts(sellerNo, pageNum, countPerPage);
+		List<OrderProductDTO> orderProducts = orderService.findNeededOrderProducts(sellerNo, pageNum, countPerPage).getProducts();
 		Assertions.assertThat(orderProducts.size()).isEqualTo(0);
 	}
 	
@@ -55,7 +55,7 @@ public class OrderTest {
 	@Test
 	void findAllOrders() {
 		Long sellerNo = 8L;
-		List<OrderDTO> orders = orderService.findOrders(sellerNo, 0, 10);
+		List<OrderDTO> orders = orderService.findOrders(sellerNo, 0, 10).getOrders();
 		Assertions.assertThat(orders.size()).isEqualTo(5);
 	}
 	

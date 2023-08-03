@@ -66,4 +66,18 @@ public class ProductHistory {
 
 	@NotNull
 	private Boolean isActive;
+	
+	public ProductHistory(Product product, UpdatedType updatedType) {
+		this.updatedType = updatedType;
+		productNo = product.getProductNo();
+		sellerNo = product.getSeller().getSellerNo();
+		productName = product.getProductName();
+		safetyStock = product.getSafetyStock();
+		currentStock = product.getCurrentStock();
+		enoughStock = product.getEnoughStock();
+		detailProductGroupNo = product.getDetailProductGroup().getDetailProductGroupNo();
+		importPrice = product.getImportPrice();
+		consumerPrice = product.getConsumerPrice();
+		isActive = product.getIsActive();
+	}
 }
