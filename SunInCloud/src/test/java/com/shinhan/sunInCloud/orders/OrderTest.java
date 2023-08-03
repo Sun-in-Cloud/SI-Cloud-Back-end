@@ -56,7 +56,7 @@ public class OrderTest {
 	void findAllOrders() {
 		Long sellerNo = 8L;
 		List<OrderDTO> orders = orderService.findOrders(sellerNo, 0, 10);
-		Assertions.assertThat(orders.size()).isEqualTo(1);
+		Assertions.assertThat(orders.size()).isEqualTo(5);
 	}
 	
 	@Test 

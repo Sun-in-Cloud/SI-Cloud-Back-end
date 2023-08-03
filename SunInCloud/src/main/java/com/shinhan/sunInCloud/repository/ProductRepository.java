@@ -25,4 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	
 	@Query("SELECT p FROM Product p WHERE p.seller.sellerNo = :sellerNo AND p.currentStock < p.safetyStock")
 	List<Product> findByNeededToOrder(@Param("sellerNo") Long sellerNo);
+	List<Product> findByProductName(String productName);
+	
 }
