@@ -12,7 +12,7 @@ import com.shinhan.sunInCloud.entity.Order;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	Page<Order> findBySeller_SellerNoOrderByOrderDateDesc(Long sellerNo, Pageable pageable);
-	Optional<Order> findBySellerNo(String sellerNo);
+	List<Order> findBySeller_SellerNo(Long sellerNo);
 	
 	
 }
