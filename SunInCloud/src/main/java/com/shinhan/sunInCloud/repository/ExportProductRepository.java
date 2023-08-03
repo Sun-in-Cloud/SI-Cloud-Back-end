@@ -9,4 +9,5 @@ import com.shinhan.sunInCloud.entity.ExportProduct;
 public interface ExportProductRepository extends JpaRepository<ExportProduct, Long>{
 	Long countByExports_ExportNoAndOrderStatus(String exportNo, String orderStatus);
 	Page<ExportProduct> findByExports_ExportNoOrderByProduct_ProductName(String exportNo, Pageable pageable);
+	ExportProduct findByExports_ExportNoAndProduct_ProductNo(String exportNo, String productNo);
 }

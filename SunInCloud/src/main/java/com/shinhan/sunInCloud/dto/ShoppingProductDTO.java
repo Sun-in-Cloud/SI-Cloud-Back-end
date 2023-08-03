@@ -34,7 +34,7 @@ public class ShoppingProductDTO {
 	private String invoiceNo;
 
 	/**
-	 * ShoppingProductDTP -> Shopping
+	 * ShoppingProductDTO -> Shopping
 	 * 요청을 주문 목록으로 만드는 메서드
 	 * 
 	 * @param exportNo
