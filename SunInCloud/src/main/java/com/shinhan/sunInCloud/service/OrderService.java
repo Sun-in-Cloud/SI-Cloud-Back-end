@@ -53,10 +53,7 @@ public class OrderService {
 					.build());
 		}
 		Long neededToOrderCount = productService.countNeededToOrder(sellerNo);
-		Long totalPage = neededToOrderCount / countPerPage;
-		if (neededToOrderCount % countPerPage > 0) {
-			++totalPage;
-		}
+		Long totalPage = calculatePageCount(neededToOrderCount, countPerPage);
 		return OrderProductListDTO.builder().totalPage(totalPage).products(products).build();
 	}
 
@@ -113,10 +110,7 @@ public class OrderService {
 					.build());
 		}
 		Long count = orderRepository.countBySeller_SellerNo(sellerNo);
-		Long totalPage = count / countPerPage;
-		if (count % countPerPage > 0) {
-			++totalPage;
-		}
+		Long totalPage = calculatePageCount(count, countPerPage);
 		return OrderListDTO.builder().totalPage(totalPage).orders(orderDTOs).build();
 	}
 
@@ -139,5 +133,13 @@ public class OrderService {
 					.build());
 		}
 		return orderProductDTOs;
+	}
+	
+	private Long calculatePageCount(Long count, int countPerPage) {
+		Long totalPage = count / countPerPage;
+		if (count % countPerPage > 0) {
+			++totalPage;
+		}
+		return totalPage;
 	}
 }
