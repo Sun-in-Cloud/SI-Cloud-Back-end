@@ -20,13 +20,13 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class ImportProductDTO {
 	private Long importProductNo;
 	private String productNo;
 	private Long importNo;
 	private int requestAmount;
 	private int importAmount;
+	private String productName;
 	
 	public ImportProduct toImportsProduct(Imports imports, Product product) {
 		return ImportProduct.builder()
