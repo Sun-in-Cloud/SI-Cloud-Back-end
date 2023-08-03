@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.OrderDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
+import com.shinhan.sunInCloud.dto.OrderProductListDTO;
 import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.entity.OrderProduct;
 import com.shinhan.sunInCloud.entity.Product;
@@ -34,10 +35,10 @@ public class OrderService {
 	 * @param sellerNo
 	 * @param pageNum
 	 * @param countPerPage
-	 * @return 발주가 필요한 상품 List
+	 * @return OrderProductListDTO
 	 * 작성자: 손준범
 	 */
-	public List<OrderProductDTO> findNeededOrderProducts(Long sellerNo, int pageNum, int countPerPage) {
+	public OrderProductListDTO findNeededOrderProducts(Long sellerNo, int pageNum, int countPerPage) {
 		Page<Product> neededToOrderProducts = productService.findNeededToOrderBySellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
 		List<OrderProductDTO> products = new ArrayList<>();
 		for (Product product : neededToOrderProducts) {
@@ -50,7 +51,12 @@ public class OrderService {
 					.amount(product.getEnoughStock() - product.getCurrentStock())
 					.build());
 		}
-		return products;
+		Long neededToOrderCount = productService.countNeededToOrder(sellerNo);
+		Long totalPage = neededToOrderCount / countPerPage;
+		if (neededToOrderCount % countPerPage > 0) {
+			++totalPage;
+		}
+		return OrderProductListDTO.builder().totalPage(totalPage).products(products).build();
 	}
 
 	/**

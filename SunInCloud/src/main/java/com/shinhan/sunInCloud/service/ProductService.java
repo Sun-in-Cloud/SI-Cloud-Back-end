@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ProductDTO;
+import com.shinhan.sunInCloud.dto.ProductListDTO;
 import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.ProductHistory;
@@ -73,7 +74,7 @@ public class ProductService {
 	 * @param pageSize
 	 * @return page에 해당하는 상품 리스트
 	 */
-	public List<ProductDTO> findProductBySellerNo(Long sellerNo, int pageNumber, int pageSize) {
+	public ProductListDTO findProductBySellerNo(Long sellerNo, int pageNumber, int pageSize) {
 		List<ProductDTO> productDTOs = new ArrayList<>();
 		Page<Product> products = productRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
 		for (Product product : products) {
@@ -82,7 +83,12 @@ public class ProductService {
 					.productName(product.getProductName()).safetyStock(product.getSafetyStock())
 					.currentStock(product.getCurrentStock()).enoughStock(product.getEnoughStock()).build());
 		}
-		return productDTOs;
+		Long count = productRepository.countBySeller_SellerNo(sellerNo);
+		Long totalPage = count / pageSize;
+		if (count % pageSize > 0) {
+			++totalPage;
+		}
+		return ProductListDTO.builder().totalPage(totalPage).products(productDTOs).build();
 	}
 	
 	public Product findByProductNo(String productNo) {
@@ -157,5 +163,14 @@ public class ProductService {
 	 */
 	public List<Product> findNeededToOrderBySellerNo(Long sellerNo) {
 		return productRepository.findByNeededToOrder(sellerNo);
+	}
+	
+	/**
+	 * 발주가 필요한 상품의 개수 조회 메서드
+	 * @param sellerNo
+	 * @return 총 상품의 개수
+	 */
+	public Long countNeededToOrder(Long sellerNo) {
+		return productRepository.countNeededToOrder(sellerNo);
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shinhan.sunInCloud.dto.OrderDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
+import com.shinhan.sunInCloud.dto.OrderProductListDTO;
 import com.shinhan.sunInCloud.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class OrderController {
 	private final OrderService orderService;
 	
 	@GetMapping("/3pl/order/auto-list")
-	public List<OrderProductDTO> findNeededOrderProducts(Long sellerNo, int pageNum, int countPerPage) {
-		return orderService.findNeededOrderProducts(sellerNo, pageNum, countPerPage);
+	public OrderProductListDTO findNeededOrderProducts(Long sellerNo, int pageNum, int countPerPage) {
+		return orderService.findNeededOrderProducts(sellerNo, pageNum - 1, countPerPage);
 	}
 	
 	@PostMapping("/3pl/order/register/{sellerNo}")
