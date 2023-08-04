@@ -24,6 +24,12 @@ public class ShoppingDTO {
 	private Timestamp orderDate;
 	private List<ShoppingProductDTO> orderedProducts;
 	
+	/**
+	 * ShoppingDTO -> Exports
+	 * 주문건을 출고 목록으로 등록하기 위함
+	 * @param seller
+	 * @return
+	 */
 	public Exports toExports(Seller seller) {
 		return Exports
 				.builder()

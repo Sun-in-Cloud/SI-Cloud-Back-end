@@ -8,4 +8,5 @@ import com.shinhan.sunInCloud.entity.ShoppingProduct;
 
 public interface ShoppingProductRepository extends JpaRepository<ShoppingProduct, Long>{
 	List<ShoppingProduct> findByShopping_ExportNo(String exportNo);
+	List<ShoppingProduct> findByShopping_Seller_SellerNoOrderByShopping_OrderDateDescProduct_ProductName(Long sellerNo);
 }

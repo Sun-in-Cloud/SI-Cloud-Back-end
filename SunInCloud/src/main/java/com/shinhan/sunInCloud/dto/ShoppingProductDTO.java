@@ -34,6 +34,8 @@ public class ShoppingProductDTO {
 	private int sellingPrice;
 
 	private Timestamp orderDate;
+	
+	private String localOrderDate;
 
 	private String orderStatus;
 
@@ -77,6 +79,13 @@ public class ShoppingProductDTO {
 				.build();
 	}
 	
+	/**
+	 * ShoppingProductDTO -> ExportProduct
+	 * 주문건 상품들을 출고 상품으로 등록하기 위함
+	 * @param exports
+	 * @param product
+	 * @return
+	 */
 	public ExportProduct toExportProduct(Exports exports, Product product) {
 		return ExportProduct
 				.builder()
