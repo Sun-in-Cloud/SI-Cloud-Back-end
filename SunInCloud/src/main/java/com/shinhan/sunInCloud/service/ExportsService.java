@@ -1,6 +1,7 @@
 package com.shinhan.sunInCloud.service;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -181,14 +182,18 @@ public class ExportsService {
 		return amount <= product.getCurrentStock();
 	}
 
-	public List<NumberOfSalesDTO> getNumberOfSales(Date startDate, Date endDate) {
-		System.out.println(startDate.getClass());
-		List<Object[]> counts = exportsRepository.getDailySalesCountForWeek(startDate, endDate);
+	public List<NumberOfSalesDTO> getNumberOfSales(Date startDate, Date endDate, Long sellerNo) {
+		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(startDate, endDate, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
 		for (Object[] count : counts) {
-			System.out.println(count[0]);
-			System.out.println(count[1]);
-			System.out.println("*********");
+			java.sql.Date date = (java.sql.Date) count[0];
+			BigInteger bi = (BigInteger) count[1];
+			numberOfSales.add(NumberOfSalesDTO.builder()
+					.year(date.getYear() + 1900)
+					.month(date.getMonth() + 1)
+					.day(date.getDate())
+					.numberOfSales(bi.longValue())
+					.build());
 		}
 		return numberOfSales;
 	}
