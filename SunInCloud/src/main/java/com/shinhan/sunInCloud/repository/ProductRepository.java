@@ -21,7 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 			+ "from orders "
 			+ "where import_no is null "
 			+ ") "
-			+ ") and current_stock < safety_stock", nativeQuery = true)
+			+ ") and is_active = 1 and current_stock < safety_stock", nativeQuery = true)
 	Page<Product> findByNeededToOrder(@Param("sellerNo") Long sellerNo, Pageable pageable);
 	
 	@Query(value = "SELECT count(*) FROM PRODUCT WHERE seller_no = :sellerNo and "
@@ -32,7 +32,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 			+ "from orders "
 			+ "where import_no is null "
 			+ ") "
-			+ ") and current_stock < safety_stock", nativeQuery = true)
+			+ ") and is_active = 1 and current_stock < safety_stock", nativeQuery = true)
 	Long countNeededToOrder(@Param("sellerNo") Long sellerNo);
 	
 	@Query(value = "SELECT * FROM PRODUCT WHERE seller_no = :sellerNo and "
@@ -43,7 +43,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 			+ "from orders "
 			+ "where import_no is null "
 			+ ") "
-			+ ") and current_stock < safety_stock", nativeQuery = true)
+			+ ") and is_active = 1 and current_stock < safety_stock", nativeQuery = true)
 	List<Product> findByNeededToOrder(@Param("sellerNo") Long sellerNo);
 	List<Product> findByProductName(String productName);
 	Long countBySeller_SellerNo(Long sellerNo);
