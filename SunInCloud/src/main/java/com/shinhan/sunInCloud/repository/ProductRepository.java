@@ -14,9 +14,9 @@ import com.shinhan.sunInCloud.entity.Product;
 public interface ProductRepository extends JpaRepository<Product, String> {
 	Page<Product> findAllBySeller_SellerNo(Long sellerNo, Pageable pageable);
 	@Query(value = "SELECT * FROM PRODUCT WHERE seller_no = :sellerNo and "
-			+ "product_no in (SELECT product_no "
+			+ "product_no not in (SELECT product_no "
 			+ "from order_product "
-			+ "where order_no not in ( "
+			+ "where order_no not ( "
 			+ "select order_no "
 			+ "from orders "
 			+ "where import_no is null "
@@ -25,9 +25,9 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	Page<Product> findByNeededToOrder(@Param("sellerNo") Long sellerNo, Pageable pageable);
 	
 	@Query(value = "SELECT count(*) FROM PRODUCT WHERE seller_no = :sellerNo and "
-			+ "product_no in (SELECT product_no "
+			+ "product_no not in (SELECT product_no "
 			+ "from order_product "
-			+ "where order_no not in ( "
+			+ "where order_no in ( "
 			+ "select order_no "
 			+ "from orders "
 			+ "where import_no is null "
@@ -36,9 +36,9 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	Long countNeededToOrder(@Param("sellerNo") Long sellerNo);
 	
 	@Query(value = "SELECT * FROM PRODUCT WHERE seller_no = :sellerNo and "
-			+ "product_no in (SELECT product_no "
+			+ "product_no not in (SELECT product_no "
 			+ "from order_product "
-			+ "where order_no not in ( "
+			+ "where order_no in ( "
 			+ "select order_no "
 			+ "from orders "
 			+ "where import_no is null "
