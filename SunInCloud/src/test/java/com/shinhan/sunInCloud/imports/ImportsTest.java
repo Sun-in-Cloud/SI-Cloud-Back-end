@@ -14,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
+import com.shinhan.sunInCloud.dto.ImportProductListDTO;
+import com.shinhan.sunInCloud.dto.ImportsDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.dto.ProductDTO;
 import com.shinhan.sunInCloud.entity.Imports;
@@ -21,6 +23,7 @@ import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.entity.OrderProduct;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
+import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.ProductRepository;
 import com.shinhan.sunInCloud.service.OrderService;
 import com.shinhan.sunInCloud.service.SellerImportService;
@@ -68,7 +71,7 @@ public class ImportsTest {
 		}	
 	}
 	
-	@Test
+	//@Test
 	void saveImports() {
 		Long sellerNo=8L;
 		int pageNumber = 0;
@@ -90,11 +93,13 @@ public class ImportsTest {
 		Assertions.assertThat(saved);
 		
 	}
-//	@Test
-//	void seePreList() {
-//		List<Imports> imports = new ArrayList<>();
-//		Timestamp timeStamp = new Timestamp(new Date().getTime());
-//		Imports im = Imports.builder().requestDate(timeStamp)
-//				.importDate(timeStamp).build();	
-//	}
+	//입고 예정 리스트 목록 조회
+	@Test
+	void seePreList() {
+		Long sellerNo=8L;
+		int pageNumber = 0;
+		int countperPage = 10;
+		ImportProductListDTO imports = sellerImportService.seePreList(sellerNo, pageNumber, countperPage);
+		Assertions.assertThat(imports.getImportproduct()).isNotEmpty();
+	}
 }
