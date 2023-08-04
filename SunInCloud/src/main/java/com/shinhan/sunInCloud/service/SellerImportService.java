@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
@@ -113,23 +114,21 @@ public class SellerImportService {
 		 * @param pageSize
 		 * @return
 		 */
-//		public List<ImportsDTO> seePreList(Long sellerNo, int pageNumber, int countPerPage) {
-//			//dto로 변환해줘서 반환
-//			List<ImportsDTO> importsDTOs = new ArrayList<>();
-//			Page<Imports> im = importRepository.findBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, countPerPage));
-//			for(Imports imports : im) {
-//				importsDTOs.add(ImportsDTO.builder().importDate(imports.getImportDate())
-//						.importNo(imports.getImportNo())
-//						.requestDate(imports.getRequestDate())
-//						.sellerNo(imports.getSeller().getSellerNo())
-//						.build());
-//			}	
-//			
-//			Long count = orderRepository.countBySeller_SellerNo(sellerNo);
-//			Long totalPage = calculatePageCount(count, countPerPage);
-//			ImportProductListDTO.builder().totalPage(totalPage).products(products).build();
-//			return importsDTOs;
-//		}
+		public ImportProductListDTO seePreList(Long sellerNo, int pageNumber, int countPerPage) {
+			List<ImportsDTO> importsDTOs = new ArrayList<>();
+			Page<Imports> im = importRepository.findBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, countPerPage));
+			for(Imports imports : im) {
+				importsDTOs.add(ImportsDTO.builder().importDate(imports.getImportDate())
+						.importNo(imports.getImportNo())
+						.requestDate(imports.getRequestDate())
+						.sellerNo(imports.getSeller().getSellerNo())
+						.build());
+			}	
+			
+			Long count = orderRepository.countBySeller_SellerNo(sellerNo);
+			Long totalPage = calculatePageCount(count, countPerPage);
+			return ImportProductListDTO.builder().totalPage(totalPage).importproduct(importsDTOs).build();
+		}
 //		
 //		//3.2 입고 예정 리스트 상세->입고 등록 후 입고가 확정된 상태이므로 실제 입고 수량을 보는것임!
 //		public List<ImportProductDTO> seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
@@ -167,6 +166,7 @@ public class SellerImportService {
 			}
 			return totalPage;
 		}
+
 
 }
 
