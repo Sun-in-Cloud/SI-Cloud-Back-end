@@ -15,6 +15,6 @@ public class ExportsDTO {
 	private String salesChannel;
 	private String ordererName;
 	private String address;
-	private String localorderDate;
+	private String localOrderDate;
 	private String orderStatus;
 }

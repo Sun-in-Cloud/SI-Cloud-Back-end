@@ -54,7 +54,7 @@ public class Exports {
 				.builder()
 				.address(address)
 				.exportNo(exportNo)
-				.localorderDate(TimestampUtil.convertTimestampToString(orderDate))
+				.localOrderDate(TimestampUtil.convertTimestampToString(orderDate))
 				.ordererName(ordererName)
 				.orderStatus(setOrderStatus(exportNo, exportProductRepository))
 				.salesChannel(salesChannel)
