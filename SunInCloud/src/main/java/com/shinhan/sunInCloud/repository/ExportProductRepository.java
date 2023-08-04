@@ -26,4 +26,13 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "export_date IS NOT NULL AND Date(e.export_date) BETWEEN :startDate AND :endDate "
 			+ "GROUP BY Date(e.export_date)", nativeQuery = true)
 	List<Object[]> getDailySalesCountForWeek(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("sellerNo") Long sellerNo);
+	
+	@Query(value = "SELECT COUNT(DISTINCT export_no) as exportCount "
+			+ "FROM export_product "
+			+ "WHERE export_no in ( "
+			+ "SELECT export_no "
+			+ "FROM exports "
+			+ "WHERE seller_seller_no = :sellerNo ) AND "
+			+ "YEAR(export_date) = YEAR(CURRENT_DATE) AND MONTH(export_date) = MONTH(CURRENT_DATE)", nativeQuery = true)
+	Long getSalesCountOfThisMonth(@Param("sellerNo") Long sellerNo);
 }
