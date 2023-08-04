@@ -31,6 +31,6 @@ public class MarketingService {
 		calendar.setTime(today);
 		calendar.add(Calendar.DAY_OF_MONTH, -6);
 		Date startDay = calendar.getTime();
-		List<NumberOfSalesDTO> dailySalesCountForWeek = exportsService.getNumberOfSales(startDay, today);
+		List<NumberOfSalesDTO> dailySalesCountForWeek = exportsService.getNumberOfSales(startDay, today, sellerNo);
 	}
 }
