@@ -129,20 +129,25 @@ public class SellerImportService {
 			Long totalPage = calculatePageCount(count, countPerPage);
 			return ImportProductListDTO.builder().totalPage(totalPage).importproduct(importsDTOs).build();
 		}
-//		
-//		//3.2 입고 예정 리스트 상세->입고 등록 후 입고가 확정된 상태이므로 실제 입고 수량을 보는것임!
-//		public List<ImportProductDTO> seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
-//			List<ImportProductDTO> importsProductDTOs=new ArrayList<>();
-//			List<ImportProduct> im= importProductRepository.findByImportNo(importNo);
-//			for(ImportProduct imp: im) {
-//				importsProductDTOs.add(importProductDTO.builder()
-//						.productNo(imp.getProduct().getProductNo())
-//						.productName(imp.getProduct().getProductName())
-//						.importAmount(imp.getImportAmount())
-//						.build());
-//			}
-//			return importsProductDTOs;
-//		}
+
+		/**
+		 * 3.2 입고 예정 리스트 상세->입고 등록 후 입고가 확정된 상태이므로 실제 입고 수량을 보는것임!
+		 * @param importProductDTO
+		 * @param importNo
+		 * @return List<ImportProductDTO>
+		 */
+		public List<ImportProductDTO> seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
+			List<ImportProductDTO> importsProductDTOs=new ArrayList<>();
+			List<ImportProduct> im= importProductRepository.findByImports_ImportNo(importNo);
+			for(ImportProduct imp: im) {
+				importsProductDTOs.add(importProductDTO.builder()
+						.productNo(imp.getProduct().getProductNo())
+						.productName(imp.getProduct().getProductName())
+						.importAmount(imp.getImportAmount())
+						.build());
+			}
+			return importsProductDTOs;
+		}
 //		
 //		//4.입고 내역 리스트
 //		//4.1 목록
