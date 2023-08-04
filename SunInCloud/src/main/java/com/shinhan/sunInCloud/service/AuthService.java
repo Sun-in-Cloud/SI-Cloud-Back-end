@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-	private final ThreePLRepository threePLRepository;
+	private final ThreePLService threePLService;
 	private final WarehouseService warehouseService;
 	private final ProductGroupService productGroupService;
 	
@@ -30,7 +30,7 @@ public class AuthService {
 		User user = threePLDTO.toUser();
 		ProductGroup productGroup = productGroupService.findByGroupName(threePLDTO.getProductGroupName());
 		ThreePL threePL = threePLDTO.toThreePL(productGroup, user);
-		ThreePL savedThreePL = threePLRepository.save(threePL);
+		ThreePL savedThreePL = threePLService.register(threePL);
 		
 		int cnt = savedThreePL.getCntTotal();
 		
