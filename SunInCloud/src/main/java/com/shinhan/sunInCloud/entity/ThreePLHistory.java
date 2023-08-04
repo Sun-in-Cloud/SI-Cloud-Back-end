@@ -77,6 +77,4 @@ public class ThreePLHistory {
 	@NotNull
 	private Integer cntTotal;
 	
-	@NotNull
-	private Integer cntContracted;
 }
