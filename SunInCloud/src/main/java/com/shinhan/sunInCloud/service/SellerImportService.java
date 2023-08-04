@@ -2,20 +2,19 @@ package com.shinhan.sunInCloud.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
+import com.shinhan.sunInCloud.dto.ImportProductListDTO;
 import com.shinhan.sunInCloud.dto.ImportsDTO;
 import com.shinhan.sunInCloud.dto.OrderDTO;
-import com.shinhan.sunInCloud.dto.OrderProductDTO;
+import com.shinhan.sunInCloud.dto.OrderListDTO;
 import com.shinhan.sunInCloud.entity.ImportProduct;
 import com.shinhan.sunInCloud.entity.Imports;
 import com.shinhan.sunInCloud.entity.Order;
-import com.shinhan.sunInCloud.entity.OrderProduct;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.ImportsProductRepository;
@@ -32,7 +31,6 @@ public class SellerImportService {
 	
 	private final SellerService sellerService;
 	private final ProductService productService;
-	private final SellerImportService sellerImportService;
 	private final ImportsRepository importRepository;
 	private final ImportsProductRepository importProductRepository;
 	private final OrderRepository orderRepository;
@@ -46,10 +44,6 @@ public class SellerImportService {
 	 * @param sellerNo
 	 * @return orders의 발주번호, 발주일자
 	 */
-	public List<Order> findBySellerNo(Long sellerNo){
-		return orderRepository.findBySeller_SellerNo(sellerNo);
-	}
-	
 		
 	/**
 	 * //1.2 발주 번호로 상세 조회
@@ -83,44 +77,57 @@ public class SellerImportService {
 		/**
 		 * 2.입고 예정 리스트 등록
 		 * @param sellerNo
-		 * @return 
+		 * @return true/false
 		 */
+	
 		public boolean saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
-			//입고 등록 -> 입고 번호 필요함
-			Imports imports = importRepository.findByImportProduct_ImportNo(sellerNo);
-			
-			//각 입고 상품 목록 ->입고 번호 부여
-			
-			for(ImportProductDTO importProductDTO :importProductDTOs) {
-				importProductDTOs.add(ImportProductDTO.builder()
-						.importAmount(importProductDTO.getImportAmount())
-						.importNo(imports.getImportNo())
-						.productNo(importProductDTO.getProductNo())
-						.importProductNo(importProductDTO.getImportProductNo())
-						.productName(importProductDTO.getProductName())
-						.requestAmount(importProductDTO.getRequestAmount())
-						.build());
-			}
-			
-			//각 입고 상품 저장
-			if(imports.getImportNo()==null) return false;
-			return true;
-		}
-//		
-//		
-//		//3.입고 예정 리스트
-//		//3.1 입고 예정 리스트 목록
-//		public List<ImportsDTO> seePreList(ImportsDTO importDTO, Long sellerNo, int pageNumber, int pageSize) {
+	         // 입고 내역을 저장함 -> 화주사 번호 필요함
+	         Seller seller = sellerService.findById(sellerNo);
+	         Imports imports = importRepository.save(Imports.builder().seller(seller).build());
+	         // 각 입고 상품에 입고 번호 부여 및 입고 내역과 관계 설정
+	         List<ImportProduct> importProducts = new ArrayList<>();
+	         for (ImportProductDTO importProductDTO : importProductDTOs) {
+	            Product product = productService.findByProductNo(importProductDTO.getProductNo());
+	            ImportProduct importProduct = ImportProduct.builder()
+	                  .importAmount(importProductDTO.getImportAmount())
+	                  .imports(imports) // 입고 내역과 관련된 입고 상품 설정
+	                  .product(product)
+	                  .importProductNo(importProductDTO.getImportProductNo())
+	                  .requestAmount(importProductDTO.getRequestAmount())
+	                  .build();
+	            importProducts.add(importProduct);
+	         }
+
+	         // 각 입고 상품 저장
+	         importProductRepository.saveAll(importProducts);
+
+	         // 입고 내역과 입고 상품이 모두 저장되면 true 반환
+	         return imports.getImportNo() != null;
+	      }
+
+		/**3.입고 예정 리스트
+		 * 3.1 입고 예정 리스트 목록 조회
+		 * @param importDTO
+		 * @param sellerNo
+		 * @param pageNumber
+		 * @param pageSize
+		 * @return
+		 */
+//		public List<ImportsDTO> seePreList(Long sellerNo, int pageNumber, int countPerPage) {
 //			//dto로 변환해줘서 반환
 //			List<ImportsDTO> importsDTOs = new ArrayList<>();
-//			Page<Imports> page = importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
-//			for(Imports imports : page) {
-//				importsDTOs.add(importDTO.builder().importDate(imports.getImportDate())
+//			Page<Imports> im = importRepository.findBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, countPerPage));
+//			for(Imports imports : im) {
+//				importsDTOs.add(ImportsDTO.builder().importDate(imports.getImportDate())
 //						.importNo(imports.getImportNo())
 //						.requestDate(imports.getRequestDate())
 //						.sellerNo(imports.getSeller().getSellerNo())
 //						.build());
 //			}	
+//			
+//			Long count = orderRepository.countBySeller_SellerNo(sellerNo);
+//			Long totalPage = calculatePageCount(count, countPerPage);
+//			ImportProductListDTO.builder().totalPage(totalPage).products(products).build();
 //			return importsDTOs;
 //		}
 //		
@@ -152,5 +159,14 @@ public class SellerImportService {
 //			imports = importRepository.findByImportNo(importNo);
 //			return imports;	
 //		}
+		
+		private Long calculatePageCount(Long count, int countPerPage) {
+			Long totalPage = count / countPerPage;
+			if (count % countPerPage > 0) {
+				++totalPage;
+			}
+			return totalPage;
+		}
 
 }
+

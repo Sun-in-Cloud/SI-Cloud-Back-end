@@ -9,7 +9,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.dto.ProductDTO;
 import com.shinhan.sunInCloud.entity.Imports;
@@ -35,12 +39,14 @@ public class ImportsTest {
 	
 	@Autowired
 	ProductRepository productRepository;
+
+	
 	
 	//발주 목록 조회
 	//@Test
 	void seeOrderList() {
 		Long seller=8L;
-		List<Order> order = sellerImportService.findBySellerNo(8L);
+		List<Order> order = sellerImportService.findBySellerNo(seller);
 		Assertions.assertThat(order.size()).isEqualTo(5);
 	}
 	
@@ -53,7 +59,7 @@ public class ImportsTest {
 	}
 	
 	//발주 조회 ->검색
-	@Test
+	//@Test
 	void searchOrder() {
 		String productName="룩엣마이아이즈 샤이닝베이지";
 		List<Product> product  = sellerImportService.searchOrder(productName);
@@ -62,17 +68,28 @@ public class ImportsTest {
 		}	
 	}
 	
-//	@Test
-//	void saveImports() {
-//		Long sellerNo=8L;
-//		List<Product> product = productRepository.findAllBySeller_SellerNo(sellerNo );
-//				new ArrayList<>();
-//		
-//		for(Product product : products) {
-//			
-//		}
-//		Imports imports = sellerImportService.saveImport(8L, );
-//	}
+	@Test
+	void saveImports() {
+		Long sellerNo=8L;
+		int pageNumber = 0;
+		int pageSize = 10;
+		
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Page<Product> p = productRepository.findAllBySeller_SellerNo(sellerNo, pageable);
+		List<ImportProductDTO> importProductDTOs = new ArrayList<>();
+		for(Product product : p.getContent()) {
+			ImportProductDTO importPRoductDTO = ImportProductDTO.builder()
+					.productNo(product.getProductNo())
+					.requestAmount(20)
+					.importAmount(20)
+					.build();
+			importProductDTOs.add(importPRoductDTO);
+		}
+		
+		boolean saved = sellerImportService.saveImport(sellerNo, importProductDTOs);
+		Assertions.assertThat(saved);
+		
+	}
 //	@Test
 //	void seePreList() {
 //		List<Imports> imports = new ArrayList<>();
