@@ -25,12 +25,12 @@ public class MarketingService {
 	 * 3. 작년, 올해 기록(판매건수, 매출)
 	 * @param sellerNo
 	 */
-	public void getStatisticsBySeller(Long sellerNo) {
+	public List<NumberOfSalesDTO> getStatisticsBySeller(Long sellerNo) {
 		Date today = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(today);
 		calendar.add(Calendar.DAY_OF_MONTH, -6);
 		Date startDay = calendar.getTime();
-		List<NumberOfSalesDTO> dailySalesCountForWeek = exportsService.getNumberOfSales(startDay, today, sellerNo);
+		return exportsService.getNumberOfSales(startDay, today, sellerNo);
 	}
 }
