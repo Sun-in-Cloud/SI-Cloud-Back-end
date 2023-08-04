@@ -1,5 +1,7 @@
 package com.shinhan.sunInCloud.service;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,7 @@ import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportProductListDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
+import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.ExportsListDTO;
 import com.shinhan.sunInCloud.dto.ShoppingDTO;
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
@@ -178,4 +181,15 @@ public class ExportsService {
 		return amount <= product.getCurrentStock();
 	}
 
+	public List<NumberOfSalesDTO> getNumberOfSales(Date startDate, Date endDate) {
+		System.out.println(startDate.getClass());
+		List<Object[]> counts = exportsRepository.getDailySalesCountForWeek(startDate, endDate);
+		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
+		for (Object[] count : counts) {
+			System.out.println(count[0]);
+			System.out.println(count[1]);
+			System.out.println("*********");
+		}
+		return numberOfSales;
+	}
 }

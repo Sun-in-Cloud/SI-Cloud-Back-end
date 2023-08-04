@@ -31,7 +31,7 @@ public class OrderController {
 	}
   
 	@GetMapping(value = {"/3pl/order/list", "/seller/order/list", "/seller/import/pre/list"})
-	public List<OrderDTO> findOrders(Long sellerNo, int pageNum, int countPerPage) {
+	public OrderListDTO findOrders(Long sellerNo, int pageNum, int countPerPage) {
 		return orderService.findOrders(sellerNo, pageNum - 1, countPerPage);
 	}
 	
