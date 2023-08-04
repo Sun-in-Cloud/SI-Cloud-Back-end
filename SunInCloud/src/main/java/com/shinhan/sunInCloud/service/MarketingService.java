@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
+import com.shinhan.sunInCloud.dto.StatisticsDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +26,13 @@ public class MarketingService {
 	 * 3. 작년, 올해 기록(판매건수, 매출)
 	 * @param sellerNo
 	 */
-	public List<NumberOfSalesDTO> getStatisticsBySeller(Long sellerNo) {
+	public StatisticsDTO getStatisticsBySeller(Long sellerNo) {
+		return StatisticsDTO.builder()
+				.numberOfSalesWeekly(getNumberOfSalesWeekly(sellerNo))
+				.build();
+	}
+	
+	private List<NumberOfSalesDTO> getNumberOfSalesWeekly(Long sellerNo) {
 		Date today = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(today);
