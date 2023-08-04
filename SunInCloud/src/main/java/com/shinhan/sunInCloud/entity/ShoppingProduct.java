@@ -56,7 +56,7 @@ public class ShoppingProduct {
 	
 	/**
 	 * ShoppingProduct -> ShoppingProductDTO
-	 * 주문건 수집 전달을 위함
+	 * 주문건 수집 전달, 주문 목록 조회를 위한 메서드
 	 * @return
 	 */
 	public ShoppingProductDTO toShoppingProductDTO() {
@@ -64,8 +64,14 @@ public class ShoppingProduct {
 				.builder()
 				.amount(amount)
 				.exportNo(shopping.getExportNo())
+				.address(shopping.getAddress())
+				.ordererName(shopping.getOrderName())
+				.orderDate(shopping.getOrderDate())
 				.productNo(product.getProductNo())
+				.productName(product.getProductName())
+				.orderStatus(orderStatus)
 				.sellingPrice(sellingPrice)
+				.invoiceNo(invoiceNo)
 				.build();
 	}
 }
