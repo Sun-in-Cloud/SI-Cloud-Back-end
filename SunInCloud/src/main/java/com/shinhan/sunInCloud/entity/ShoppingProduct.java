@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,26 +55,9 @@ public class ShoppingProduct {
 	@NotNull
 	private int amount;
 	
-//	/**
-//	 * ShoppingProduct -> ExportProduct
-//	 * 쇼핑몰 주문 상품을 출고 상품으로 가져오기 위함
-//	 * 
-//	 * @param exports
-//	 * @return
-//	 */
-//	public ExportProduct toExportProduct(Exports exports) {
-//		return ExportProduct
-//				.builder()
-//				.amount(amount)
-//				.exports(exports)
-//				.product(product)
-//				.sellingPrice(sellingPrice)
-//				.build();
-//	}
-	
 	/**
 	 * ShoppingProduct -> ShoppingProductDTO
-	 * 주문건 수집 전달을 위함
+	 * 주문건 수집 전달, 주문 목록 조회를 위한 메서드
 	 * @return
 	 */
 	public ShoppingProductDTO toShoppingProductDTO() {
@@ -81,8 +65,15 @@ public class ShoppingProduct {
 				.builder()
 				.amount(amount)
 				.exportNo(shopping.getExportNo())
+				.address(shopping.getAddress())
+				.ordererName(shopping.getOrderName())
+				.orderDate(shopping.getOrderDate())
 				.productNo(product.getProductNo())
+				.productName(product.getProductName())
+				.orderStatus(orderStatus)
 				.sellingPrice(sellingPrice)
+				.invoiceNo(invoiceNo)
+				.localOrderDate(TimestampUtil.convertTimestampToString(shopping.getOrderDate()))
 				.build();
 	}
 }

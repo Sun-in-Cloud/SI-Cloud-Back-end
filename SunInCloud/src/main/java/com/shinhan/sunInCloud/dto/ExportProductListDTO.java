@@ -3,13 +3,15 @@ package com.shinhan.sunInCloud.dto;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExportInvoiceRequestDTO {
-	private String exportNo;
-	private List<ExportInvoiceDTO> invoiceProducts;
+public class ExportProductListDTO {
+	private int totalPage;
+	private List<ExportProductDTO> exportProducts;
 }

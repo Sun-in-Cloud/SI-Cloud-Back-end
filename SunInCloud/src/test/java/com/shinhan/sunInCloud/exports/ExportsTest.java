@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
-import com.shinhan.sunInCloud.dto.ExportProductDTO;
-import com.shinhan.sunInCloud.dto.ExportsDTO;
+import com.shinhan.sunInCloud.dto.ExportProductListDTO;
+import com.shinhan.sunInCloud.dto.ExportsListDTO;
 import com.shinhan.sunInCloud.service.ExportsService;
 
 @SpringBootTest
@@ -21,25 +21,25 @@ public class ExportsTest {
 //	@Test
 	void registerExport() {
 		Long sellerNo = 8L;
-		List<ExportsDTO> exports = exportsService.register(sellerNo, 0, 10);
+		ExportsListDTO exports = exportsService.register(sellerNo, 0, 10);
 		
-		Assertions.assertThat(exports.size()).isNotZero();
+		Assertions.assertThat(exports).isNotNull();
 	}
 	
 //	@Test
 	void findAllExport() {
 		Long sellerNo = 8L;
-		List<ExportsDTO> exports = exportsService.findExports(sellerNo, 0, 10);
+		ExportsListDTO exports = exportsService.findExports(sellerNo, 0, 10);
 		
-		Assertions.assertThat(exports.size()).isNotZero();
+		Assertions.assertThat(exports).isNotNull();
 	}
 	
 //	@Test
 	void exportDetail() {
 		String exportNo = "S8-63592";
-		List<ExportProductDTO> products = exportsService.exportDetail(exportNo, 0, 10);
+		ExportProductListDTO products = exportsService.exportDetail(exportNo, 0, 10);
 		
-		Assertions.assertThat(products.size()).isNotZero();
+		Assertions.assertThat(products).isNotNull();
 		
 	}
 	
