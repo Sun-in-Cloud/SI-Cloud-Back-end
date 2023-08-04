@@ -83,22 +83,4 @@ public class ExportProduct {
 		orderStatus = "출고완료";
 	}
 	
-	/**
-	 * ExportProduct -> ExportProductHistory
-	 * @return
-	 */
-	public ExportProductHistory toExportProductHistory() {
-		return ExportProductHistory
-				.builder()
-				.amount(amount)
-				.exportDate(exportDate)
-				.exportNo(exports.getExportNo())
-				.exportProductNo(exportProductNo)
-				.invoiceNo(invoiceNo)
-				.orderStatus(orderStatus)
-				.productNo(product.getProductNo())
-				.sellingPrice(sellingPrice)
-				.updatedType(UpdatedType.UPDATED)
-				.build();
-	}
 }

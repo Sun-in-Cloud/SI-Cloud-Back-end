@@ -54,23 +54,6 @@ public class ShoppingProduct {
 	@NotNull
 	private int amount;
 	
-//	/**
-//	 * ShoppingProduct -> ExportProduct
-//	 * 쇼핑몰 주문 상품을 출고 상품으로 가져오기 위함
-//	 * 
-//	 * @param exports
-//	 * @return
-//	 */
-//	public ExportProduct toExportProduct(Exports exports) {
-//		return ExportProduct
-//				.builder()
-//				.amount(amount)
-//				.exports(exports)
-//				.product(product)
-//				.sellingPrice(sellingPrice)
-//				.build();
-//	}
-	
 	/**
 	 * ShoppingProduct -> ShoppingProductDTO
 	 * 주문건 수집 전달을 위함
