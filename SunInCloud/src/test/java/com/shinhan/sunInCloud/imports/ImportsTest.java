@@ -18,11 +18,13 @@ import com.shinhan.sunInCloud.dto.ImportProductListDTO;
 import com.shinhan.sunInCloud.dto.ImportsDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.dto.ProductDTO;
+import com.shinhan.sunInCloud.entity.ImportProduct;
 import com.shinhan.sunInCloud.entity.Imports;
 import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.entity.OrderProduct;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
+import com.shinhan.sunInCloud.repository.ImportsProductRepository;
 import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.ProductRepository;
 import com.shinhan.sunInCloud.service.OrderService;
@@ -42,7 +44,12 @@ public class ImportsTest {
 	
 	@Autowired
 	ProductRepository productRepository;
-
+	
+	@Autowired
+	ImportsProductRepository importProductRepository;
+	
+	@Autowired
+	ImportsRepository importsRepository;
 	
 	
 	//발주 목록 조회
@@ -94,12 +101,23 @@ public class ImportsTest {
 		
 	}
 	//입고 예정 리스트 목록 조회
-	@Test
+	//@Test
 	void seePreList() {
 		Long sellerNo=8L;
 		int pageNumber = 0;
 		int countperPage = 10;
 		ImportProductListDTO imports = sellerImportService.seePreList(sellerNo, pageNumber, countperPage);
 		Assertions.assertThat(imports.getImportproduct()).isNotEmpty();
+	}
+	
+	//입고 예정 리스트 상세 조회
+	@Test
+	void seePreDetail() {
+		Long importNo = 150L;
+		List<ImportProduct> importProduct = importProductRepository.findByImports_ImportNo(importNo);
+		for(ImportProduct im : importProduct) {
+			System.out.println(im.getImportProductNo());
+		}
+		Assertions.assertThat(importProduct.size()).isEqualTo(10);
 	}
 }
