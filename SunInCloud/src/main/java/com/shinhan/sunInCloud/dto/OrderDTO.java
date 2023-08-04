@@ -23,6 +23,7 @@ public class OrderDTO {
 	private Timestamp orderDate;
 	private Long importNo;
 	private Boolean isImported;
+	private Long totalPage;
 	
 	public Order toOrder(Seller seller, Imports imports) {
 		return Order.builder()
