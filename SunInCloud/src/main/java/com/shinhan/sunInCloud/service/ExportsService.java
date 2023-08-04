@@ -1,12 +1,12 @@
 package com.shinhan.sunInCloud.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -14,11 +14,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
+import com.shinhan.sunInCloud.dto.ExportProductListDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
+import com.shinhan.sunInCloud.dto.ExportsListDTO;
 import com.shinhan.sunInCloud.dto.ShoppingDTO;
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
 import com.shinhan.sunInCloud.entity.ExportProduct;
-import com.shinhan.sunInCloud.entity.ExportProductHistory;
 import com.shinhan.sunInCloud.entity.Exports;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
@@ -36,59 +37,22 @@ public class ExportsService {
 	private final ProductService productService;
 
 	/**
-	 * 주문건 수집한 후 주문 목록 리턴하는 메서드
-	 * 
+	 * 쇼핑몰에 주문건 요청해 출고 목록에 추가하는 메서드
 	 * @param sellerNo
 	 * @param pageNum
 	 * @param countPerPage
 	 * @return
-	 * @throws IOException 
 	 */
-//	@Transactional
-//	public List<ExportsDTO> register(Long sellerNo, int pageNum, int countPerPage) {
-//		List<Exports> exports = new ArrayList<>();
-//		
-//		List<Shopping> shoppings = shoppingService.findNotCollected(sellerNo);
-//		
-//		Seller seller = sellerService.findById(sellerNo);
-//
-//		// 수집된 주문이 있는 경우에만 출고 목록 만듦
-//		if (shoppings.size() > 0) {
-//			// 출고 목록 만들기
-//			for (Shopping shopping : shoppings) {
-//				exports.add(shopping.toExports(seller));
-//			}
-//
-//			// 출고 상품 만들기
-//			for (Exports exp : exports) {
-//				List<ExportProduct> exportProducts = new ArrayList<>();
-//				Exports savedExports = exportsRepository.save(exp);
-//				List<ShoppingProduct> shoppingProducts = shoppingService
-//						.findShoppingProduct(savedExports.getExportNo());
-//
-//				for (ShoppingProduct shoppingProduct : shoppingProducts) {
-//					exportProducts.add(shoppingProduct.toExportProduct(savedExports));
-//				}
-//
-//				List<ExportProduct> savedExportProducts = exportProductRepository.saveAll(exportProducts);
-//				
-//				if(savedExports == null || savedExportProducts == null) findExports(sellerNo, 0, countPerPage);
-//			}
-//		}
-//
-//		// 주문 수집하면 무조건 첫 페이지로 이동
-//		return findExports(sellerNo, 0, countPerPage);
-//	}
 	@Transactional
-	public List<ExportsDTO> register(Long sellerNo, int pageNum, int countPerPage) {
+	public ExportsListDTO register(Long sellerNo, int pageNum, int countPerPage) {
 		Seller seller = sellerService.findById(sellerNo);
-		WebClient webClient = WebClient.builder().baseUrl("http://localhost:4885").build();
-		List<ShoppingDTO> shoppingDTOs = webClient
-				.get()
-				.uri(UriBuilder -> UriBuilder.path("/shop/order/send/" + sellerNo).build())
-				.retrieve()
-				.bodyToMono(List.class)
-				.block();
+		
+		WebClient webClient = WebClient.create("http://localhost:4885");
+		List<ShoppingDTO> shoppingDTOs = webClient.get()
+			.uri("/shop/order/send/" + sellerNo)
+			.retrieve()
+			.bodyToMono(new ParameterizedTypeReference<List<ShoppingDTO>>() {})
+			.block();
 		
 		for(ShoppingDTO shoppingDTO: shoppingDTOs) {
 			List<ExportProduct> exportProducts = new ArrayList<>();
@@ -104,11 +68,11 @@ public class ExportsService {
 			}
 			
 			List<ExportProduct> savedExportProducts = exportProductRepository.saveAll(exportProducts);
-			if(savedExports == null || savedExportProducts == null) findExports(sellerNo, 0, countPerPage);
+			if(savedExports == null || savedExportProducts == null) findExports(sellerNo, 1, countPerPage);
 			
 		}
 		
-		return findExports(sellerNo, 0, countPerPage);
+		return findExports(sellerNo, 1, countPerPage);
 	}
 
 	/**
@@ -119,15 +83,22 @@ public class ExportsService {
 	 * @param countPerPage
 	 * @return
 	 */
-	public List<ExportsDTO> findExports(Long sellerNo, int pageNum, int countPerPage) {
+	public ExportsListDTO findExports(Long sellerNo, int pageNum, int countPerPage) {
 		List<ExportsDTO> exportsDTOs = new ArrayList<>();
 		Page<Exports> exports = exportsRepository.findAllBySeller_SellerNoOrderByOrderDateDesc(sellerNo,
-				PageRequest.of(pageNum, countPerPage));
+				PageRequest.of(pageNum - 1, countPerPage));
 
 		for (Exports exp : exports) {
 			exportsDTOs.add(exp.toExportsDTO(exportProductRepository));
 		}
-		return exportsDTOs;
+		
+		ExportsListDTO exportsListDTO = ExportsListDTO
+				.builder()
+				.totalPage(exports.getTotalPages())
+				.exports(exportsDTOs)
+				.build();
+		
+		return exportsListDTO;
 	}
 
 	/**
@@ -138,16 +109,22 @@ public class ExportsService {
 	 * @param countPerPage
 	 * @return
 	 */
-	public List<ExportProductDTO> exportDetail(String exportNo, int pageNum, int countPerPage) {
+	public ExportProductListDTO exportDetail(String exportNo, int pageNum, int countPerPage) {
 		List<ExportProductDTO> exportProductDTOs = new ArrayList<>();
 		Page<ExportProduct> exportProducts = exportProductRepository
-				.findByExports_ExportNoOrderByProduct_ProductName(exportNo, PageRequest.of(pageNum, countPerPage));
+				.findByExports_ExportNoOrderByProduct_ProductName(exportNo, PageRequest.of(pageNum - 1, countPerPage));
 
 		for (ExportProduct exportProduct : exportProducts) {
 			exportProductDTOs.add(exportProduct.toExportProductDTO());
 		}
+		
+		ExportProductListDTO exportProductListDTO = ExportProductListDTO
+				.builder()
+				.totalPage(exportProducts.getTotalPages())
+				.exportProducts(exportProductDTOs)
+				.build();
 
-		return exportProductDTOs;
+		return exportProductListDTO;
 	}
 	
 	/**
@@ -177,7 +154,6 @@ public class ExportsService {
 			// 재고가 남은 경우에만 ExportProduct 업데이트 
 			if(exportInvoiceDTO.getInvoiceNo() != null) {
 				ExportProduct exportProduct = exportProductRepository.findByExports_ExportNoAndProduct_ProductNo(exportNo, productNo);
-				ExportProductHistory exportProductHistory = exportProduct.toExportProductHistory();
 				
 				exportProduct.updateExportProductByExportInvoiceDTO(exportInvoiceDTO);
 				exportProducts.add(exportProduct);
