@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.shinhan.sunInCloud.entity.ImportProduct;
 
 public interface ImportsProductRepository extends JpaRepository<ImportProduct, Long> {
+
+	List<ImportProduct> findByImports_ImportNo(Long importNo);
 	
 }

@@ -58,5 +58,6 @@ public class ThreePL {
 	@NotNull
 	private Integer cntTotal;
 	@NotNull
-	private Integer cntContracted;
+	@Builder.Default
+	private Integer cntContracted = 0;
 }

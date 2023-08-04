@@ -15,6 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ImportProductListDTO {
-	private List<ImportProductDTO> importproduct;
+	private List<ImportsDTO> importproduct;
 	private Long totalPage;
 }
