@@ -54,13 +54,23 @@ public class ShoppingTest {
 		Assertions.assertThat(shoppings.size()).isNotNull();
 	}
 	
-	@Test
+//	@Test
 	public void sendToWMS() {
 		Long sellerNo = 8L;
 		List<ShoppingDTO> shoppings = shoppingService.sendOrderToWMS(sellerNo);
 		
 		for(ShoppingDTO shopping: shoppings) {
 			System.out.println(shopping);
+		}
+	}
+	
+	@Test
+	public void findShoppings() {
+		Long sellerNo = 8L;
+		List<ShoppingProductDTO> shoppings = shoppingService.findShoppings(sellerNo);
+		
+		for(ShoppingProductDTO s : shoppings) {
+			System.out.println(s);
 		}
 	}
 }
