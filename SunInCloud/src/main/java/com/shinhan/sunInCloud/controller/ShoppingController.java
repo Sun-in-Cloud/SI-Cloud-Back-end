@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shinhan.sunInCloud.dto.ShoppingDTO;
+import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
 import com.shinhan.sunInCloud.service.ShoppingService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,10 @@ public class ShoppingController {
 	@GetMapping("/shop/order/send/{sellerNo}")
 	public List<ShoppingDTO> sendOrderToWMS(@PathVariable Long sellerNo) {
 		return shoppingService.sendOrderToWMS(sellerNo);
+	}
+	
+	@GetMapping("/shop/list")
+	public List<ShoppingProductDTO> findShoppings(Long sellerNo) {
+		return shoppingService.findShoppings(sellerNo);
 	}
 }
