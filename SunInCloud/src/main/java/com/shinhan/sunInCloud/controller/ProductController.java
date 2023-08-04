@@ -36,9 +36,8 @@ public class ProductController {
 		return productService.register(productDTO);
 	}
 	
-	@PutMapping("/seller/product/edit/{sellerNo}")
-	public ProductDTO update(@RequestBody ProductDTO productDTO, @PathVariable Long sellerNo) {
-		productDTO.setSellerNo(sellerNo);
+	@PutMapping("/seller/product/edit")
+	public ProductDTO update(@RequestBody ProductDTO productDTO) {
 		return productService.update(productDTO);
 	}
 	
