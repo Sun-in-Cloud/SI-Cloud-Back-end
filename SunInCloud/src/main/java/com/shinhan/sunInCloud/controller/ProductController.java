@@ -30,13 +30,15 @@ public class ProductController {
 		return productService.findById(productNo);
 	}
 	
-	@PostMapping("/seller/product/register")
-	public boolean register(@RequestBody ProductDTO productDTO) {
+	@PostMapping("/seller/product/register/{sellerNo}")
+	public boolean register(@RequestBody ProductDTO productDTO, @PathVariable Long sellerNo) {
+		productDTO.setSellerNo(sellerNo);
 		return productService.register(productDTO);
 	}
 	
-	@PutMapping("/seller/product/edit")
-	public ProductDTO update(@RequestBody ProductDTO productDTO) {
+	@PutMapping("/seller/product/edit/{sellerNo}")
+	public ProductDTO update(@RequestBody ProductDTO productDTO, @PathVariable Long sellerNo) {
+		productDTO.setSellerNo(sellerNo);
 		return productService.update(productDTO);
 	}
 	
