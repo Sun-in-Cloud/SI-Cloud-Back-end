@@ -34,6 +34,8 @@ public class ShoppingProductDTO {
 	private int sellingPrice;
 
 	private Timestamp orderDate;
+	
+	private String localOrderDate;
 
 	private String orderStatus;
 

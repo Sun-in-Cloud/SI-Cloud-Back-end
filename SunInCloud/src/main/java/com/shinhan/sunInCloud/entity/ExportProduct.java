@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -70,6 +71,7 @@ public class ExportProduct {
 				.productName(product.getProductName())
 				.productNo(product.getProductNo())
 				.sellingPrice(sellingPrice)
+				.localExportDate(exportDate == null ? null : TimestampUtil.convertTimestampToString(exportDate))
 				.build();
 	}
 	

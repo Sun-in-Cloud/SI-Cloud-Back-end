@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -72,6 +73,7 @@ public class ShoppingProduct {
 				.orderStatus(orderStatus)
 				.sellingPrice(sellingPrice)
 				.invoiceNo(invoiceNo)
+				.localOrderDate(TimestampUtil.convertTimestampToString(shopping.getOrderDate()))
 				.build();
 	}
 }

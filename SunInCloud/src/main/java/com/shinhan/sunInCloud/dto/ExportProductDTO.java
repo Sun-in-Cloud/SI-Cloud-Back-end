@@ -17,6 +17,7 @@ public class ExportProductDTO {
 	private int amount;
 	private int sellingPrice;
 	private Timestamp exportDate;
+	private String localExportDate;
 	private String invoiceNo;
 	private String orderStatus;
 }
