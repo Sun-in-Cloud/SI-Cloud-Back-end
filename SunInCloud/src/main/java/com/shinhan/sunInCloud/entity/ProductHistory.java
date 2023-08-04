@@ -68,7 +68,6 @@ public class ProductHistory {
 		sellerNo = product.getSeller().getSellerNo();
 		productName = product.getProductName();
 		safetyStock = product.getSafetyStock();
-		currentStock = product.getCurrentStock();
 		enoughStock = product.getEnoughStock();
 		detailProductGroupNo = product.getDetailProductGroup().getDetailProductGroupNo();
 		importPrice = product.getImportPrice();

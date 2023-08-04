@@ -103,4 +103,17 @@ public class ShoppingService {
 	public List<Shopping> findNotCollected(Long sellerNo) {
 		return shoppingRepository.findBySeller_SellerNoAndIsCollected(sellerNo, false);
 	}
+	
+	public List<ShoppingProductDTO> findShoppings(Long sellerNo) {
+		List<ShoppingProductDTO> shoppingProductDTOs = new ArrayList<>();
+		List<ShoppingProduct> shoppingProducts = shoppingProductRepository
+				.findByShopping_Seller_SellerNoOrderByShopping_OrderDateDescProduct_ProductName(sellerNo);
+		
+		for(ShoppingProduct shoppingProduct: shoppingProducts) {
+			ShoppingProductDTO shoppingProductDTO = shoppingProduct.toShoppingProductDTO();
+			shoppingProductDTOs.add(shoppingProductDTO);
+		}
+		
+		return shoppingProductDTOs;
+	}
 }

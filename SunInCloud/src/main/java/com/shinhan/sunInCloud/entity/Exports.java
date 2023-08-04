@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import com.shinhan.sunInCloud.dto.ExportsDTO;
 import com.shinhan.sunInCloud.repository.ExportProductRepository;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,7 +54,7 @@ public class Exports {
 				.builder()
 				.address(address)
 				.exportNo(exportNo)
-				.orderDate(orderDate)
+				.localOrderDate(TimestampUtil.convertTimestampToString(orderDate))
 				.ordererName(ordererName)
 				.orderStatus(setOrderStatus(exportNo, exportProductRepository))
 				.salesChannel(salesChannel)

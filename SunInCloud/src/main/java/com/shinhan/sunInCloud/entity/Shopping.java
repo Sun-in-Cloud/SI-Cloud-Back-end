@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -52,25 +50,6 @@ public class Shopping {
 	
 	@Builder.Default
 	private Boolean isCollected = false;
-	
-//	/**
-//	 * Shopping -> Exports
-//	 * 쇼핑몰 주문 목록을 출고 목록으로 가져오기 위함
-//	 * 
-//	 * @param seller
-//	 * @return
-//	 */
-//	public Exports toExports(Seller seller) {
-//		return Exports
-//				.builder()
-//				.address(address)
-//				.exportNo(exportNo)
-//				.orderDate(orderDate)
-//				.ordererName(orderName)
-//				.salesChannel(salesChannel)
-//				.seller(seller)
-//				.build();
-//	}
 	
 	/**
 	 * Shopping -> ShoppingDTO
