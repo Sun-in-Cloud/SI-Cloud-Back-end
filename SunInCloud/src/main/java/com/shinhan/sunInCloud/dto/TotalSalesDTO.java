@@ -1,20 +1,20 @@
 package com.shinhan.sunInCloud.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Builder
-@Setter
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImportProductListDTO {
-	private List<ImportsDTO> importproduct;
-	private Long totalPage;
+@Getter
+@Setter
+public class TotalSalesDTO {
+
+	private Integer year;
+	private Integer month;
+	private Integer day;
+	private Long totalSales;
 }
