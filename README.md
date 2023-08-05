@@ -18,7 +18,7 @@
 # 팀 소개
 |[손준범](https://github.com/junbeom-Son)|[오은빈](https://github.com/svbean77)|[이진경](https://github.com/jingyeong0604)|[노성은](https://github.com/seonggg)|[양유진](https://github.com/YYJ-1229)|[이솔](https://github.com/leessol)|
 |---|---|---|---|---|---|
-|<img src="https://github.com/OneTimeGroup/OneTimeTripCard/assets/89973303/af74cfa3-637d-4224-b98d-dcaa5a8bbcb6" width="150" height="200">|사진|사진|사진|사진|사진|
+|<img src="https://github.com/OneTimeGroup/OneTimeTripCard/assets/89973303/af74cfa3-637d-4224-b98d-dcaa5a8bbcb6" width="150" height="200">|사진|사진|사진|<img src="https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/f1b5aae4-1773-4f86-9b72-51365c347806" width="150" height="200">|사진|
 |백엔드 개발자|백엔드 개발자|백엔드 개발자|프론트엔드 개발자|프론트엔드 개발자|기획자|
 
 # 프로젝트 소개
