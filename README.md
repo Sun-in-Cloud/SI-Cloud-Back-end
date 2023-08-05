@@ -16,6 +16,17 @@
 <!-- * <img alt="" src =""/> -->
 
 # 팀 소개
-|[손준범](https://github.com/junbeom-Son)|[오은빈](https://github.com/svbean77)|[이진경](https://github.com/jingyeong0604)|[노성은](https://github.com/seonggg)|[양유진](https://github.com/YYJ-1229)|이솔|
+|[손준범](https://github.com/junbeom-Son)|[오은빈](https://github.com/svbean77)|[이진경](https://github.com/jingyeong0604)|[노성은](https://github.com/seonggg)|[양유진](https://github.com/YYJ-1229)|[이솔](https://github.com/leessol)|
 |---|---|---|---|---|---|
 |<img src="https://github.com/OneTimeGroup/OneTimeTripCard/assets/89973303/af74cfa3-637d-4224-b98d-dcaa5a8bbcb6" width="150" height="200">|사진|사진|사진|사진|사진|
+|백엔드 개발자|백엔드 개발자|백엔드 개발자|프론트엔드 개발자|프론트엔드 개발자|기획자|
+
+# 프로젝트 소개
+## 개요
+3PL에서 기존에 사용하는 WMS를 추가로 개발하였습니다.
+### 3PL이란?
+***Third Party Logistics***의 약자로, 3자 물류 대행 서비스를 의미합니다. 
+창고 대여, 재고 관리, 배송 등 물류와 관련된 업무를 대행해줘 판매자는 마케팅과 판매에만 집중할 수 있습니다.
+### WMS란?
+***Warehouse Management System***의 약자로 창고 관리 시스템을 의미합니다.
+3PL에서 물류를 관리할 때 사용하는 시스템으로, 저희는 이 시스템을 개발하였습니다.
