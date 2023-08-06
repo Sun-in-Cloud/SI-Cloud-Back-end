@@ -23,7 +23,10 @@
 
 # 프로젝트 소개
 **[API Sheet](https://sustaining-eel-c8a.notion.site/2f4d305a31a54ce5bea31020ae9d9f5c?v=75654fd58e884ae08f740661f811c143)** - API 정리 문서
-2023-07-24~
+
+**[프로젝트 소개 PPT](https://www.miricanvas.com/v/12a4tlo)**
+
+프로젝트 시작일 - 2023-07-24~
 ## 개요
 3PL에서 기존에 사용하는 WMS를 추가로 개발하였습니다.
 ### 3PL이란?
