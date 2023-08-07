@@ -190,8 +190,8 @@ public class ExportsService {
 	 * @param sellerNo
 	 * @return
 	 */
-	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
-		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(startDate, endDate, sellerNo);
+	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(List<String> dates, Long sellerNo) {
+		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(dates, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
 		for (Object[] count : counts) {
 			java.sql.Date date = (java.sql.Date) count[0];

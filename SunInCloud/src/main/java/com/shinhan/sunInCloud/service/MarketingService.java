@@ -46,12 +46,27 @@ public class MarketingService {
 	 * 작성자: 손준범
 	 */
 	private List<NumberOfSalesDTO> getNumberOfSalesWeekly(Long sellerNo) {
-		Date today = new Date();
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(today);
-		calendar.add(Calendar.DAY_OF_MONTH, -6);
-		Date startDate = calendar.getTime();
-		return exportsService.getNumberOfSalesWeekly(startDate, today, sellerNo);
+		calendar.add(Calendar.YEAR, 1900);
+		calendar.add(Calendar.MONTH, 1);
+		calendar.add(Calendar.DATE, -6);
+		List<String> dates = new ArrayList<>();
+		for (int i = 0; i < 7; ++i) {
+			int month = calendar.getTime().getMonth();
+			int date = calendar.getTime().getDate();
+			dates.add(new StringBuilder().append(calendar.getTime().getYear())
+					.append("-")
+					.append(month < 10 ? new StringBuilder().append("0").append(month) : month)
+					.append("-")
+					.append(date < 10 ? new StringBuilder().append("0").append(date) : date)
+					.toString());
+			
+			calendar.add(Calendar.DATE, 1);
+		}
+		for (String date : dates) {
+			System.out.println(date);
+		}
+		return exportsService.getNumberOfSalesWeekly(dates, sellerNo);
 	}
 	
 	/**
