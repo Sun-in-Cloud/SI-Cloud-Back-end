@@ -34,6 +34,7 @@ public class MarketingService {
 				.numberOfSalesMonthly(getNumberOfSalesMonthly(sellerNo))
 				.numberOfSalesYearly(getNumberOfSalesYearly(sellerNo))
 				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
+				.totalSalesMonthly(getTotalSalesMonthly(sellerNo))
 				.build();
 	}
 	
@@ -116,5 +117,34 @@ public class MarketingService {
 		calendar.add(Calendar.DAY_OF_MONTH, -6);
 		Date startDate = calendar.getTime();
 		return exportsService.getTotalSalesWeekly(startDate, today, sellerNo);
+	}
+	
+	/**
+	 * 당월, 전월, 작년 동월 매출 조회
+	 * @param sellerNo
+	 * @return 당월, 전월, 작년 동월 매출 List
+	 * 작성자: 손준범
+	 */
+	private List<TotalSalesDTO> getTotalSalesMonthly(Long sellerNo) {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		List<TotalSalesDTO> totalSalesMonthly = new ArrayList<>();
+		int[] years = {year, year, year - 1};
+		int[] months = {month + 1, month, month + 1};
+		Long[] totalSales = new Long[3];
+		if (month == 0) { // 당월이 1월인 경우, 전월을 전년 12월로 처리
+			--years[1];
+			months[1] = 12;
+		}
+		for (int i = 0; i < 3; ++i) {
+			totalSales[i] = exportsService.getTotalSalesMonthly(sellerNo, years[i], months[i]);
+			totalSalesMonthly.add(TotalSalesDTO.builder()
+					.year(years[i])
+					.month(months[i])
+					.totalSales(totalSales[i])
+					.build());
+		}
+		return totalSalesMonthly;
 	}
 }

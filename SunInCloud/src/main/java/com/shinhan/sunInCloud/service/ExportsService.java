@@ -245,4 +245,15 @@ public class ExportsService {
 		}
 		return null;
 	}
+
+	/**
+	 * 입력으로 주어진 년, 월에 해당하는 매출 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @param month
+	 * @return 매출
+	 */
+	public Long getTotalSalesMonthly(Long sellerNo, int year, int month) {
+		return exportProductRepository.getMonthlySales(sellerNo, year, month);
+	}
 }
