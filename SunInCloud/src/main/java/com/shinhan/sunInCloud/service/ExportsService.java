@@ -1,8 +1,6 @@
 package com.shinhan.sunInCloud.service;
 
-import java.io.IOException;
 import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,10 +17,11 @@ import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportProductListDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
-import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.ExportsListDTO;
+import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.ShoppingDTO;
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
+import com.shinhan.sunInCloud.dto.TotalSalesDTO;
 import com.shinhan.sunInCloud.entity.ExportProduct;
 import com.shinhan.sunInCloud.entity.Exports;
 import com.shinhan.sunInCloud.entity.Product;
@@ -190,8 +189,8 @@ public class ExportsService {
 	 * @param sellerNo
 	 * @return
 	 */
-	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(Date startDay, Date endDay, Long sellerNo) {
-		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(startDay, endDay, sellerNo);
+	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
+		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(startDate, endDate, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
 		for (Object[] count : counts) {
 			java.sql.Date date = (java.sql.Date) count[0];

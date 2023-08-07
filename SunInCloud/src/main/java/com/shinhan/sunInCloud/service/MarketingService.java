@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.StatisticsDTO;
+import com.shinhan.sunInCloud.dto.TotalSalesDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,7 @@ public class MarketingService {
 				.numberOfSalesWeekly(getNumberOfSalesWeekly(sellerNo))
 				.numberOfSalesMonthly(getNumberOfSalesMonthly(sellerNo))
 				.numberOfSalesYearly(getNumberOfSalesYearly(sellerNo))
+				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
 				.build();
 	}
 	
@@ -46,8 +48,8 @@ public class MarketingService {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(today);
 		calendar.add(Calendar.DAY_OF_MONTH, -6);
-		Date startDay = calendar.getTime();
-		return exportsService.getNumberOfSalesWeekly(startDay, today, sellerNo);
+		Date startDate = calendar.getTime();
+		return exportsService.getNumberOfSalesWeekly(startDate, today, sellerNo);
 	}
 	
 	/**
@@ -99,5 +101,14 @@ public class MarketingService {
 					.build());
 		}
 		return numberOfSalesYearly;
+	}
+	
+	private List<TotalSalesDTO> getTotalSalesWeekly(Long sellerNo) {
+		Date today = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(today);
+		calendar.add(Calendar.DAY_OF_MONTH, -6);
+		Date startDate = calendar.getTime();
+		return exportsService.getTotalSalesWeekly(startDate, today, sellerNo);
 	}
 }
