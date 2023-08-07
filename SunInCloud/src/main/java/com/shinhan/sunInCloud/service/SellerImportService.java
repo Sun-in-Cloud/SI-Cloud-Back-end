@@ -81,7 +81,7 @@ public class SellerImportService {
 		 * @return true/false
 		 */
 	
-		public boolean saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
+		public boolean saveImport(Long sellerNo, Long orderNo, List<ImportProductDTO> importProductDTOs) {
 	         // 입고 내역을 저장함 -> 화주사 번호 필요함
 	         Seller seller = sellerService.findById(sellerNo);
 	         Imports imports = importRepository.save(Imports.builder().seller(seller).build());
