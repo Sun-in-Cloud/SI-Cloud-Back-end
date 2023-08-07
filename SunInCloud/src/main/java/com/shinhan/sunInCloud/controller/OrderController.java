@@ -30,7 +30,7 @@ public class OrderController {
 		return orderService.register(sellerNo);
 	}
   
-	@GetMapping(value = {"/3pl/order/list", "/seller/order/list", "/seller/import/pre/list"})
+	@GetMapping(value = {"/3pl/order/list", "/seller/order/list"}) //, "/seller/import/pre/list"삭제
 	public OrderListDTO findOrders(Long sellerNo, int pageNum, int countPerPage) {
 		return orderService.findOrders(sellerNo, pageNum - 1, countPerPage);
 	}
