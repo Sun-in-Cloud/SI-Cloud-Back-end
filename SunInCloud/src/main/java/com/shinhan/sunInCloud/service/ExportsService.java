@@ -204,9 +204,7 @@ public class ExportsService {
 			map.put(date, 0L);
 		}
 		for (Object[] count : counts) {
-			String date = String.valueOf(count[0]);
-			BigDecimal bi = (BigDecimal) count[1];
-			map.put(date, bi.longValue());
+			map.put(String.valueOf(count[0]), ((BigDecimal) count[1]).longValue());
 		}
 		for (String date : dates) {
 			String[] arr = date.split("-");
