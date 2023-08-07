@@ -60,11 +60,7 @@ public class MarketingService {
 					.append("-")
 					.append(date < 10 ? new StringBuilder().append("0").append(date) : date)
 					.toString());
-			
 			calendar.add(Calendar.DATE, 1);
-		}
-		for (String date : dates) {
-			System.out.println(date);
 		}
 		return exportsService.getNumberOfSalesWeekly(dates, sellerNo);
 	}
