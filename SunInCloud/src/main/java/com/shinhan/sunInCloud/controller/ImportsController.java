@@ -22,8 +22,8 @@ public class ImportsController {
 	
 	//발주 등록
 	@PostMapping(value= {"/seller/import/register"})
-	public boolean saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
-		return sellerImportService.saveImport(sellerNo, importProductDTOs);
+	public boolean saveImport(Long sellerNo, Long orderNo, List<ImportProductDTO> importProductDTOs) {
+		return sellerImportService.saveImport(sellerNo, orderNo, importProductDTOs);
 	}
 	
 	
