@@ -14,9 +14,7 @@ import com.shinhan.sunInCloud.dto.ProductDTO;
 import com.shinhan.sunInCloud.dto.ProductListDTO;
 import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
-import com.shinhan.sunInCloud.entity.ProductHistory;
 import com.shinhan.sunInCloud.entity.Seller;
-import com.shinhan.sunInCloud.entity.UpdatedType;
 import com.shinhan.sunInCloud.repository.ProductHistoryRepository;
 import com.shinhan.sunInCloud.repository.ProductRepository;
 
