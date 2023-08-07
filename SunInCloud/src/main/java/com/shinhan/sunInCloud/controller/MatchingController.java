@@ -34,6 +34,6 @@ public class MatchingController {
 	
 	@GetMapping("/3pl/match/list")
 	public MatchingSellerListDTO searcingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
-		return matchingService.searcingSellerByCondition(matchingConditionDTO);
+		return matchingService.searchingSellerByCondition(matchingConditionDTO);
 	}
 }

@@ -63,7 +63,7 @@ public class MatchingTest {
 				.countPerPage(10)
 				.build();
 		
-		MatchingSellerListDTO sellers = matchingService.searcingSellerByCondition(condition);
+		MatchingSellerListDTO sellers = matchingService.searchingSellerByCondition(condition);
 		System.out.println(sellers);
 	}
 }
