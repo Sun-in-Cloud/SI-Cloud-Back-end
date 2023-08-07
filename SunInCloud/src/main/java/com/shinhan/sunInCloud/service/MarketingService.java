@@ -25,6 +25,7 @@ public class MarketingService {
 	 * 2. 이번달, 지난달, 작년 동월 기록(판매건수, 매출)
 	 * 3. 작년, 올해 기록(판매건수, 매출)
 	 * @param sellerNo
+	 * 작성자: 손준범
 	 */
 	public StatisticsDTO getStatisticsBySeller(Long sellerNo) {
 		return StatisticsDTO.builder()
@@ -34,6 +35,12 @@ public class MarketingService {
 				.build();
 	}
 	
+	/**
+	 * 일주일간의 일별 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @return 7일간의 일별 판매 건수 List
+	 * 작성자: 손준범
+	 */
 	private List<NumberOfSalesDTO> getNumberOfSalesWeekly(Long sellerNo) {
 		Date today = new Date();
 		Calendar calendar = Calendar.getInstance();
@@ -43,6 +50,12 @@ public class MarketingService {
 		return exportsService.getNumberOfSales(startDay, today, sellerNo);
 	}
 	
+	/**
+	 * 당월, 전월, 작년 동월 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @return 당월, 전월, 작년 동월 판매 건수 List
+	 * 작성자: 손준범
+	 */
 	private List<NumberOfSalesDTO> getNumberOfSalesMonthly(Long sellerNo) {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
@@ -66,6 +79,12 @@ public class MarketingService {
 		return numberOfSalesMonthly;
 	}
 	
+	/**
+	 * 금년, 작년 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @return 금년, 작년 판매 건수 List
+	 * 작성자: 손준범
+	 */
 	private List<NumberOfSalesDTO> getNumberOfSalesYearly(Long sellerNo) {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
