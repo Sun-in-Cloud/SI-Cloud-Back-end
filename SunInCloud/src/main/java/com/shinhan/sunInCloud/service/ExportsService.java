@@ -198,13 +198,7 @@ public class ExportsService {
 	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(List<String> dates, Long sellerNo) {
 		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(dates, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
-		Map<String, Long> map = new HashMap<>();
-		for (String date : dates) {
-			map.put(date, 0L);
-		}
-		for (Object[] count : counts) {
-			map.put(String.valueOf(count[0]), ((BigDecimal) count[1]).longValue());
-		}
+		Map<String, Long> map = aggregateWeeklyData(dates, counts);
 		for (String date : dates) {
 			String[] arr = date.split("-");
 			numberOfSales.add(NumberOfSalesDTO.builder()
@@ -250,13 +244,7 @@ public class ExportsService {
 	public List<TotalSalesDTO> getTotalSalesWeekly(List<String> dates, Long sellerNo) {
 		List<Object[]> totalSales = exportProductRepository.getDailySalesForWeek(dates, sellerNo);
 		List<TotalSalesDTO> totalSalesWeekly = new ArrayList<>();
-		Map<String, Long> map = new HashMap<>();
-		for (String date : dates) {
-			map.put(date, 0L);
-		}
-		for (Object[] totalSale : totalSales) {
-			map.put(String.valueOf(totalSale[0]), ((BigDecimal)totalSale[1]).longValue());
-		}
+		Map<String, Long> map = aggregateWeeklyData(dates, totalSales);
 		for (String date : dates) {
 			String[] arr = date.split("-");
 			totalSalesWeekly.add(TotalSalesDTO.builder()
@@ -289,5 +277,16 @@ public class ExportsService {
 	 */
 	public Long getTotalSalesYearly(Long sellerNo, int year) {
 		return exportProductRepository.getYearlySales(sellerNo, year);
+	}
+	
+	private Map<String, Long> aggregateWeeklyData(List<String> dates, List<Object[]> data) {
+		Map<String, Long> map = new HashMap<>();
+		for (String date : dates) {
+			map.put(date, 0L);
+		}
+		for (Object[] oneData : data) {
+			map.put(String.valueOf(oneData[0]), ((BigDecimal)oneData[1]).longValue());
+		}
+		return map;
 	}
 }
