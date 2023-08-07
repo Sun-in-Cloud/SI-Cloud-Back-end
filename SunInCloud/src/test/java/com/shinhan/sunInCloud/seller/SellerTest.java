@@ -58,7 +58,6 @@ public class SellerTest {
 				.managerName("박서준")
 				.managerPhone("010-1111-1234")
 				.managerEmail("etude_master@etude.co.kr")
-				.isAgreed(true)
 				.isMarketing(true)
 				.build();
 				
@@ -72,7 +71,6 @@ public class SellerTest {
 				.managerName("최도윤")
 				.managerPhone("010-2222-1234")
 				.managerEmail("innisfree@innisfree.com")
-				.isAgreed(true)
 				.isMarketing(false)
 				.build();
 		Seller registerSeller1 = sellerService.save(seller1);

@@ -54,8 +54,6 @@ public class Seller {
 	@NotNull
 	private String managerEmail;
 	@NotNull
-	private Boolean isAgreed;
-	@NotNull
 	private Boolean isMarketing;
 	
 	/**
@@ -92,7 +90,6 @@ public class Seller {
 				.managerName(managerName)
 				.managerPhone(managerPhone)
 				.isMarketing(isMarketing)
-				.isAgreed(isAgreed)
 				.sales(sales)
 				.exportCnt(exportCnt)
 				.matching(matchingDTO)

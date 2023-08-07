@@ -20,7 +20,6 @@ public class SellerDTO {
 	private String managerPhone;
 	private String managerEmail;
 	private boolean isMarketing;
-	private boolean isAgreed;
 	
 	private long sales;
 	private long exportCnt;
