@@ -8,7 +8,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
+import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
@@ -57,8 +57,8 @@ public class Seller {
 	@NotNull
 	private Boolean isMarketing;
 	
-	public MatchingSellerDTO toMatchingSellerDTO(Matching matching) {
-		return MatchingSellerDTO
+	public MatchingDTO toMatchingSellerDTO(Matching matching) {
+		return MatchingDTO
 				.builder()
 				.productGroup(productGroup.getGroupName())
 				.companyName(companyName)

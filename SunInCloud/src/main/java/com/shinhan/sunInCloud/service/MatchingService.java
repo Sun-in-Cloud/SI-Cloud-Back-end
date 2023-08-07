@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
-import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
 import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
 import com.shinhan.sunInCloud.entity.Matching;
 import com.shinhan.sunInCloud.entity.Seller;
@@ -63,18 +62,18 @@ public class MatchingService {
 	 * @return
 	 */
 	public MatchingSellerListDTO searcingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
-		List<MatchingSellerDTO> matchingSellerDTOs = new ArrayList<>();
+		List<MatchingDTO> matchingSellerDTOs = new ArrayList<>();
 		Page<Seller> findedSellers = sellerService.findByMatchingCondition(matchingConditionDTO);
 		
 		for(Seller findedSeller : findedSellers) {
-			MatchingSellerDTO matchingSeller = findedSeller.toMatchingSellerDTO(matchingRepository.findBySeller_SellerNo(findedSeller.getSellerNo()));
+			MatchingDTO matchingSeller = findedSeller.toMatchingSellerDTO(matchingRepository.findBySeller_SellerNo(findedSeller.getSellerNo()));
 			matchingSellerDTOs.add(matchingSeller);
 		}
 		
 		MatchingSellerListDTO matchingSellerListDTO = MatchingSellerListDTO
 				.builder()
 				.totalPage(findedSellers.getTotalPages())
-				.matchingSellers(matchingSellerDTOs)
+				.matchingCompanies(matchingSellerDTOs)
 				.build();
 		
 		return matchingSellerListDTO;
