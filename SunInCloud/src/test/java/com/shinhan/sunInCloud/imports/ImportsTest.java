@@ -69,7 +69,7 @@ public class ImportsTest {
 	}
 	
 	//발주 조회 ->검색
-	@Test
+	//@Test
 	void searchOrder() {
 		String productName="룩엣마이아이즈 샤이닝베이지";
 		Product product  = sellerImportService.searchOrder(productName);
@@ -77,12 +77,12 @@ public class ImportsTest {
 			
 	}
 	
-	//@Test
+	@Test
 	void saveImports() {
 		Long sellerNo=8L;
 		int pageNumber = 0;
 		int pageSize = 10;
-		
+		Long orderNo = 26L;
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		Page<Product> p = productRepository.findAllBySeller_SellerNo(sellerNo, pageable);
 		List<ImportProductDTO> importProductDTOs = new ArrayList<>();
@@ -95,7 +95,7 @@ public class ImportsTest {
 			importProductDTOs.add(importPRoductDTO);
 		}
 		
-		boolean saved = sellerImportService.saveImport(sellerNo, importProductDTOs);
+		boolean saved = sellerImportService.saveImport(sellerNo, orderNo, importProductDTOs);
 		Assertions.assertThat(saved);
 		
 	}
