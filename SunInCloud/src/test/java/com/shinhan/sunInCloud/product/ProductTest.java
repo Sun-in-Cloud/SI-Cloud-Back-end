@@ -72,7 +72,7 @@ public class ProductTest {
 		int pageSize = 5;
 		int pageNumber = 1;
 		Seller seller = sellerService.findByBusinessNo("135-81-05033");
-		List<ProductDTO> products = productService.findProductBySellerNo(seller.getSellerNo(), pageNumber, pageSize);
+		List<ProductDTO> products = productService.findProductBySellerNo(seller.getSellerNo(), pageNumber, pageSize).getProducts();
 		for (ProductDTO product : products) {
 			System.out.println(product.getProductName());
 		}
