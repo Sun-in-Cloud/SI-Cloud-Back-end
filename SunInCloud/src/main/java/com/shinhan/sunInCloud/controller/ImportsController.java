@@ -35,10 +35,10 @@ public class ImportsController {
 	}
 	
 	//입고예정 리스트 상세 조회
-	@GetMapping(value= {"/seller/import/pre/{importNo}"})
-	public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, @PathVariable Long importNo) {
-		return sellerImportService.seePreDetail(importProductDTO, importNo);
-	}
+//	@GetMapping(value= {"/seller/import/pre/{importNo}"})
+//	public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, @PathVariable Long importNo) {
+//		return sellerImportService.seePreDetail(importProductDTO, importNo);
+//	}
 	//발주 상품 검색
 	@GetMapping(value= {"/seller/import/search"})
 	public List<Product> searchOrder(String productName) {
