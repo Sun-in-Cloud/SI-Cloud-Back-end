@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shinhan.sunInCloud.dto.ProductGroupDTO;
 import com.shinhan.sunInCloud.service.DetailProductGroupService;
 import com.shinhan.sunInCloud.service.ProductGroupService;
 
@@ -19,12 +18,12 @@ public class ProductGroupController {
 	private final DetailProductGroupService detailProductGroupService;
 	
 	@GetMapping("/productGroup/list")
-	public List<ProductGroupDTO> findProductGroups() {
+	public List<String> findProductGroups() {
 		return productGroupService.findAll();
 	}
 	
 	@GetMapping("/detailProductGroup/list/{sellerNo}")
-	public List<ProductGroupDTO> findDetailProductGroups(@PathVariable Long sellerNo) {
+	public List<String> findDetailProductGroups(@PathVariable Long sellerNo) {
 		return detailProductGroupService.findByProductGroup(sellerNo);
 	}
 }

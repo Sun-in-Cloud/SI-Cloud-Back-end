@@ -1,18 +1,20 @@
 package com.shinhan.sunInCloud.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MatchingSellerDTO {
-	private long sellerNo;
+public class MatchingConditionDTO {
 	private String productGroup;
-	private String companyName;
-	private String endDate;
+	private String address;
+	private int numValue;
+	private int contractPeriod;
 	
+	private int pageNum;
+	private int countPerPage;
 }

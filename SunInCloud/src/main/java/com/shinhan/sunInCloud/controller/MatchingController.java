@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
+import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
 import com.shinhan.sunInCloud.dto.WarehouseDTO;
 import com.shinhan.sunInCloud.service.MatchingService;
 import com.shinhan.sunInCloud.service.WarehouseService;
@@ -29,5 +31,10 @@ public class MatchingController {
 	@PostMapping("/3pl/match/contract")
 	public boolean contract(@RequestBody MatchingDTO matchingDTO) {
 		return matchingService.contract(matchingDTO);
+	}
+	
+	@GetMapping("/3pl/match/list")
+	public MatchingSellerListDTO searcingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
+		return matchingService.searcingSellerByCondition(matchingConditionDTO);
 	}
 }
