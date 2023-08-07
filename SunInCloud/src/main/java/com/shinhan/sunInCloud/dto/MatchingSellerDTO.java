@@ -10,11 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MatchingSellerDTO {
+	private long sellerNo;
 	private String productGroup;
-	private String address;
-	private int exportCnt;
-	private int contractPeriod;
-	
 	private String companyName;
 	private String endDate;
+	
 }
