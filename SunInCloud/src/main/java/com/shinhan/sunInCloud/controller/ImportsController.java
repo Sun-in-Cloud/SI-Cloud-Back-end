@@ -29,12 +29,6 @@ public class ImportsController {
 	}
 	
 	
-	//입고예정 리스트 목록 조회
-	@GetMapping(value= {"/seller/import/pre/list"})
-	public ImportProductListDTO seePreList (Long sellerNo, int pageNum, int countPerPage){
-		return sellerImportService.seePreList(sellerNo, pageNum, countPerPage);
-	}
-	
 	//입고예정 리스트 상세 조회
 //	@GetMapping(value= {"/seller/import/pre/{importNo}"})
 //	public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, @PathVariable Long importNo) {
