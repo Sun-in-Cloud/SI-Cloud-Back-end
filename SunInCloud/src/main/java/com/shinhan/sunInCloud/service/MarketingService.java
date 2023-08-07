@@ -103,6 +103,12 @@ public class MarketingService {
 		return numberOfSalesYearly;
 	}
 	
+	/**
+	 * 일주일간의 일별 매출 조회 메서드
+	 * @param sellerNo
+	 * @return 7일간의 일별 매출 List
+	 * 작성자: 손준범
+	 */
 	private List<TotalSalesDTO> getTotalSalesWeekly(Long sellerNo) {
 		Date today = new Date();
 		Calendar calendar = Calendar.getInstance();
