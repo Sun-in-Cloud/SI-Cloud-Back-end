@@ -1,8 +1,6 @@
 package com.shinhan.sunInCloud.service;
 
-import java.io.IOException;
 import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,10 +17,11 @@ import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportProductListDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
-import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.ExportsListDTO;
+import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.ShoppingDTO;
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
+import com.shinhan.sunInCloud.dto.TotalSalesDTO;
 import com.shinhan.sunInCloud.entity.ExportProduct;
 import com.shinhan.sunInCloud.entity.Exports;
 import com.shinhan.sunInCloud.entity.Product;
@@ -182,7 +181,15 @@ public class ExportsService {
 		return amount <= product.getCurrentStock();
 	}
 
-	public List<NumberOfSalesDTO> getNumberOfSales(Date startDate, Date endDate, Long sellerNo) {
+	/**
+	 * 일주일간의 일별 판매 건수 조회 메서드
+	 * 데이터 조회 후 DTO로 변경
+	 * @param startDate
+	 * @param endDate
+	 * @param sellerNo
+	 * @return
+	 */
+	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
 		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(startDate, endDate, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
 		for (Object[] count : counts) {
@@ -198,7 +205,44 @@ public class ExportsService {
 		return numberOfSales;
 	}
 	
-	public Long getNumberOfSalesMonthly(Long sellerNo) {
-		return exportProductRepository.getSalesCountOfThisMonth(sellerNo);
+	/**
+	 * 입력으로 주어진 년, 월에 해당하는 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @param month
+	 * @return 판매건수
+	 * 작성자: 손준범
+	 */
+	public Long getNumberOfSalesMonthly(Long sellerNo, int year, int month) {
+		return exportProductRepository.getSalesCountOfMonth(sellerNo, year, month);
+	}
+
+	/**
+	 * 입력으로 주어진 년도에 해당하는 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @return 판매건수
+	 * 작성자: 손준범
+	 */
+	public Long getNumberOfSalesYearly(Long sellerNo, int year) {
+		return exportProductRepository.getSalesCountOfYear(sellerNo, year);
+	}
+
+	/**
+	 * 일주일간의 일별 매출 조회 메서드
+	 * @param startDate
+	 * @param endDate
+	 * @param sellerNo
+	 * @return 7일간의 일별 매출 List
+	 */
+	public List<TotalSalesDTO> getTotalSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
+		List<Object[]> totalSales = exportProductRepository.getDailySalesForWeek(startDate, endDate, sellerNo);
+		for (Object[] totalSale : totalSales) {
+			for (Object t : totalSale) {
+				System.out.println(t);
+			}
+			System.out.println("************");
+		}
+		return null;
 	}
 }

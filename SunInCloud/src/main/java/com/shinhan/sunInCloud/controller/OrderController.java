@@ -29,8 +29,8 @@ public class OrderController {
 	public boolean register(@PathVariable Long sellerNo) {
 		return orderService.register(sellerNo);
 	}
-  
-	@GetMapping(value = {"/3pl/order/list", "/seller/order/list", "/seller/import/pre/list"})
+	//발주 목록 조회 url 추가
+	@GetMapping(value = {"/3pl/order/list", "/seller/order/list","/seller/import/pre/list","/seller/import/pre"}) 
 	public OrderListDTO findOrders(Long sellerNo, int pageNum, int countPerPage) {
 		return orderService.findOrders(sellerNo, pageNum - 1, countPerPage);
 	}

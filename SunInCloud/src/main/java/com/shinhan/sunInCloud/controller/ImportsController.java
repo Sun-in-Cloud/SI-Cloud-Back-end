@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.dto.ImportProductListDTO;
+import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.service.SellerImportService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class ImportsController {
 	
 	//발주 등록
 	@PostMapping(value= {"/seller/import/register"})
-	public boolean saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
-		return sellerImportService.saveImport(sellerNo, importProductDTOs);
+	public boolean saveImport(Long sellerNo, Long orderNo, List<ImportProductDTO> importProductDTOs) {
+		return sellerImportService.saveImport(sellerNo, orderNo, importProductDTOs);
 	}
 	
 	
@@ -37,6 +38,11 @@ public class ImportsController {
 	@GetMapping(value= {"/seller/import/pre/{importNo}"})
 	public List<ImportProductDTO> seePreDetail(ImportProductDTO importProductDTO, @PathVariable Long importNo) {
 		return sellerImportService.seePreDetail(importProductDTO, importNo);
+	}
+	//발주 상품 검색
+	@GetMapping(value= {"/seller/import/search"})
+	public Product searchOrder(String productName) {
+		return sellerImportService.searchOrder(productName);
 	}
 	
 }

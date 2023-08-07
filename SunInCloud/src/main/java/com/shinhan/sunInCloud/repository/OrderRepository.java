@@ -1,6 +1,7 @@
 package com.shinhan.sunInCloud.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,4 +14,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	Page<Order> findBySeller_SellerNoOrderByOrderDateDesc(Long sellerNo, Pageable pageable);
 	List<Order> findBySeller_SellerNo(Long sellerNo);
 	Long countBySeller_SellerNo(Long sellerNo);
+	//진경
+	Optional<Order> findById(Long orderNo);
 }

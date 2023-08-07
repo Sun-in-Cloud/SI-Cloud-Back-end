@@ -13,6 +13,7 @@ import com.shinhan.sunInCloud.dto.ImportProductListDTO;
 import com.shinhan.sunInCloud.dto.ImportsDTO;
 import com.shinhan.sunInCloud.dto.OrderDTO;
 import com.shinhan.sunInCloud.dto.OrderListDTO;
+import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.entity.ImportProduct;
 import com.shinhan.sunInCloud.entity.Imports;
 import com.shinhan.sunInCloud.entity.Order;
@@ -70,41 +71,77 @@ public class SellerImportService {
 		 * @param productName
 		 * @return
 		 */
-		public List<Product> searchOrder(String productName) {
+		public Product searchOrder(String productName) {
 			return productRepository.findByProductName(productName);
 			
 		}
-
+		
+		
 		/**
 		 * 2.입고 예정 리스트 등록
 		 * @param sellerNo
 		 * @return true/false
 		 */
-	
-		public boolean saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
-	         // 입고 내역을 저장함 -> 화주사 번호 필요함
-	         Seller seller = sellerService.findById(sellerNo);
-	         Imports imports = importRepository.save(Imports.builder().seller(seller).build());
-	         // 각 입고 상품에 입고 번호 부여 및 입고 내역과 관계 설정
-	         List<ImportProduct> importProducts = new ArrayList<>();
-	         for (ImportProductDTO importProductDTO : importProductDTOs) {
-	            Product product = productService.findByProductNo(importProductDTO.getProductNo());
-	            ImportProduct importProduct = ImportProduct.builder()
-	                  .importAmount(importProductDTO.getImportAmount())
-	                  .imports(imports) // 입고 내역과 관련된 입고 상품 설정
-	                  .product(product)
-	                  .importProductNo(importProductDTO.getImportProductNo())
-	                  .requestAmount(importProductDTO.getRequestAmount())
-	                  .build();
-	            importProducts.add(importProduct);
-	         }
+	//발주 등록을 시키면 발주 내역에도 importNo가 저장되고 입고 내역에도 importNo가 생김
+		   public boolean saveImport(Long sellerNo, Long orderNo, List<ImportProductDTO> importProductDTOs) {
+		         // 입고 내역을 저장함 -> 화주사 번호 필요함
+		         Seller seller = sellerService.findById(sellerNo);
+		         Imports imports = importRepository.save(Imports.builder().seller(seller).build());
 
-	         // 각 입고 상품 저장
-	         importProductRepository.saveAll(importProducts);
+		         // 각 입고 상품에 입고 번호 부여 및 입고 내역과 관계 설정
+		         List<ImportProduct> importProducts = new ArrayList<>();
+		         for (ImportProductDTO importProductDTO : importProductDTOs) {
+		            Product product = productService.findByProductNo(importProductDTO.getProductNo());
+		            ImportProduct importProduct = ImportProduct.builder()
+		                  .importAmount(importProductDTO.getImportAmount())
+		                  .imports(imports) // 입고 내역과 관련된 입고 상품 설정
+		                  .product(product)
+		                  .importProductNo(importProductDTO.getImportProductNo())
+		                  .requestAmount(importProductDTO.getRequestAmount())
+		                  .build();
+		            importProducts.add(importProduct);
+		         }
 
-	         // 입고 내역과 입고 상품이 모두 저장되면 true 반환
-	         return imports.getImportNo() != null;
-	      }
+		         // 각 입고 상품 저장
+		         importProductRepository.saveAll(importProducts);
+		         
+		         // 입고 내역과 입고 상품이 모두 저장되면 true 반환
+		         boolean importSaved = imports.getImportNo() != null;
+		         
+		         //order테이블에 importNo저장
+		         if(importSaved) {
+		        	 orderService.saveImportNoForSeller(orderNo, imports);
+		         }
+		         return importSaved;
+		      }
+//		public boolean saveImport(Long sellerNo, Long orderNo, List<ImportProductDTO> importProductDTOs) {
+//	         // 입고 내역을 저장함 -> 화주사 번호 필요함
+//	         Seller seller = sellerService.findById(sellerNo);
+//	         //발주 번호로 발주내역 조회 ?
+//	         List<OrderProductDTO> orders = orderService.findByOrderNo(orderNo);
+//	         //그 발주 내역에 입고 번호 저장 ?
+//	         
+//	         Imports imports = importRepository.save(Imports.builder().seller(seller).build());
+//	         // 각 입고 상품에 입고 번호 부여 및 입고 내역과 관계 설정
+//	         List<ImportProduct> importProducts = new ArrayList<>();
+//	         for (ImportProductDTO importProductDTO : importProductDTOs) {
+//	            Product product = productService.findByProductNo(importProductDTO.getProductNo());
+//	            ImportProduct importProduct = ImportProduct.builder()
+//	                  .importAmount(importProductDTO.getImportAmount())
+//	                  .imports(imports) // 입고 내역과 관련된 입고 상품 설정
+//	                  .product(product)
+//	                  .importProductNo(importProductDTO.getImportProductNo())
+//	                  .requestAmount(importProductDTO.getRequestAmount())
+//	                  .build();
+//	            importProducts.add(importProduct);
+//	         }
+//
+//	         // 각 입고 상품 저장
+//	         importProductRepository.saveAll(importProducts);
+//
+//	         // 입고 내역과 입고 상품이 모두 저장되면 true 반환
+//	         return imports.getImportNo() != null;
+//	      }
 
 		/**3.입고 예정 리스트
 		 * 3.1 입고 예정 리스트 목록 조회
@@ -148,14 +185,25 @@ public class SellerImportService {
 			}
 			return importsProductDTOs;
 		}
-//		
-//		//4.입고 내역 리스트
-//		//4.1 목록
-//		public List<ImportsDTO> seeList(Long sellerNo, int pageNum, int countPerPage){
-//			Page<Imports> imports=importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
-//			List<ImportsDTO> importDTO =new ArrayList<>();
-//			return importDTO;
-//		}
+//      //4.입고 내역 리스트
+//      //4.1 목록
+      public ImportProductListDTO seeList(Long sellerNo, int pageNum, int countPerPage){
+      //importDate가 null이 아니면 조회 가능 출고 목록 조회와 로직이 같음
+         //입고 번호, 리스트 작성 일자
+         Page<Imports> imports=importRepository.findBySeller_SellerNoAndImportDateIsNotNull(sellerNo, PageRequest.of(pageNum, countPerPage));
+         List<ImportsDTO> importDTO =new ArrayList<>();
+         Long count = orderRepository.countBySeller_SellerNo(sellerNo);
+         Long totalPage = calculatePageCount(count, countPerPage);
+         for(Imports im: imports){
+            importDTO.add(ImportsDTO.builder().importNo(im.getImportNo())
+                  .importDate(im.getImportDate()).build());
+         }
+         ImportProductListDTO productListDTO = ImportProductListDTO.builder()
+               .importproduct(importDTO)
+               .totalPage(totalPage)
+               .build();
+         return productListDTO;  // 수정된 리턴 타입
+      }
 		
 		//4.2 상세
 //		public List<ImportsDTO> seeDetail(Long importNo){
