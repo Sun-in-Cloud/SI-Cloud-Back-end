@@ -16,7 +16,7 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 	Page<ExportProduct> findByExports_ExportNoOrderByProduct_ProductName(String exportNo, Pageable pageable);
 	ExportProduct findByExports_ExportNoAndProduct_ProductNo(String exportNo, String productNo);
 	
-	@Query(value = "SELECT Date(e.export_date) as exportDate, COUNT(DISTINCT export_no) as exportCount "
+	@Query(value = "SELECT Date(e.export_date) as exportDate, sum(amount) as exportCount "
 			+ "FROM export_product e "
 			+ "WHERE export_no in ( "
 			+ "SELECT export_no "
@@ -27,7 +27,7 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "GROUP BY Date(e.export_date)", nativeQuery = true)
 	List<Object[]> getDailySalesCountForWeek(@Param("dates") List<String> dates, @Param("sellerNo") Long sellerNo);
 	
-	@Query(value = "SELECT COUNT(DISTINCT export_no) as exportCount "
+	@Query(value = "SELECT sum(amount) as exportCount "
 			+ "FROM export_product "
 			+ "WHERE export_no in ( "
 			+ "SELECT export_no "
@@ -36,7 +36,7 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "YEAR(export_date) = :year AND MONTH(export_date) =:month", nativeQuery = true)
 	Long getSalesCountOfMonth(@Param("sellerNo") Long sellerNo, @Param("year") int year, @Param("month") int month);
 	
-	@Query(value = "SELECT COUNT(DISTINCT export_no) as exportCount "
+	@Query(value = "SELECT sum(amount) as exportCount "
 			+ "FROM export_product "
 			+ "WHERE export_no in ( "
 			+ "SELECT export_no "

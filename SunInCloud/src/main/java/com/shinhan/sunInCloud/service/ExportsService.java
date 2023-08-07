@@ -205,7 +205,7 @@ public class ExportsService {
 		}
 		for (Object[] count : counts) {
 			String date = String.valueOf(count[0]);
-			BigInteger bi = (BigInteger) count[1];
+			BigDecimal bi = (BigDecimal) count[1];
 			map.put(date, bi.longValue());
 		}
 		for (String date : dates) {
