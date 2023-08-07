@@ -1,6 +1,10 @@
 package com.shinhan.sunInCloud.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.OrderRepository;
@@ -35,6 +39,18 @@ public class SellerService {
 		return sellerRepo.findById(sellerNo).orElse(null);
 	}
 	
-	
+	/**
+	 * 매칭 검색 조건에 맞는 화주사 조회
+	 * @param matchingSellerDTO
+	 * @return
+	 */
+	public List<Seller> findByMatchingCondition(MatchingSellerDTO matchingSellerDTO) {
+		System.out.println("group: " + matchingSellerDTO.getProductGroup());
+		System.out.println("address: " + matchingSellerDTO.getAddress());
+		System.out.println("getExportCnt: " + matchingSellerDTO.getExportCnt());
+		System.out.println("getContractPeriod: " + matchingSellerDTO.getContractPeriod());
+		return sellerRepo.findByMatchingCondition(matchingSellerDTO.getProductGroup(), matchingSellerDTO.getAddress(), 
+				matchingSellerDTO.getExportCnt(), matchingSellerDTO.getContractPeriod());
+	}
 }
 
