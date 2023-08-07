@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
+import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.entity.Matching;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.Warehouse;
@@ -70,7 +71,7 @@ public class MatchingService {
 	 * @param matchingConditionDTO
 	 * @return
 	 */
-	public MatchingSellerListDTO searcingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
+	public MatchingSellerListDTO searchingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
 		List<MatchingDTO> matchingSellerDTOs = new ArrayList<>();
 		Page<Seller> findedSellers = sellerService.findByMatchingCondition(matchingConditionDTO);
 		
