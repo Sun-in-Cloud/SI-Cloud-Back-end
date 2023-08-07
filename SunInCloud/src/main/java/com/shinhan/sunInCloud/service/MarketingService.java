@@ -35,6 +35,7 @@ public class MarketingService {
 				.numberOfSalesYearly(getNumberOfSalesYearly(sellerNo))
 				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
 				.totalSalesMonthly(getTotalSalesMonthly(sellerNo))
+				.totalSalesYearly(getTotalSalesYearly(sellerNo))
 				.build();
 	}
 	
@@ -146,5 +147,21 @@ public class MarketingService {
 					.build());
 		}
 		return totalSalesMonthly;
+	}
+	
+	private List<TotalSalesDTO> getTotalSalesYearly(Long sellerNo) {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		List<TotalSalesDTO> totalSalesYearly = new ArrayList<>();
+		int[] years = {year, year, year - 1};
+		Long[] totalSales = new Long[3];
+		for (int i = 0; i < 3; ++i) {
+			totalSales[i] = exportsService.getTotalSalesYearly(sellerNo, years[i]);
+			totalSalesYearly.add(TotalSalesDTO.builder()
+					.year(years[i])
+					.totalSales(totalSales[i])
+					.build());
+		}
+		return totalSalesYearly;
 	}
 }

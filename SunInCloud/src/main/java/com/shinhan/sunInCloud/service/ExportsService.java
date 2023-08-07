@@ -1,5 +1,6 @@
 package com.shinhan.sunInCloud.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -240,7 +241,7 @@ public class ExportsService {
 		List<TotalSalesDTO> totalSalesWeekly = new ArrayList<>();
 		for (Object[] totalSale : totalSales) {
 			java.sql.Date date = (java.sql.Date) totalSale[0];
-			Long saleAmount = (Long) totalSale[1];
+			Long saleAmount = ((BigDecimal)totalSale[1]).longValue();
 			totalSalesWeekly.add(TotalSalesDTO.builder()
 					.year(date.getYear())
 					.month(date.getMonth() + 1)
@@ -260,5 +261,16 @@ public class ExportsService {
 	 */
 	public Long getTotalSalesMonthly(Long sellerNo, int year, int month) {
 		return exportProductRepository.getMonthlySales(sellerNo, year, month);
+	}
+
+	/**
+	 * 입력으로 주어진 년도에 해당하는 매출 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @param month
+	 * @return 매출
+	 */
+	public Long getTotalSalesYearly(Long sellerNo, int year) {
+		return exportProductRepository.getYearlySales(sellerNo, year);
 	}
 }
