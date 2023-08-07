@@ -47,5 +47,6 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	List<Product> findByNeededToOrder(@Param("sellerNo") Long sellerNo);
 	Product findByProductName(String productName);
 	Long countBySeller_SellerNo(Long sellerNo);
+	boolean existsByProductNameAndSeller_SellerNo(String productName, Long sellerNo);
 	
 }

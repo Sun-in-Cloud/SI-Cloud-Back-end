@@ -48,6 +48,9 @@ public class ProductService {
 	 * @return 상품이 정상적으로 등록되면 true, 아니면 false
 	 */
 	public boolean register(ProductDTO productDTO) {
+		if (productRepository.existsByProductNameAndSeller_SellerNo(productDTO.getProductName(), productDTO.getSellerNo())) {
+			return false;
+		}
 		Seller seller = sellerService.findById(productDTO.getSellerNo());
 		DetailProductGroup detailProductGroup = detailProductGroupService.findByGroupName(productDTO.getProductGroup());
 		Product product = productDTO.toProduct(seller, detailProductGroup);
