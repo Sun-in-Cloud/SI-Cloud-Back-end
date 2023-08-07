@@ -69,9 +69,6 @@ public class ThreePLHistory {
 	private String managerEmail;
 	
 	@NotNull
-	private Boolean isAgreed;
-	
-	@NotNull
 	private Long fee;
 	
 	@NotNull

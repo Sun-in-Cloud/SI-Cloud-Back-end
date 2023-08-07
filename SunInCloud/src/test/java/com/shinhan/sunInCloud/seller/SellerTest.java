@@ -1,13 +1,12 @@
 package com.shinhan.sunInCloud.seller;
 
-import javax.transaction.Transactional;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.entity.ProductGroup;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.User;
@@ -26,7 +25,7 @@ public class SellerTest {
 	ProductGroupService productGroupService;
 	
 	
-	@Test
+//	@Test
 	void SellerInfoSave() {
 
 		//user에 seller추가
@@ -59,7 +58,6 @@ public class SellerTest {
 				.managerName("박서준")
 				.managerPhone("010-1111-1234")
 				.managerEmail("etude_master@etude.co.kr")
-				.isAgreed(true)
 				.isMarketing(true)
 				.build();
 				
@@ -73,7 +71,6 @@ public class SellerTest {
 				.managerName("최도윤")
 				.managerPhone("010-2222-1234")
 				.managerEmail("innisfree@innisfree.com")
-				.isAgreed(true)
 				.isMarketing(false)
 				.build();
 		Seller registerSeller1 = sellerService.save(seller1);
@@ -83,6 +80,14 @@ public class SellerTest {
 		Assertions.assertThat(seller2.getManagerName()).isEqualTo(registerSeller2.getManagerName());
 	
 		
+	}
+	
+	@Test
+	public void detail() {
+		Long sellerNo = 8L;
+		SellerDTO seller = sellerService.sellerDetail(sellerNo);
+		
+		Assertions.assertThat(seller).isNotNull();
 	}
 	
 

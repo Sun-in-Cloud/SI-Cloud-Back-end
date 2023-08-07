@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MatchingSellerListDTO {
 	private int totalPage;
-	private List<MatchingSellerDTO> matchingSellers;
+	private List<MatchingDTO> matchingCompanies;
 }

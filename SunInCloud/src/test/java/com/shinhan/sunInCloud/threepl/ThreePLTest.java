@@ -40,7 +40,6 @@ public class ThreePLTest {
 				.managerEmail("olivezero@email.com")
 				.managerName("김서아")
 				.managerPhone("010-0000-1234")
-				.isAgreed(true)
 				.fee(100000L)
 				.cntTotal(6)
 				.cntContracted(0)

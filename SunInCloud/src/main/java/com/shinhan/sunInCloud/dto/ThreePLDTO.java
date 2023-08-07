@@ -26,7 +26,6 @@ public class ThreePLDTO {
 	private String managerName;
 	private String managerPhone;
 	private String managerEmail;
-	private boolean isAgreed;
 	private long fee;
 	private int cntTotal;
 	private int cntContracted;
@@ -63,7 +62,6 @@ public class ThreePLDTO {
 				.cntTotal(cntTotal)
 				.companyName(companyName)
 				.fee(fee)
-				.isAgreed(isAgreed)
 				.managerEmail(managerEmail)
 				.managerName(managerName)
 				.managerPhone(managerPhone)
