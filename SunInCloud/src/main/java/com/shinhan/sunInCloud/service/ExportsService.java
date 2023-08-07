@@ -182,6 +182,14 @@ public class ExportsService {
 		return amount <= product.getCurrentStock();
 	}
 
+	/**
+	 * 일주일간의 일별 판매 건수 조회 메서드
+	 * 데이터 조회 후 DTO로 변경
+	 * @param startDate
+	 * @param endDate
+	 * @param sellerNo
+	 * @return
+	 */
 	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
 		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(startDate, endDate, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
@@ -198,10 +206,25 @@ public class ExportsService {
 		return numberOfSales;
 	}
 	
+	/**
+	 * 입력으로 주어진 년, 월에 해당하는 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @param month
+	 * @return 판매건수
+	 * 작성자: 손준범
+	 */
 	public Long getNumberOfSalesMonthly(Long sellerNo, int year, int month) {
 		return exportProductRepository.getSalesCountOfMonth(sellerNo, year, month);
 	}
 
+	/**
+	 * 입력으로 주어진 년도에 해당하는 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @return 판매건수
+	 * 작성자: 손준범
+	 */
 	public Long getNumberOfSalesYearly(Long sellerNo, int year) {
 		return exportProductRepository.getSalesCountOfYear(sellerNo, year);
 	}
