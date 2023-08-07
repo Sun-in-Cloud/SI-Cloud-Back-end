@@ -23,6 +23,12 @@ public class AuthService {
 	private final WarehouseService warehouseService;
 	private final ProductGroupService productGroupService;
 	
+	/**
+	 * 3PL 회원가입하는 메서드
+	 * 
+	 * @param threePLDTO
+	 * @return
+	 */
 	@Transactional
 	public boolean register3PL(ThreePLDTO threePLDTO) {
 		List<Warehouse> warehouses = new ArrayList<>();
