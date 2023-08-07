@@ -154,6 +154,7 @@ public class ExportsService {
 					.amount(amount)
 					.invoiceNo(isAvailableForExport(productNo, amount) ? invoiceNo : null)
 					.productNo(invoiceProduct.getProductNo())
+					.productName(invoiceProduct.getProductName())
 					.build();
 			
 			// 재고가 남은 경우에만 ExportProduct 업데이트 

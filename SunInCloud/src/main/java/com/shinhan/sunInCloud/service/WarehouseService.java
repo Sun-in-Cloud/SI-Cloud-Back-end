@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.shinhan.sunInCloud.dto.WarehouseDTO;
 import com.shinhan.sunInCloud.entity.Warehouse;
 import com.shinhan.sunInCloud.repository.WarehouseRepository;
 
@@ -30,18 +29,15 @@ public class WarehouseService {
 	 * @param threePLNo
 	 * @return
 	 */
-	public List<WarehouseDTO> findLeftLocation(Long threePLNo) {
-		List<WarehouseDTO> warehouseDTOs = new ArrayList<>();
+	public List<String> findLeftLocation(Long threePLNo) {
+		List<String> locations = new ArrayList<>();
 		List<Warehouse> warehouses = warehouseRepository.findByWarehouseNotInMatching(threePLNo);
 		
 		for(Warehouse warehouse : warehouses) {
-			WarehouseDTO warehouseDTO = WarehouseDTO.builder()
-					.location(warehouse.getLocation())
-					.build();
-			warehouseDTOs.add(warehouseDTO);
+			locations.add(warehouse.getLocation());
 		}
 		
-		return warehouseDTOs;
+		return locations;
 	}
 	
 	/**

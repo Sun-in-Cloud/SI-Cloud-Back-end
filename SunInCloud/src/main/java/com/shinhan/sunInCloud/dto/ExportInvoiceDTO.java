@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ExportInvoiceDTO {
 	private String productNo;
+	private String productName;
 	private int amount;
 	private String invoiceNo;
 }

@@ -58,7 +58,5 @@ public class SellerHistory {
 	@NotNull
 	private String managerEmail;
 	@NotNull
-	private Boolean isAgreed;
-	@NotNull
 	private Boolean isMarketing;
 }

@@ -6,6 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TimestampUtil {
+	/**
+	 * Timestamp -> yyyy-MM-dd hh:mm (String)
+	 * @param timestamp
+	 * @return
+	 */
 	public static String convertTimestampToString(Timestamp timestamp) {
 		Date date = new Date(timestamp.getTime());
 		SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd hh:mm");
@@ -13,6 +18,11 @@ public class TimestampUtil {
 		return pattern.format(date);
 	}
 	
+	/**
+	 * yyyy-MM-dd (String) -> Timestamp
+	 * @param string
+	 * @return
+	 */
 	public static Timestamp convertStringToDate(String string) {
 		SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
 		Timestamp time = null;
@@ -25,10 +35,26 @@ public class TimestampUtil {
 		return time;
 	}
 	
+	/**
+	 * Timestamp -> yyyy-MM-dd (String)
+	 * @param timestamp
+	 * @return
+	 */
 	public static String convertTimestampToDate(Timestamp timestamp) {
 		Date date = new Date(timestamp.getTime());
 		SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
 		
 		return pattern.format(date);
+	}
+	
+	/**
+	 * 현재시각 -> 패턴값
+	 * @return
+	 */
+	public static String getPattern(String pattern) {
+		Date date = new Date();
+		SimpleDateFormat result = new SimpleDateFormat(pattern);
+		
+		return result.format(date);
 	}
 }
