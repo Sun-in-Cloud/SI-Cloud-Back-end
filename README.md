@@ -14,7 +14,6 @@
 ## Communication
 <img alt="notion" src ="https://img.shields.io/badge/notion-000000.svg?&style=for-the-badge&logo=notion&logoColor=white"/> <img alt="slack" src ="https://img.shields.io/badge/slack-4A154B.svg?&style=for-the-badge&logo=slack&logoColor=white"/>
 <!-- * <img alt="" src =""/> -->
-![노성은]()
 
 # 팀 소개
 |[손준범](https://github.com/junbeom-Son)|[오은빈](https://github.com/svbean77)|[이진경](https://github.com/jingyeong0604)|[노성은](https://github.com/seonggg)|[양유진](https://github.com/YYJ-1229)|[이솔](https://github.com/leessol)|
