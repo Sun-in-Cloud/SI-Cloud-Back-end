@@ -42,7 +42,4 @@ public class Order {
 	@ManyToOne
 	@JoinColumn(name="import_no")
 	private Imports imports;
-	
-	@NotNull
-	private Timestamp deletedDate;
 }

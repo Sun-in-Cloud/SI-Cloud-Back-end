@@ -1,6 +1,7 @@
 package com.shinhan.sunInCloud.entity;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.ColumnDefault;
+import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
+import com.shinhan.sunInCloud.dto.ExportProductDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,4 +56,33 @@ public class ExportProduct {
 	private Integer sellingPrice;
 
 	private String invoiceNo;
+	
+	/**
+	 * ExportProduct -> ExportProductDTO
+	 * @return
+	 */
+	public ExportProductDTO toExportProductDTO() {
+		return ExportProductDTO
+				.builder()
+				.amount(amount)
+				.exportDate(exportDate)
+				.invoiceNo(invoiceNo)
+				.orderStatus(orderStatus)
+				.productName(product.getProductName())
+				.productNo(product.getProductNo())
+				.sellingPrice(sellingPrice)
+				.localExportDate(exportDate == null ? null : TimestampUtil.convertTimestampToString(exportDate))
+				.build();
+	}
+	
+	/**
+	 * entity update하는 메서드
+	 * @param exportInvoiceDTO
+	 */
+	public void updateExportProductByExportInvoiceDTO(ExportInvoiceDTO exportInvoiceDTO) {
+		invoiceNo = exportInvoiceDTO.getInvoiceNo();
+		exportDate = new Timestamp(new Date().getTime());
+		orderStatus = "출고완료";
+	}
+	
 }

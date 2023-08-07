@@ -8,6 +8,9 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,4 +56,14 @@ public class Seller {
 	private Boolean isAgreed;
 	@NotNull
 	private Boolean isMarketing;
+	
+	public MatchingSellerDTO toMatchingSellerDTO(Matching matching) {
+		return MatchingSellerDTO
+				.builder()
+				.productGroup(productGroup.getGroupName())
+				.companyName(companyName)
+				.endDate(matching == null ? null : TimestampUtil.convertTimestampToDate(matching.getEndDate()))
+				.sellerNo(sellerNo)
+				.build();
+	}
 }

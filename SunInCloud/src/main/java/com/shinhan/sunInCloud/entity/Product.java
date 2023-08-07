@@ -6,6 +6,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.shinhan.sunInCloud.dto.ProductDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,4 +54,21 @@ public class Product {
 
 	@NotNull
 	private Boolean isActive;
+	
+	public void updateProductByProductDTO(ProductDTO productDTO) {
+		productName = productDTO.getProductName();
+		safetyStock = productDTO.getSafetyStock();
+		currentStock = productDTO.getCurrentStock();
+		enoughStock = productDTO.getEnoughStock();
+		importPrice = productDTO.getImportPrice();
+		consumerPrice = productDTO.getConsumerPrice();
+	}
+	
+	public ProductDTO toProductDTO() {
+		return ProductDTO.builder().productNo(productNo)
+				.productGroup(detailProductGroup.getGroupName())
+				.productName(productName).safetyStock(safetyStock)
+				.currentStock(currentStock).enoughStock(enoughStock)
+				.importPrice(importPrice).consumerPrice(consumerPrice).build();
+	}
 }

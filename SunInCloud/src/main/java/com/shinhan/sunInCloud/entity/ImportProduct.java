@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.shinhan.sunInCloud.dto.ImportProductDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,8 +43,29 @@ public class ImportProduct {
 	@NotNull
 	private Integer requestAmount;
 	
-	// Ã³À½ default·Î 0À» ÁÙ °ÍÀÎÁö nullÀ» ÁÙ °ÍÀÎÁö?
-	// °ªÀÌ ±âº»°ªÀ¸·Î 0ÀÌ µé¾î°¡Áö ¾ÊÀ¸¸é º¯°æÇØÁÜ
+	// Ã³ï¿½ï¿½ defaultï¿½ï¿½ 0ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½âº»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@ColumnDefault("0")
 	private Integer importAmount;
+	
+	
+	public ImportProductDTO toImportProductDTO() {
+		return ImportProductDTO.builder()
+				.importAmount(importAmount)
+				.importNo(imports.getImportNo())
+				.importProductNo(importProductNo)
+				.productNo(product.getProductNo())
+				.requestAmount(requestAmount)
+				.build();
+		
+	}
 }
+
+
+
+
+
+
+
+
+
