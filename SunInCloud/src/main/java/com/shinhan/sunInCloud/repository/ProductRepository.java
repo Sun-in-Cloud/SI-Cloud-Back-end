@@ -45,7 +45,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 			+ ") "
 			+ ") and is_active = 1 and current_stock < safety_stock", nativeQuery = true)
 	List<Product> findByNeededToOrder(@Param("sellerNo") Long sellerNo);
-	Product findByProductName(String productName);
+	List<Product> findByProductNameContaining(String productName);
 	Long countBySeller_SellerNo(Long sellerNo);
 	
 }

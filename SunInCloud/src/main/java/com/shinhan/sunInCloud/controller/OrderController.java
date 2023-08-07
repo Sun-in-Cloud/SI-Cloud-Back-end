@@ -35,7 +35,7 @@ public class OrderController {
 		return orderService.findOrders(sellerNo, pageNum - 1, countPerPage);
 	}
 	
-	@GetMapping(value = {"/3pl/order/{orderNo}", "/seller/order/{orderNo}","/seller/import/pre/{orderNo}"})
+	@GetMapping(value = {"/3pl/order/{orderNo}", "/seller/order/{orderNo}","/seller/import/pre/{orderNo}","/seller/import/order/detail/{orderNo}"})
 	public List<OrderProductDTO> findByOrderNo(@PathVariable Long orderNo) {
 		return orderService.findByOrderNo(orderNo);
 	}
