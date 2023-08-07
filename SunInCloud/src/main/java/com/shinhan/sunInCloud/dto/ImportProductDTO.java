@@ -26,6 +26,7 @@ public class ImportProductDTO {
 	private Long importNo;
 	private int requestAmount;
 	private int importAmount;
+	private String productName;
 	
 	public ImportProduct toImportsProduct(Imports imports, Product product) {
 		return ImportProduct.builder()
