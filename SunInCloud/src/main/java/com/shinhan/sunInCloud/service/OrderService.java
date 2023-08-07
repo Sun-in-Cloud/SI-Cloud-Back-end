@@ -2,6 +2,7 @@ package com.shinhan.sunInCloud.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,7 @@ import com.shinhan.sunInCloud.dto.OrderDTO;
 import com.shinhan.sunInCloud.dto.OrderListDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.dto.OrderProductListDTO;
+import com.shinhan.sunInCloud.entity.Imports;
 import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.entity.OrderProduct;
 import com.shinhan.sunInCloud.entity.Product;
@@ -141,5 +143,15 @@ public class OrderService {
 			++totalPage;
 		}
 		return totalPage;
+	}
+	
+	//orderNo 발주번호를 가지고 있는 주문에 importNo입고번호를 저장함
+	public void saveImportNoForSeller(Long orderNo, Imports imports) {
+		Optional<Order> orders = orderRepository.findById(orderNo);
+		
+			Order order = orders.get();
+			order.setImports(imports);
+			orderRepository.save(order);
+		
 	}
 }
