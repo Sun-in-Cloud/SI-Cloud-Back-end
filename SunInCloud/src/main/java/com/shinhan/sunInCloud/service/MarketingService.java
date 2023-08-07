@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.StatisticsDTO;
+import com.shinhan.sunInCloud.dto.TotalSalesDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,23 +26,38 @@ public class MarketingService {
 	 * 2. 이번달, 지난달, 작년 동월 기록(판매건수, 매출)
 	 * 3. 작년, 올해 기록(판매건수, 매출)
 	 * @param sellerNo
+	 * 작성자: 손준범
 	 */
 	public StatisticsDTO getStatisticsBySeller(Long sellerNo) {
 		return StatisticsDTO.builder()
 				.numberOfSalesWeekly(getNumberOfSalesWeekly(sellerNo))
 				.numberOfSalesMonthly(getNumberOfSalesMonthly(sellerNo))
+				.numberOfSalesYearly(getNumberOfSalesYearly(sellerNo))
+				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
 				.build();
 	}
 	
+	/**
+	 * 일주일간의 일별 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @return 7일간의 일별 판매 건수 List
+	 * 작성자: 손준범
+	 */
 	private List<NumberOfSalesDTO> getNumberOfSalesWeekly(Long sellerNo) {
 		Date today = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(today);
 		calendar.add(Calendar.DAY_OF_MONTH, -6);
-		Date startDay = calendar.getTime();
-		return exportsService.getNumberOfSales(startDay, today, sellerNo);
+		Date startDate = calendar.getTime();
+		return exportsService.getNumberOfSalesWeekly(startDate, today, sellerNo);
 	}
 	
+	/**
+	 * 당월, 전월, 작년 동월 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @return 당월, 전월, 작년 동월 판매 건수 List
+	 * 작성자: 손준범
+	 */
 	private List<NumberOfSalesDTO> getNumberOfSalesMonthly(Long sellerNo) {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
@@ -50,13 +66,12 @@ public class MarketingService {
 		int[] years = {year, year, year - 1};
 		int[] months = {month + 1, month, month + 1};
 		Long[] counts = {0L, 0L, 0L};
-		if (month == 1) {
+		if (month == 0) { // 당월이 1월인 경우, 전월을 전년 12월로 처리
 			--years[1];
-			months[1] += 12;
+			months[1] = 12;
 		}
-		counts[0] = exportsService.getNumberOfSalesMonthly(sellerNo);
 		for (int i = 0; i < 3; ++i) {
-			System.out.println(new StringBuilder().append(years[i]).append(months[i]).append(counts[i]).toString());
+			counts[i] = exportsService.getNumberOfSalesMonthly(sellerNo, years[i], months[i]);
 			numberOfSalesMonthly.add(NumberOfSalesDTO.builder()
 					.year(years[i])
 					.month(months[i])
@@ -64,5 +79,42 @@ public class MarketingService {
 					.build());
 		}
 		return numberOfSalesMonthly;
+	}
+	
+	/**
+	 * 금년, 작년 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @return 금년, 작년 판매 건수 List
+	 * 작성자: 손준범
+	 */
+	private List<NumberOfSalesDTO> getNumberOfSalesYearly(Long sellerNo) {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		List<NumberOfSalesDTO> numberOfSalesYearly = new ArrayList<>();
+		int[] years = {year, year - 1};
+		Long[] counts = new Long[2];
+		for (int i = 0; i < 2; ++i) {
+			counts[i] = exportsService.getNumberOfSalesYearly(sellerNo, years[i]);
+			numberOfSalesYearly.add(NumberOfSalesDTO.builder()
+					.year(years[i])
+					.numberOfSales(counts[i])
+					.build());
+		}
+		return numberOfSalesYearly;
+	}
+	
+	/**
+	 * 일주일간의 일별 매출 조회 메서드
+	 * @param sellerNo
+	 * @return 7일간의 일별 매출 List
+	 * 작성자: 손준범
+	 */
+	private List<TotalSalesDTO> getTotalSalesWeekly(Long sellerNo) {
+		Date today = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(today);
+		calendar.add(Calendar.DAY_OF_MONTH, -6);
+		Date startDate = calendar.getTime();
+		return exportsService.getTotalSalesWeekly(startDate, today, sellerNo);
 	}
 }
