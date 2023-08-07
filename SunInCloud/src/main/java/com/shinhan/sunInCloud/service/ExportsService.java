@@ -1,9 +1,11 @@
 package com.shinhan.sunInCloud.service;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -184,23 +186,27 @@ public class ExportsService {
 
 	/**
 	 * 일주일간의 일별 판매 건수 조회 메서드
-	 * 데이터 조회 후 DTO로 변경
+	 * Map 사용
+	 * 1. 각 일자별 카운트를 0으로 초기화 한
+	 * 2. 데이터가 있는 날짜만 개수 변경
+	 * 3. 각 개수를 DTO로 변경
 	 * @param startDate
 	 * @param endDate
 	 * @param sellerNo
-	 * @return
+	 * @return NumberOfSalesDTO List
+	 * 작성자: 손준범
 	 */
-	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
-		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(startDate, endDate, sellerNo);
+	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(List<String> dates, Long sellerNo) {
+		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(dates, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
-		for (Object[] count : counts) {
-			java.sql.Date date = (java.sql.Date) count[0];
-			BigInteger bi = (BigInteger) count[1];
+		Map<String, Long> map = aggregateWeeklyData(dates, counts);
+		for (String date : dates) {
+			String[] arr = date.split("-");
 			numberOfSales.add(NumberOfSalesDTO.builder()
-					.year(date.getYear() + 1900)
-					.month(date.getMonth() + 1)
-					.day(date.getDate())
-					.numberOfSales(bi.longValue())
+					.year(Integer.parseInt(arr[0]))
+					.month(Integer.parseInt(arr[1]))
+					.day(Integer.parseInt(arr[2]))
+					.numberOfSales(map.get(date))
 					.build());
 		}
 		return numberOfSales;
@@ -236,14 +242,52 @@ public class ExportsService {
 	 * @param sellerNo
 	 * @return 7일간의 일별 매출 List
 	 */
-	public List<TotalSalesDTO> getTotalSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
-		List<Object[]> totalSales = exportProductRepository.getDailySalesForWeek(startDate, endDate, sellerNo);
-		for (Object[] totalSale : totalSales) {
-			for (Object t : totalSale) {
-				System.out.println(t);
-			}
-			System.out.println("************");
+	public List<TotalSalesDTO> getTotalSalesWeekly(List<String> dates, Long sellerNo) {
+		List<Object[]> totalSales = exportProductRepository.getDailySalesForWeek(dates, sellerNo);
+		List<TotalSalesDTO> totalSalesWeekly = new ArrayList<>();
+		Map<String, Long> map = aggregateWeeklyData(dates, totalSales);
+		for (String date : dates) {
+			String[] arr = date.split("-");
+			totalSalesWeekly.add(TotalSalesDTO.builder()
+					.year(Integer.parseInt(arr[0]))
+					.month(Integer.parseInt(arr[1]))
+					.day(Integer.parseInt(arr[2]))
+					.totalSales(map.get(date))
+					.build());
 		}
-		return null;
+		return totalSalesWeekly;
+	}
+
+	/**
+	 * 입력으로 주어진 년, 월에 해당하는 매출 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @param month
+	 * @return 매출
+	 */
+	public Long getTotalSalesMonthly(Long sellerNo, int year, int month) {
+		return exportProductRepository.getMonthlySales(sellerNo, year, month);
+	}
+
+	/**
+	 * 입력으로 주어진 년도에 해당하는 매출 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @param month
+	 * @return 매출
+	 */
+	public Long getTotalSalesYearly(Long sellerNo, int year) {
+		return exportProductRepository.getYearlySales(sellerNo, year);
+	}
+	
+	private Map<String, Long> aggregateWeeklyData(List<String> dates, List<Object[]> data) {
+		Map<String, Long> map = new HashMap<>();
+		for (String date : dates) {
+			map.put(date, 0L);
+		}
+		for (Object[] oneData : data) {
+			map.put(String.valueOf(oneData[0]), ((BigDecimal)oneData[1]).longValue());
+		}
+		return map;
 	}
 }

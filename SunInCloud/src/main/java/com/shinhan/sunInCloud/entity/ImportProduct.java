@@ -45,8 +45,8 @@ public class ImportProduct {
 	
 	// ó�� default�� 0�� �� ������ null�� �� ������?
 	// ���� �⺻������ 0�� ���� ������ ��������
-	@ColumnDefault("0")
-	private Integer importAmount;
+	@Builder.Default
+	private Integer importAmount=0;
 	
 	
 	public ImportProductDTO toImportProductDTO() {

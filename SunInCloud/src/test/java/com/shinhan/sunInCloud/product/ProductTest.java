@@ -3,6 +3,8 @@ package com.shinhan.sunInCloud.product;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,5 +110,15 @@ public class ProductTest {
 		} else {
 			Assertions.assertThat(product.getIsActive()).isTrue();
 		}
+	}
+	
+	@Test
+	@Transactional
+	void registerAlreadyRegisteredOne() {
+		String productNo = "2398";
+		Long sellerNo = 8L;
+		String productName = "룩엣마이아이즈 샤이닝베이지";
+		boolean registered = productService.register(ProductDTO.builder().productNo(productNo).sellerNo(sellerNo).productName(productName).build());
+		Assertions.assertThat(registered).isFalse();
 	}
 }

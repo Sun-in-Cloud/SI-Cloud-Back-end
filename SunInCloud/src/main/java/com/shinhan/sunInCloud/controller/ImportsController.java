@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.dto.ImportProductListDTO;
+import com.shinhan.sunInCloud.dto.ImportProductPostDTO;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.service.SellerImportService;
 
@@ -23,25 +24,19 @@ public class ImportsController {
 	
 	//발주 등록
 	@PostMapping(value= {"/seller/import/register"})
-	public boolean saveImport(Long sellerNo, Long orderNo, List<ImportProductDTO> importProductDTOs) {
-		return sellerImportService.saveImport(sellerNo, orderNo, importProductDTOs);
+	public boolean saveImport(@RequestBody ImportProductPostDTO dto) {
+		return sellerImportService.saveImport(dto.getSellerNo(), dto.getOrderNo(), dto.getDtos());
 	}
 	
-	
-	//입고예정 리스트 목록 조회
-	@GetMapping(value= {"/seller/import/pre/list"})
-	public ImportProductListDTO seePreList (Long sellerNo, int pageNumber, int countPerPage){
-		return sellerImportService.seePreList(sellerNo, pageNumber, countPerPage);
-	}
 	
 	//입고예정 리스트 상세 조회
-	@GetMapping(value= {"/seller/import/pre/{importNo}"})
-	public List<ImportProductDTO> seePreDetail(ImportProductDTO importProductDTO, @PathVariable Long importNo) {
+	@GetMapping(value= {"/seller/import/pre/detail/{importNo}"})
+	public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, @PathVariable Long importNo) {
 		return sellerImportService.seePreDetail(importProductDTO, importNo);
 	}
 	//발주 상품 검색
 	@GetMapping(value= {"/seller/import/search"})
-	public Product searchOrder(String productName) {
+	public List<Product> searchOrder(String productName) {
 		return sellerImportService.searchOrder(productName);
 	}
 	

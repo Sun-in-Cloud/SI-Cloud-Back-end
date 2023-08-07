@@ -8,11 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
-	Page<Product> findAllBySeller_SellerNo(Long sellerNo, Pageable pageable);
+	Page<Product> findAllBySeller_SellerNoAndIsActive(Long sellerNo, Pageable pageable, Boolean isActive);
 	@Query(value = "SELECT * FROM PRODUCT WHERE seller_no = :sellerNo and "
 			+ "product_no not in (SELECT product_no "
 			+ "from order_product "
@@ -45,7 +44,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 			+ ") "
 			+ ") and is_active = 1 and current_stock < safety_stock", nativeQuery = true)
 	List<Product> findByNeededToOrder(@Param("sellerNo") Long sellerNo);
-	Product findByProductName(String productName);
+	List<Product> findByProductNameContaining(String productName);
 	Long countBySeller_SellerNo(Long sellerNo);
+	boolean existsByProductNameAndSeller_SellerNo(String productName, Long sellerNo);
 	
 }

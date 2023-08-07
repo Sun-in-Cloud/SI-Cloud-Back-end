@@ -14,9 +14,7 @@ import com.shinhan.sunInCloud.dto.ProductDTO;
 import com.shinhan.sunInCloud.dto.ProductListDTO;
 import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
-import com.shinhan.sunInCloud.entity.ProductHistory;
 import com.shinhan.sunInCloud.entity.Seller;
-import com.shinhan.sunInCloud.entity.UpdatedType;
 import com.shinhan.sunInCloud.repository.ProductHistoryRepository;
 import com.shinhan.sunInCloud.repository.ProductRepository;
 
@@ -48,6 +46,9 @@ public class ProductService {
 	 * @return 상품이 정상적으로 등록되면 true, 아니면 false
 	 */
 	public boolean register(ProductDTO productDTO) {
+		if (productRepository.existsByProductNameAndSeller_SellerNo(productDTO.getProductName(), productDTO.getSellerNo())) {
+			return false;
+		}
 		Seller seller = sellerService.findById(productDTO.getSellerNo());
 		DetailProductGroup detailProductGroup = detailProductGroupService.findByGroupName(productDTO.getProductGroup());
 		Product product = productDTO.toProduct(seller, detailProductGroup);
@@ -76,7 +77,7 @@ public class ProductService {
 	 */
 	public ProductListDTO findProductBySellerNo(Long sellerNo, int pageNumber, int pageSize) {
 		List<ProductDTO> productDTOs = new ArrayList<>();
-		Page<Product> products = productRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, pageSize));
+		Page<Product> products = productRepository.findAllBySeller_SellerNoAndIsActive(sellerNo, PageRequest.of(pageNumber, pageSize), true);
 		for (Product product : products) {
 			productDTOs.add(ProductDTO.builder().productNo(product.getProductNo())
 					.productGroup(product.getDetailProductGroup().getGroupName())
