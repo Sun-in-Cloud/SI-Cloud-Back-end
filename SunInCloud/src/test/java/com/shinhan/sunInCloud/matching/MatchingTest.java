@@ -7,8 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
-import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
+import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
 import com.shinhan.sunInCloud.dto.WarehouseDTO;
 import com.shinhan.sunInCloud.service.MatchingService;
 import com.shinhan.sunInCloud.service.SellerService;
@@ -52,18 +53,20 @@ public class MatchingTest {
 	public void searchSeller() {
 		String productGroup = "화장품";
 		String address = "서울";
-		int exportCnt = 0;
-		int contractPeriod = 0;
+		int numValue = 1;
+		int contractPeriod = 2;
 		
-		MatchingSellerDTO condition = MatchingSellerDTO
+		MatchingConditionDTO condition = MatchingConditionDTO
 				.builder()
 				.productGroup(productGroup)
+				.numValue(numValue)
 				.address(address)
-				.exportCnt(exportCnt)
 				.contractPeriod(contractPeriod)
+				.pageNum(1)
+				.countPerPage(10)
 				.build();
 		
-		List<MatchingSellerDTO> sellers = matchingService.searcingByCondition(condition);
+		MatchingSellerListDTO sellers = matchingService.searcingSellerByCondition(condition);
 		System.out.println(sellers);
 	}
 }

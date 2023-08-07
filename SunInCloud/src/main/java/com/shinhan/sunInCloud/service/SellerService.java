@@ -1,10 +1,10 @@
 package com.shinhan.sunInCloud.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
+import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.OrderRepository;
@@ -44,13 +44,10 @@ public class SellerService {
 	 * @param matchingSellerDTO
 	 * @return
 	 */
-	public List<Seller> findByMatchingCondition(MatchingSellerDTO matchingSellerDTO) {
-		System.out.println("group: " + matchingSellerDTO.getProductGroup());
-		System.out.println("address: " + matchingSellerDTO.getAddress());
-		System.out.println("getExportCnt: " + matchingSellerDTO.getExportCnt());
-		System.out.println("getContractPeriod: " + matchingSellerDTO.getContractPeriod());
-		return sellerRepo.findByMatchingCondition(matchingSellerDTO.getProductGroup(), matchingSellerDTO.getAddress(), 
-				matchingSellerDTO.getExportCnt(), matchingSellerDTO.getContractPeriod());
+	public Page<Seller> findByMatchingCondition(MatchingConditionDTO matchingConditionDTO) {
+		return sellerRepo.findByMatchingCondition(matchingConditionDTO.getProductGroup(), matchingConditionDTO.getAddress(), 
+				matchingConditionDTO.getNumValue(), matchingConditionDTO.getContractPeriod(), 
+				PageRequest.of(matchingConditionDTO.getPageNum() - 1, matchingConditionDTO.getCountPerPage()));
 	}
 }
 

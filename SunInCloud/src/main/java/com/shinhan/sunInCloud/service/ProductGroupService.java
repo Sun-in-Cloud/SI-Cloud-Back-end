@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.shinhan.sunInCloud.dto.ProductGroupDTO;
 import com.shinhan.sunInCloud.entity.ProductGroup;
 import com.shinhan.sunInCloud.repository.ProductGroupRepository;
 
@@ -39,14 +38,13 @@ public class ProductGroupService {
 	 * 모든 상품군 리스트 조회
 	 * @return
 	 */
-	public List<ProductGroupDTO> findAll() {
-		List<ProductGroupDTO> productGroupDTOs = new ArrayList<>();
+	public List<String> findAll() {
+		List<String> productGroupNames = new ArrayList<>();
 		List<ProductGroup> productGroups = productGroupRepository.findAll();
 		
 		for(ProductGroup productGroup : productGroups) {
-			ProductGroupDTO productGroupDTO = ProductGroupDTO.builder().groupName(productGroup.getGroupName()).build();
-			productGroupDTOs.add(productGroupDTO);
+			productGroupNames.add(productGroup.getGroupName());
 		}
-		return productGroupDTOs;
+		return productGroupNames;
 	}
 }

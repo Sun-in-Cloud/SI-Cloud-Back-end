@@ -8,4 +8,5 @@ import com.shinhan.sunInCloud.entity.Matching;
 
 public interface MatchingRepository extends JpaRepository<Matching, Long>{
 	public List<Matching> findByWarehouse_ThreePL_ThreePLNo(Long threePLNo);
+	public Matching findBySeller_SellerNo(Long sellerNo);
 }
