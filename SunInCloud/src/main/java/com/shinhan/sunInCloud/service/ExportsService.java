@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -184,23 +186,35 @@ public class ExportsService {
 
 	/**
 	 * 일주일간의 일별 판매 건수 조회 메서드
-	 * 데이터 조회 후 DTO로 변경
+	 * Map 사용
+	 * 1. 각 일자별 카운트를 0으로 초기화 한
+	 * 2. 데이터가 있는 날짜만 개수 변경
+	 * 3. 각 개수를 DTO로 변경
 	 * @param startDate
 	 * @param endDate
 	 * @param sellerNo
-	 * @return
+	 * @return NumberOfSalesDTO List
+	 * 작성자: 손준범
 	 */
 	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(List<String> dates, Long sellerNo) {
 		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(dates, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
+		Map<String, Long> map = new HashMap<>();
+		for (String date : dates) {
+			map.put(date, 0L);
+		}
 		for (Object[] count : counts) {
-			java.sql.Date date = (java.sql.Date) count[0];
+			String date = String.valueOf(count[0]);
 			BigInteger bi = (BigInteger) count[1];
+			map.put(date, bi.longValue());
+		}
+		for (String date : dates) {
+			String[] arr = date.split("-");
 			numberOfSales.add(NumberOfSalesDTO.builder()
-					.year(date.getYear() + 1900)
-					.month(date.getMonth() + 1)
-					.day(date.getDate())
-					.numberOfSales(bi.longValue())
+					.year(Integer.parseInt(arr[0]))
+					.month(Integer.parseInt(arr[1]))
+					.day(Integer.parseInt(arr[2]))
+					.numberOfSales(map.get(date))
 					.build());
 		}
 		return numberOfSales;
