@@ -50,13 +50,12 @@ public class MarketingService {
 		int[] years = {year, year, year - 1};
 		int[] months = {month + 1, month, month + 1};
 		Long[] counts = {0L, 0L, 0L};
-		if (month == 1) {
+		if (month == 0) { // 당월이 1월인 경우, 전월을 전년 12월로 처리
 			--years[1];
-			months[1] += 12;
+			months[1] = 12;
 		}
-		counts[0] = exportsService.getNumberOfSalesMonthly(sellerNo);
 		for (int i = 0; i < 3; ++i) {
-			System.out.println(new StringBuilder().append(years[i]).append(months[i]).append(counts[i]).toString());
+			counts[i] = exportsService.getNumberOfSalesMonthly(sellerNo, years[i], months[i]);
 			numberOfSalesMonthly.add(NumberOfSalesDTO.builder()
 					.year(years[i])
 					.month(months[i])

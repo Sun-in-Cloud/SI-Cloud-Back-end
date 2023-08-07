@@ -198,7 +198,7 @@ public class ExportsService {
 		return numberOfSales;
 	}
 	
-	public Long getNumberOfSalesMonthly(Long sellerNo) {
-		return exportProductRepository.getSalesCountOfThisMonth(sellerNo);
+	public Long getNumberOfSalesMonthly(Long sellerNo, int year, int month) {
+		return exportProductRepository.getSalesCountOfMonth(sellerNo, year, month);
 	}
 }
