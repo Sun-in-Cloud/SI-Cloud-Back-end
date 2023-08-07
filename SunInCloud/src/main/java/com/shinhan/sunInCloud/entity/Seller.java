@@ -8,7 +8,8 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
+import com.shinhan.sunInCloud.dto.MatchingDTO;
+import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
@@ -53,17 +54,45 @@ public class Seller {
 	@NotNull
 	private String managerEmail;
 	@NotNull
-	private Boolean isAgreed;
-	@NotNull
 	private Boolean isMarketing;
 	
-	public MatchingSellerDTO toMatchingSellerDTO(Matching matching) {
-		return MatchingSellerDTO
+	/**
+	 * Seller -> MatchingDTO
+	 * 매칭 검색시 보이는 정보
+	 * @param matching
+	 * @return
+	 */
+	public MatchingDTO toMatchingSellerDTO(Matching matching) {
+		return MatchingDTO
 				.builder()
 				.productGroup(productGroup.getGroupName())
 				.companyName(companyName)
 				.endDate(matching == null ? null : TimestampUtil.convertTimestampToDate(matching.getEndDate()))
 				.sellerNo(sellerNo)
+				.build();
+	}
+	
+	/**
+	 * Seller -> SellerDTO
+	 * 상세 조회
+	 * @return
+	 */
+	public SellerDTO toSellerDTO(MatchingDTO matchingDTO, long sales, long exportCnt) {
+		return SellerDTO
+				.builder()
+				.sellerNo(sellerNo)
+				.productGroupName(productGroup.getGroupName())
+				.businessNo(businessNo)
+				.companyName(companyName)
+				.ceoName(ceoName)
+				.address(address)
+				.managerEmail(managerEmail)
+				.managerName(managerName)
+				.managerPhone(managerPhone)
+				.isMarketing(isMarketing)
+				.sales(sales)
+				.exportCnt(exportCnt)
+				.matching(matchingDTO)
 				.build();
 	}
 }

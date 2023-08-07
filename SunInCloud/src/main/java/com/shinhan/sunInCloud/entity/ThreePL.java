@@ -52,8 +52,6 @@ public class ThreePL {
 	@NotNull
 	private String managerEmail;
 	@NotNull
-	private Boolean isAgreed;
-	@NotNull
 	private Long fee;
 	@NotNull
 	private Integer cntTotal;

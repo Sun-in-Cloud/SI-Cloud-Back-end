@@ -23,7 +23,6 @@ public class AuthTest {
 				.cntTotal(5)
 				.companyName("신한DS")
 				.fee(50000L)
-				.isAgreed(true)
 				.loginId("shinhanDS")
 				.loginPassword("1234")
 				.managerEmail("shihanDS@gmail.com")

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
-import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
 import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
+import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.entity.Matching;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.Warehouse;
@@ -32,6 +32,15 @@ public class MatchingService {
 	 */
 	public List<Matching> findByThreePLNo(Long threePLNo) {
 		return matchingRepository.findByWarehouse_ThreePL_ThreePLNo(threePLNo);
+	}
+	
+	/**
+	 * 화주사 번호로 매칭 정보 찾는 메서드
+	 * @param sellerNo
+	 * @return
+	 */
+	public Matching findBySellerNo(Long sellerNo) {
+		return matchingRepository.findBySeller_SellerNo(sellerNo);
 	}
 	
 	/**
@@ -62,19 +71,19 @@ public class MatchingService {
 	 * @param matchingConditionDTO
 	 * @return
 	 */
-	public MatchingSellerListDTO searcingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
-		List<MatchingSellerDTO> matchingSellerDTOs = new ArrayList<>();
+	public MatchingSellerListDTO searchingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
+		List<MatchingDTO> matchingSellerDTOs = new ArrayList<>();
 		Page<Seller> findedSellers = sellerService.findByMatchingCondition(matchingConditionDTO);
 		
 		for(Seller findedSeller : findedSellers) {
-			MatchingSellerDTO matchingSeller = findedSeller.toMatchingSellerDTO(matchingRepository.findBySeller_SellerNo(findedSeller.getSellerNo()));
+			MatchingDTO matchingSeller = findedSeller.toMatchingSellerDTO(matchingRepository.findBySeller_SellerNo(findedSeller.getSellerNo()));
 			matchingSellerDTOs.add(matchingSeller);
 		}
 		
 		MatchingSellerListDTO matchingSellerListDTO = MatchingSellerListDTO
 				.builder()
 				.totalPage(findedSellers.getTotalPages())
-				.matchingSellers(matchingSellerDTOs)
+				.matchingCompanies(matchingSellerDTOs)
 				.build();
 		
 		return matchingSellerListDTO;
