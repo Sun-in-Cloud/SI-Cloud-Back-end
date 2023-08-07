@@ -20,8 +20,8 @@ public class MarketingTest {
 	@Test
 	void findStatisticsBySeller() {
 		StatisticsDTO statistics = marketingService.getStatisticsBySeller(8L);
-		List<NumberOfSalesDTO> numberOfSalesMonthly = statistics.getNumberOfSalesMonthly();
-		getNumberOfSalesMonthlyTest(numberOfSalesMonthly);
+		getNumberOfSalesMonthlyTest(statistics.getNumberOfSalesMonthly());
+		getNumberOfSalesYearlyTest(statistics.getNumberOfSalesYearly());
 	}
 	
 	void getNumberOfSalesMonthlyTest(List<NumberOfSalesDTO> numberOfSalesMonthly) {
@@ -35,6 +35,18 @@ public class MarketingTest {
 				} else { // 전월
 					Assertions.assertThat(count).isEqualTo(0L);
 				}
+			} else {
+				Assertions.assertThat(count).isEqualTo(0L);
+			}
+		}
+	}
+	
+	void getNumberOfSalesYearlyTest(List<NumberOfSalesDTO> numberOfSalesYearly) {
+		for (NumberOfSalesDTO numberOfSales : numberOfSalesYearly) {
+			int year = numberOfSales.getYear(); 
+			Long count = numberOfSales.getNumberOfSales();
+			if (year == 2023) { // 금년
+				Assertions.assertThat(count).isEqualTo(5L);
 			} else {
 				Assertions.assertThat(count).isEqualTo(0L);
 			}
