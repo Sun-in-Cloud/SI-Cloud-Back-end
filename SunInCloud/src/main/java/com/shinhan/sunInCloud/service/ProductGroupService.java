@@ -1,8 +1,5 @@
 package com.shinhan.sunInCloud.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.entity.ProductGroup;
@@ -32,19 +29,5 @@ public class ProductGroupService {
 	 */
 	public ProductGroup findByGroupName(String groupName) {
 		return productGroupRepository.findByGroupName(groupName);
-	}
-	
-	/**
-	 * 모든 상품군 리스트 조회
-	 * @return
-	 */
-	public List<String> findAll() {
-		List<String> productGroupNames = new ArrayList<>();
-		List<ProductGroup> productGroups = productGroupRepository.findAll();
-		
-		for(ProductGroup productGroup : productGroups) {
-			productGroupNames.add(productGroup.getGroupName());
-		}
-		return productGroupNames;
 	}
 }

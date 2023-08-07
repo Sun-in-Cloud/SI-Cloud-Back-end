@@ -44,7 +44,7 @@ public class ExportProductHistory {
 	private String exportNo;
 	
 	@NotNull
-	private String productNo;
+	private Long productNo;
 	
 	@NotNull
 	private Integer amount;
@@ -52,10 +52,12 @@ public class ExportProductHistory {
 	@NotNull
 	private String orderStatus;
 	
+	@NotNull
 	private Timestamp exportDate;
 	
 	@NotNull
 	private Integer sellingPrice;
 	
+	@NotNull
 	private String invoiceNo;
 }

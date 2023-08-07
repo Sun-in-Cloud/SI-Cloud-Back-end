@@ -1,12 +1,11 @@
 package com.shinhan.sunInCloud.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
+import com.shinhan.sunInCloud.entity.Order;
 import com.shinhan.sunInCloud.entity.Seller;
-import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.OrderRepository;
 import com.shinhan.sunInCloud.repository.SellerRepository;
 
@@ -18,7 +17,7 @@ public class SellerService {
 		
 	private final SellerRepository sellerRepo;
 	private final OrderRepository orderRepo;
-	private final ImportsRepository importsRepo;
+	
 	//회원가입시 판매자 등록
 	public Seller save(Seller seller){
 		return sellerRepo.save(seller);
@@ -29,25 +28,22 @@ public class SellerService {
 		return sellerRepo.findByBusinessNo(no);
 	}
 	
-	/**
-	 * PK로 조회 (sellerNo)
-	 * 
-	 * @param sellerNo
-	 * @return
-	 */
-	public Seller findById(Long sellerNo) {
-		return sellerRepo.findById(sellerNo).orElse(null);
-	}
+	//1.입고 예정 리스트 등록
+	//1.1 발주 조회->목록
+//	public List<Order> findByOrderNo(String orderNo){
+//		return (List<Order>) orderRepo.findByOrderNo(orderNo);
+//	}
 	
-	/**
-	 * 매칭 검색 조건에 맞는 화주사 조회
-	 * @param matchingSellerDTO
-	 * @return
-	 */
-	public Page<Seller> findByMatchingCondition(MatchingConditionDTO matchingConditionDTO) {
-		return sellerRepo.findByMatchingCondition(matchingConditionDTO.getProductGroup(), matchingConditionDTO.getAddress(), 
-				matchingConditionDTO.getNumValue(), matchingConditionDTO.getContractPeriod(), 
-				PageRequest.of(matchingConditionDTO.getPageNum() - 1, matchingConditionDTO.getCountPerPage()));
-	}
+	//1.2 발주 조회->상세
+//	public Order findByOrderProductNo(Long orderProductNo) {
+//		return orderRepo.findByOrderProductNo(orderProductNo);
+//	}
+//	
+	//1.3 발주 조회->등록
+	//public Product saveProduct(Product ) {
+		
+	//}
+	
+	
 }
 

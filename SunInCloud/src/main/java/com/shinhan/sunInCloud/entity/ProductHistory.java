@@ -48,6 +48,9 @@ public class ProductHistory {
 
 	@NotNull
 	private Integer safetyStock;
+
+	@NotNull
+	private Integer currentStock;
 	
 	@NotNull
 	private Integer enoughStock;
@@ -55,23 +58,12 @@ public class ProductHistory {
 	@NotNull
 	private Long detailProductGroupNo;
 
+	@NotNull
 	private Integer importPrice;
 
+	@NotNull
 	private Integer consumerPrice;
 
 	@NotNull
 	private Boolean isActive;
-	
-	public ProductHistory(Product product, UpdatedType updatedType) {
-		this.updatedType = updatedType;
-		productNo = product.getProductNo();
-		sellerNo = product.getSeller().getSellerNo();
-		productName = product.getProductName();
-		safetyStock = product.getSafetyStock();
-		enoughStock = product.getEnoughStock();
-		detailProductGroupNo = product.getDetailProductGroup().getDetailProductGroupNo();
-		importPrice = product.getImportPrice();
-		consumerPrice = product.getConsumerPrice();
-		isActive = product.getIsActive();
-	}
 }

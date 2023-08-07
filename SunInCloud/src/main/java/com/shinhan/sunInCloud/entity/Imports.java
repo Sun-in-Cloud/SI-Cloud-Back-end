@@ -11,9 +11,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.shinhan.sunInCloud.dto.ImportsDTO;
-import com.shinhan.sunInCloud.dto.ProductDTO;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,12 +37,4 @@ public class Imports {
 	private Timestamp requestDate;
 	
 	private Timestamp importDate;
-	
-	public ImportsDTO toImportsDTO() {
-	    return ImportsDTO.builder()
-	            .importDate(importDate)
-	            .importNo(importNo)
-	            .requestDate(requestDate)
-	            .sellerNo(seller.getSellerNo()).build();
-	}
 }
