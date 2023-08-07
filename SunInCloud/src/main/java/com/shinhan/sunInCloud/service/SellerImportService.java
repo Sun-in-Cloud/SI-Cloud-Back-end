@@ -81,7 +81,7 @@ public class SellerImportService {
 		 * @return true/false
 		 */
 	
-		public boolean saveImport(Long sellerNo, List<ImportProductDTO> importProductDTOs) {
+		public boolean saveImport(Long sellerNo, Long orderNo, List<ImportProductDTO> importProductDTOs) {
 	         // 입고 내역을 저장함 -> 화주사 번호 필요함
 	         Seller seller = sellerService.findById(sellerNo);
 	         Imports imports = importRepository.save(Imports.builder().seller(seller).build());
@@ -148,14 +148,25 @@ public class SellerImportService {
 			}
 			return importsProductDTOs;
 		}
-//		
-//		//4.입고 내역 리스트
-//		//4.1 목록
-//		public List<ImportsDTO> seeList(Long sellerNo, int pageNum, int countPerPage){
-//			Page<Imports> imports=importRepository.findBySellerNo(sellerNo, PageRequest.of(pageNum, countPerPage));
-//			List<ImportsDTO> importDTO =new ArrayList<>();
-//			return importDTO;
-//		}
+//      //4.입고 내역 리스트
+//      //4.1 목록
+      public ImportProductListDTO seeList(Long sellerNo, int pageNum, int countPerPage){
+      //importDate가 null이 아니면 조회 가능 출고 목록 조회와 로직이 같음
+         //입고 번호, 리스트 작성 일자
+         Page<Imports> imports=importRepository.findBySeller_SellerNoAndImportDateIsNotNull(sellerNo, PageRequest.of(pageNum, countPerPage));
+         List<ImportsDTO> importDTO =new ArrayList<>();
+         Long count = orderRepository.countBySeller_SellerNo(sellerNo);
+         Long totalPage = calculatePageCount(count, countPerPage);
+         for(Imports im: imports){
+            importDTO.add(ImportsDTO.builder().importNo(im.getImportNo())
+                  .importDate(im.getImportDate()).build());
+         }
+         ImportProductListDTO productListDTO = ImportProductListDTO.builder()
+               .importproduct(importDTO)
+               .totalPage(totalPage)
+               .build();
+         return productListDTO;  // 수정된 리턴 타입
+      }
 		
 		//4.2 상세
 //		public List<ImportsDTO> seeDetail(Long importNo){
