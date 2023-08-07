@@ -12,7 +12,7 @@ import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
-	Page<Product> findAllBySeller_SellerNo(Long sellerNo, Pageable pageable);
+	Page<Product> findAllBySeller_SellerNoAndIsActive(Long sellerNo, Pageable pageable, Boolean isActive);
 	@Query(value = "SELECT * FROM PRODUCT WHERE seller_no = :sellerNo and "
 			+ "product_no not in (SELECT product_no "
 			+ "from order_product "
