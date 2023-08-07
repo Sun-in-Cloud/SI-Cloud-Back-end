@@ -47,7 +47,7 @@ public class MarketingService {
 		calendar.setTime(today);
 		calendar.add(Calendar.DAY_OF_MONTH, -6);
 		Date startDay = calendar.getTime();
-		return exportsService.getNumberOfSales(startDay, today, sellerNo);
+		return exportsService.getNumberOfSalesWeekly(startDay, today, sellerNo);
 	}
 	
 	/**

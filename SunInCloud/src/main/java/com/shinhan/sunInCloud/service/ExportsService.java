@@ -182,7 +182,7 @@ public class ExportsService {
 		return amount <= product.getCurrentStock();
 	}
 
-	public List<NumberOfSalesDTO> getNumberOfSales(Date startDate, Date endDate, Long sellerNo) {
+	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
 		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(startDate, endDate, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
 		for (Object[] count : counts) {
