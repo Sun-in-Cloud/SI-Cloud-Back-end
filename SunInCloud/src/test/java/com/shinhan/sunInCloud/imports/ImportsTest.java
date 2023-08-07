@@ -72,18 +72,17 @@ public class ImportsTest {
 	//@Test
 	void searchOrder() {
 		String productName="룩엣마이아이즈 샤이닝베이지";
-		List<Product> product  = sellerImportService.searchOrder(productName);
-		for (Product products : product) {
-			System.out.println(products.getSafetyStock());
-		}	
+		Product product  = sellerImportService.searchOrder(productName);
+		System.out.println(product.getSafetyStock());
+			
 	}
 	
-	//@Test
+	@Test
 	void saveImports() {
 		Long sellerNo=8L;
 		int pageNumber = 0;
 		int pageSize = 10;
-		
+		Long orderNo = 26L;
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		Page<Product> p = productRepository.findAllBySeller_SellerNo(sellerNo, pageable);
 		List<ImportProductDTO> importProductDTOs = new ArrayList<>();
@@ -96,7 +95,7 @@ public class ImportsTest {
 			importProductDTOs.add(importPRoductDTO);
 		}
 		
-		boolean saved = sellerImportService.saveImport(sellerNo, importProductDTOs);
+		boolean saved = sellerImportService.saveImport(sellerNo, orderNo, importProductDTOs);
 		Assertions.assertThat(saved);
 		
 	}
@@ -111,7 +110,7 @@ public class ImportsTest {
 	}
 	
 	//입고 예정 리스트 상세 조회
-	@Test
+	//@Test
 	void seePreDetail() {
 		Long importNo = 150L;
 		List<ImportProduct> importProduct = importProductRepository.findByImports_ImportNo(importNo);
@@ -119,5 +118,11 @@ public class ImportsTest {
 			System.out.println(im.getImportProductNo());
 		}
 		Assertions.assertThat(importProduct.size()).isEqualTo(10);
+	}
+	
+	//입고 내역 리스트 목록 조회
+	//@Test
+	void seeImportList() {
+		
 	}
 }
