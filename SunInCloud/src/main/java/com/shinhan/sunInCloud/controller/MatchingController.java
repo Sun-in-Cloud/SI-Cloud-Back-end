@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
-import com.shinhan.sunInCloud.dto.WarehouseDTO;
 import com.shinhan.sunInCloud.service.MatchingService;
 import com.shinhan.sunInCloud.service.WarehouseService;
 
@@ -24,7 +23,7 @@ public class MatchingController {
 	private final MatchingService matchingService;
 	
 	@GetMapping("/3pl/match/left/{threePLNo}")
-	public List<WarehouseDTO> findLeftLocation(@PathVariable Long threePLNo) {
+	public List<String> findLeftLocation(@PathVariable Long threePLNo) {
 		return warehouseService.findLeftLocation(threePLNo);
 	}
 	
