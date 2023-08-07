@@ -41,7 +41,7 @@ public class ImportsController {
 	}
 	//발주 상품 검색
 	@GetMapping(value= {"/seller/import/search"})
-	public List<Product> searchOrder(String productName) {
+	public Product searchOrder(String productName) {
 		return sellerImportService.searchOrder(productName);
 	}
 	
