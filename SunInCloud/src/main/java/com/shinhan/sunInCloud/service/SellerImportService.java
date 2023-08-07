@@ -70,7 +70,7 @@ public class SellerImportService {
 		 * @param productName
 		 * @return
 		 */
-		public List<Product> searchOrder(String productName) {
+		public Product searchOrder(String productName) {
 			return productRepository.findByProductName(productName);
 			
 		}

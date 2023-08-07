@@ -69,13 +69,12 @@ public class ImportsTest {
 	}
 	
 	//발주 조회 ->검색
-	//@Test
+	@Test
 	void searchOrder() {
 		String productName="룩엣마이아이즈 샤이닝베이지";
-		List<Product> product  = sellerImportService.searchOrder(productName);
-		for (Product products : product) {
-			System.out.println(products.getSafetyStock());
-		}	
+		Product product  = sellerImportService.searchOrder(productName);
+		System.out.println(product.getSafetyStock());
+			
 	}
 	
 	//@Test
@@ -111,7 +110,7 @@ public class ImportsTest {
 	}
 	
 	//입고 예정 리스트 상세 조회
-	@Test
+	//@Test
 	void seePreDetail() {
 		Long importNo = 150L;
 		List<ImportProduct> importProduct = importProductRepository.findByImports_ImportNo(importNo);
@@ -119,5 +118,11 @@ public class ImportsTest {
 			System.out.println(im.getImportProductNo());
 		}
 		Assertions.assertThat(importProduct.size()).isEqualTo(10);
+	}
+	
+	//입고 내역 리스트 목록 조회
+	//@Test
+	void seeImportList() {
+		
 	}
 }
