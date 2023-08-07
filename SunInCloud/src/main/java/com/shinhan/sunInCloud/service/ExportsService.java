@@ -237,13 +237,18 @@ public class ExportsService {
 	 */
 	public List<TotalSalesDTO> getTotalSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
 		List<Object[]> totalSales = exportProductRepository.getDailySalesForWeek(startDate, endDate, sellerNo);
+		List<TotalSalesDTO> totalSalesWeekly = new ArrayList<>();
 		for (Object[] totalSale : totalSales) {
-			for (Object t : totalSale) {
-				System.out.println(t);
-			}
-			System.out.println("************");
+			java.sql.Date date = (java.sql.Date) totalSale[0];
+			Long saleAmount = (Long) totalSale[1];
+			totalSalesWeekly.add(TotalSalesDTO.builder()
+					.year(date.getYear())
+					.month(date.getMonth() + 1)
+					.day(date.getDate())
+					.totalSales(saleAmount)
+					.build());
 		}
-		return null;
+		return totalSalesWeekly;
 	}
 
 	/**
