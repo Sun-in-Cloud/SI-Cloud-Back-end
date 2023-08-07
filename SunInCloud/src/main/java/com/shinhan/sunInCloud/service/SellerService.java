@@ -71,13 +71,16 @@ public class SellerService {
 		Long exportCnt = exportProductRepository.getSalesCountOfYear(sellerNo, Integer.parseInt(TimestampUtil.getPattern("yyyy")) - 1);
 		Matching matching = matchingRepository.findBySeller_SellerNo(sellerNo);
 		
-		MatchingDTO matchingDTO = new MatchingDTO();
+		MatchingDTO matchingDTO = null;
 		
 		if(matching != null) {
-			matchingDTO.setCompanyName(matching.getWarehouse().getThreePL().getCompanyName());
-			matchingDTO.setEndDate(TimestampUtil.convertTimestampToDate(matching.getEndDate()));
-			matchingDTO.setLocation(matching.getWarehouse().getLocation());
-			matchingDTO.setProductGroup(matching.getWarehouse().getThreePL().getProductGroup().getGroupName());
+			matchingDTO = MatchingDTO
+					.builder()
+					.companyName(matching.getWarehouse().getThreePL().getCompanyName())
+					.endDate(TimestampUtil.convertTimestampToDate(matching.getEndDate()))
+					.location(matching.getWarehouse().getLocation())
+					.productGroup(matching.getWarehouse().getThreePL().getProductGroup().getGroupName())
+					.build();
 		}
 		
 		return seller.toSellerDTO(matchingDTO, sales, exportCnt);
