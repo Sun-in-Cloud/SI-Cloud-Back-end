@@ -9,6 +9,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,15 +57,13 @@ public class Seller {
 	@NotNull
 	private Boolean isMarketing;
 	
-	public MatchingSellerDTO toMatchingSellerDTO(MatchingSellerDTO matchingSellerDTO) {
+	public MatchingSellerDTO toMatchingSellerDTO(Matching matching) {
 		return MatchingSellerDTO
 				.builder()
 				.productGroup(productGroup.getGroupName())
-				.address(address)
-				.exportCnt(matchingSellerDTO.getExportCnt())
-				.contractPeriod(matchingSellerDTO.getContractPeriod())
 				.companyName(companyName)
-				.endDate(matchingSellerDTO.getEndDate())
+				.endDate(matching == null ? null : TimestampUtil.convertTimestampToDate(matching.getEndDate()))
+				.sellerNo(sellerNo)
 				.build();
 	}
 }

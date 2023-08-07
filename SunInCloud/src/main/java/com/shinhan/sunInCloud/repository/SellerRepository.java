@@ -1,7 +1,7 @@
 package com.shinhan.sunInCloud.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +12,7 @@ public interface SellerRepository extends CrudRepository<Seller, Long>{
 	
 	public Seller findByBusinessNo(String businessNo);
 	
-	@Query(value = "SELECT seller.seller_no, company_name, group_name, end_date "
+	@Query(value = "SELECT * "
 			+ "FROM seller "
 			+ "	JOIN product_group "
 			+ "	ON seller.product_group_no = product_group.product_group_no "
@@ -27,9 +27,9 @@ public interface SellerRepository extends CrudRepository<Seller, Long>{
 			+ " 	WHERE IFNULL(order_status, '') LIKE if(:exportCnt > 0, '출고완료', '%') "
 			+ "	GROUP BY seller.seller_no "
 			+ "	HAVING COUNT(*) >= :exportCnt) "
-			+ "AND product_group.group_name LIKE '%:groupName%' "
-			+ "AND seller.address LIKE '%:address%' "
+			+ "AND product_group.group_name LIKE CONCAT('%', :groupName, '%') "
+			+ "AND seller.address LIKE CONCAT('%', :address, '%') "
 			+ "AND IFNULL(end_date, SYSDATE()) <= DATE_ADD(SYSDATE(), INTERVAL :contractPeriod MONTH)", nativeQuery = true)
-	public List<Seller> findByMatchingCondition(@Param("groupName")String groupName, @Param("address")String address, 
-			@Param("exportCnt")int exportCnt, @Param("contractPeriod")int contractPeriod);
+	public Page<Seller> findByMatchingCondition(@Param("groupName") String groupName, @Param("address")String address,
+			@Param("exportCnt")int exportCnt, @Param("contractPeriod")int contractPeriod, Pageable pageable);
 }

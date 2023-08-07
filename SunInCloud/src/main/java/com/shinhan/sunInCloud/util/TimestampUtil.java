@@ -24,4 +24,11 @@ public class TimestampUtil {
 		}
 		return time;
 	}
+	
+	public static String convertTimestampToDate(Timestamp timestamp) {
+		Date date = new Date(timestamp.getTime());
+		SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
+		
+		return pattern.format(date);
+	}
 }

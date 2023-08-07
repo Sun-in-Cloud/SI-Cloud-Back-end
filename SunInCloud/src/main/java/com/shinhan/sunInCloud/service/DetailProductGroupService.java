@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.shinhan.sunInCloud.dto.ProductGroupDTO;
 import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.DetailProductGroupRepository;
@@ -43,16 +42,15 @@ public class DetailProductGroupService {
 	 * @param sellerNo
 	 * @return
 	 */
-	public List<ProductGroupDTO> findByProductGroup(Long sellerNo) {
-		List<ProductGroupDTO> productGroupDTOs = new ArrayList<>();
+	public List<String> findByProductGroup(Long sellerNo) {
+		List<String> productGroupDTOs = new ArrayList<>();
 		Seller seller = sellerService.findById(sellerNo);
 		
 		List<DetailProductGroup> detailProductGroups = detailProductGroupRepository
 				.findByProductGroup_GroupName(seller.getProductGroup().getGroupName());
 		
 		for(DetailProductGroup detailProductGroup: detailProductGroups) {
-			ProductGroupDTO productGroupDTO = ProductGroupDTO.builder().groupName(detailProductGroup.getGroupName()).build();
-			productGroupDTOs.add(productGroupDTO);
+			productGroupDTOs.add(detailProductGroup.getGroupName());
 		}
 		
 		return productGroupDTOs;

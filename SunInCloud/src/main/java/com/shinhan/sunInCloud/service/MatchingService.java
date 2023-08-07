@@ -3,10 +3,13 @@ package com.shinhan.sunInCloud.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.MatchingSellerDTO;
+import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
 import com.shinhan.sunInCloud.entity.Matching;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.Warehouse;
@@ -54,15 +57,26 @@ public class MatchingService {
 		return savedMatching != null;
 	}
 	
-	public List<MatchingSellerDTO> searcingByCondition(MatchingSellerDTO matchingSellerDTO) {
+	/**
+	 * 검색 조건에 맞는 화주사 검색
+	 * @param matchingConditionDTO
+	 * @return
+	 */
+	public MatchingSellerListDTO searcingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
 		List<MatchingSellerDTO> matchingSellerDTOs = new ArrayList<>();
-		List<Seller> findedSellers = sellerService.findByMatchingCondition(matchingSellerDTO);
-		System.out.println("findedSellers: " + findedSellers);
+		Page<Seller> findedSellers = sellerService.findByMatchingCondition(matchingConditionDTO);
 		
 		for(Seller findedSeller : findedSellers) {
-			matchingSellerDTOs.add(findedSeller.toMatchingSellerDTO(matchingSellerDTO));
+			MatchingSellerDTO matchingSeller = findedSeller.toMatchingSellerDTO(matchingRepository.findBySeller_SellerNo(findedSeller.getSellerNo()));
+			matchingSellerDTOs.add(matchingSeller);
 		}
 		
-		return matchingSellerDTOs;
+		MatchingSellerListDTO matchingSellerListDTO = MatchingSellerListDTO
+				.builder()
+				.totalPage(findedSellers.getTotalPages())
+				.matchingSellers(matchingSellerDTOs)
+				.build();
+		
+		return matchingSellerListDTO;
 	}
 }
