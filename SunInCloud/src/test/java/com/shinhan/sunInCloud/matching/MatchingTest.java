@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
-import com.shinhan.sunInCloud.dto.WarehouseDTO;
 import com.shinhan.sunInCloud.service.MatchingService;
 import com.shinhan.sunInCloud.service.SellerService;
 import com.shinhan.sunInCloud.service.WarehouseService;
@@ -21,13 +20,11 @@ public class MatchingTest {
 	private WarehouseService warehouseService;
 	@Autowired
 	private MatchingService matchingService;
-	@Autowired
-	private SellerService sellerService;
 	
 //	@Test
 	public void findLeftLocation() {
 		Long threePLNo = 97L;
-		List<WarehouseDTO> warehouses = warehouseService.findLeftLocation(threePLNo);
+		List<String> warehouses = warehouseService.findLeftLocation(threePLNo);
 		System.out.println(warehouses);
 	}
 	
