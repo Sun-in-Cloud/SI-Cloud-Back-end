@@ -250,17 +250,23 @@ public class ExportsService {
 	 * @param sellerNo
 	 * @return 7일간의 일별 매출 List
 	 */
-	public List<TotalSalesDTO> getTotalSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
-		List<Object[]> totalSales = exportProductRepository.getDailySalesForWeek(startDate, endDate, sellerNo);
+	public List<TotalSalesDTO> getTotalSalesWeekly(List<String> dates, Long sellerNo) {
+		List<Object[]> totalSales = exportProductRepository.getDailySalesForWeek(dates, sellerNo);
 		List<TotalSalesDTO> totalSalesWeekly = new ArrayList<>();
+		Map<String, Long> map = new HashMap<>();
+		for (String date : dates) {
+			map.put(date, 0L);
+		}
 		for (Object[] totalSale : totalSales) {
-			java.sql.Date date = (java.sql.Date) totalSale[0];
-			Long saleAmount = ((BigDecimal)totalSale[1]).longValue();
+			map.put(String.valueOf(totalSale[0]), ((BigDecimal)totalSale[1]).longValue());
+		}
+		for (String date : dates) {
+			String[] arr = date.split("-");
 			totalSalesWeekly.add(TotalSalesDTO.builder()
-					.year(date.getYear())
-					.month(date.getMonth() + 1)
-					.day(date.getDate())
-					.totalSales(saleAmount)
+					.year(Integer.parseInt(arr[0]))
+					.month(Integer.parseInt(arr[1]))
+					.day(Integer.parseInt(arr[2]))
+					.totalSales(map.get(date))
 					.build());
 		}
 		return totalSalesWeekly;

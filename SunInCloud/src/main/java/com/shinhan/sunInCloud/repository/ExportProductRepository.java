@@ -52,9 +52,9 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "FROM exports "
 			+ "WHERE seller_seller_no = :sellerNo ) "
 			+ " AND "
-			+ "export_date IS NOT NULL AND Date(e.export_date) BETWEEN :startDate AND :endDate "
+			+ "export_date IS NOT NULL AND Date(e.export_date) IN (:dates) "
 			+ "GROUP BY Date(e.export_date)", nativeQuery = true)
-	List<Object[]> getDailySalesForWeek(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("sellerNo") Long sellerNo);
+	List<Object[]> getDailySalesForWeek(@Param("dates") List<String> dates, @Param("sellerNo") Long sellerNo);
 	
 	@Query(value = "SELECT COALESCE(SUM(selling_price), 0) as totalSales "
 			+ "FROM export_product "
