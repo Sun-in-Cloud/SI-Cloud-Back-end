@@ -227,4 +227,22 @@ public class ExportsService {
 	public Long getNumberOfSalesYearly(Long sellerNo, int year) {
 		return exportProductRepository.getSalesCountOfYear(sellerNo, year);
 	}
+
+	/**
+	 * 일주일간의 일별 매출 조회 메서드
+	 * @param startDate
+	 * @param endDate
+	 * @param sellerNo
+	 * @return 7일간의 일별 매출 List
+	 */
+	public List<TotalSalesDTO> getTotalSalesWeekly(Date startDate, Date endDate, Long sellerNo) {
+		List<Object[]> totalSales = exportProductRepository.getDailySalesForWeek(startDate, endDate, sellerNo);
+		for (Object[] totalSale : totalSales) {
+			for (Object t : totalSale) {
+				System.out.println(t);
+			}
+			System.out.println("************");
+		}
+		return null;
+	}
 }
