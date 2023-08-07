@@ -34,6 +34,15 @@ public class MatchingService {
 	}
 	
 	/**
+	 * 화주사 번호로 매칭 정보 찾는 메서드
+	 * @param sellerNo
+	 * @return
+	 */
+	public Matching findBySellerNo(Long sellerNo) {
+		return matchingRepository.findBySeller_SellerNo(sellerNo);
+	}
+	
+	/**
 	 * 계약 맺는 메서드
 	 * @param matchingDTO
 	 * @return
