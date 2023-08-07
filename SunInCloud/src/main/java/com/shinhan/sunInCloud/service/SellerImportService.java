@@ -71,8 +71,9 @@ public class SellerImportService {
 		 * @param productName
 		 * @return
 		 */
-		public Product searchOrder(String productName) {
-			return productRepository.findByProductName(productName);
+		public List<Product> searchOrder(String productName) {
+			//특정화주사를 조회하는 코드 추가
+			return productRepository.findByProductNameContaining(productName);
 			
 		}
 		
@@ -173,18 +174,16 @@ public class SellerImportService {
 		 * @param importNo
 		 * @return List<ImportProductDTO>
 		 */
-		public List<ImportProductDTO> seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
-			List<ImportProductDTO> importsProductDTOs=new ArrayList<>();
-			List<ImportProduct> im= importProductRepository.findByImports_ImportNo(importNo);
-			for(ImportProduct imp: im) {
-				importsProductDTOs.add(importProductDTO.builder()
-						.productNo(imp.getProduct().getProductNo())
-						.productName(imp.getProduct().getProductName())
-						.importAmount(imp.getImportAmount())
-						.build());
-			}
-			return importsProductDTOs;
-		}
+//		public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
+//			ImportProduct im= importProductRepository.findByImports_ImportNo(importNo);
+//			if(im==null) return null;
+//			return importsProductDTO.builder()
+//						.productNo(im.getProduct().getProductNo())
+//						.productName(im.getProduct().getProductName())
+//						.importAmount(im.getImportAmount())
+//						.build();
+//			
+//		}
 //      //4.입고 내역 리스트
 //      //4.1 목록
       public ImportProductListDTO seeList(Long sellerNo, int pageNum, int countPerPage){
