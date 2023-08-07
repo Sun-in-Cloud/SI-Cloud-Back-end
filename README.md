@@ -14,11 +14,12 @@
 ## Communication
 <img alt="notion" src ="https://img.shields.io/badge/notion-000000.svg?&style=for-the-badge&logo=notion&logoColor=white"/> <img alt="slack" src ="https://img.shields.io/badge/slack-4A154B.svg?&style=for-the-badge&logo=slack&logoColor=white"/>
 <!-- * <img alt="" src =""/> -->
+![노성은]()
 
 # 팀 소개
 |[손준범](https://github.com/junbeom-Son)|[오은빈](https://github.com/svbean77)|[이진경](https://github.com/jingyeong0604)|[노성은](https://github.com/seonggg)|[양유진](https://github.com/YYJ-1229)|[이솔](https://github.com/leessol)|
 |---|---|---|---|---|---|
-|<img src="https://github.com/OneTimeGroup/OneTimeTripCard/assets/89973303/af74cfa3-637d-4224-b98d-dcaa5a8bbcb6" width="150" height="200">|사진|<img src="https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/3c660cc3-0463-4edc-9061-1d9854b957eb" width="150" height="200">|사진|<img src="https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/f1b5aae4-1773-4f86-9b72-51365c347806" width="150" height="200">|<img src="https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/1b47590f-b134-4d39-9ead-f9bef53062a2" width="150" height="200">|
+|<img src="https://github.com/OneTimeGroup/OneTimeTripCard/assets/89973303/af74cfa3-637d-4224-b98d-dcaa5a8bbcb6" width="150" height="200">|사진|<img src="https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/3c660cc3-0463-4edc-9061-1d9854b957eb" width="150" height="200">|<img src="https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/3ab94659-b3ce-4009-a7c2-599bccb6ea2f" width="150" height="200">|<img src="https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/f1b5aae4-1773-4f86-9b72-51365c347806" width="150" height="200">|<img src="https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/1b47590f-b134-4d39-9ead-f9bef53062a2" width="150" height="200">|
 |백엔드 개발자|백엔드 개발자|백엔드 개발자|프론트엔드 개발자|프론트엔드 개발자|기획자|
 
 # 프로젝트 소개
