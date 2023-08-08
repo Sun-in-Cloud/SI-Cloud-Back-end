@@ -30,7 +30,7 @@ public class ImportsController {
 	
 	
 	//입고예정 리스트 상세 조회
-	@GetMapping(value= {"/seller/import/pre/detail/{importNo}"})
+	@GetMapping(value= {"/seller/import/pre/detail/{importNo}","/3pl/import/pre/{importNo}"})
 	public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, @PathVariable Long importNo) {
 		return sellerImportService.seePreDetail(importProductDTO, importNo);
 	}
@@ -40,6 +40,10 @@ public class ImportsController {
 		return sellerImportService.searchOrder(productName);
 	}
 	
+	@GetMapping(value= {"seller/import/list"})
+	public ImportProductListDTO seeList (Long sellerNo, int pageNum, int countPerPage) {
+		return sellerImportService.seeList(sellerNo, pageNum, countPerPage);
+	}
 }
 
 
