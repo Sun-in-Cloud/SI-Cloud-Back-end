@@ -1,5 +1,7 @@
 package com.shinhan.sunInCloud.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -8,6 +10,9 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.shinhan.sunInCloud.dto.MatchingDTO;
+import com.shinhan.sunInCloud.dto.ThreePLDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,4 +63,25 @@ public class ThreePL {
 	@NotNull
 	@Builder.Default
 	private Integer cntContracted = 0;
+	
+	public ThreePLDTO toThreePLDTO(String endDate, long exportCnt, List<MatchingDTO> matchings) {
+		return ThreePLDTO
+				.builder()
+				.productGroupName(productGroup.getGroupName())
+				.businessNo(businessNo)
+				.companyName(companyName)
+				.ceoName(ceoName)
+				.address(address)
+				.managerEmail(managerEmail)
+				.managerName(managerName)
+				.managerPhone(managerPhone)
+				.fee(fee)
+				.cntTotal(cntTotal)
+				.cntContracted(cntContracted)
+				.endDate(endDate)
+				.leftContract(cntTotal - cntContracted)
+				.exportCnt(exportCnt)
+				.matchings(matchings)
+				.build();
+	}
 }

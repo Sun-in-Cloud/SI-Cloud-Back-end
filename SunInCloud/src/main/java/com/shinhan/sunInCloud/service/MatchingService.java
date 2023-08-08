@@ -52,7 +52,8 @@ public class MatchingService {
 		Seller seller = sellerService.findById(matchingDTO.getSellerNo());
 		Warehouse warehouse = warehouseService.findByLocation(matchingDTO.getLocation(), matchingDTO.getThreePLNo());
 		
-		if(warehouse == null) return false;
+		// 창고가 없는 경우, 남은 자리가 없는 경우 실패
+		if(warehouse == null || (warehouse.getThreePL().getCntContracted() == warehouse.getThreePL().getCntTotal())) return false;
 		
 		Matching matching = Matching
 				.builder()

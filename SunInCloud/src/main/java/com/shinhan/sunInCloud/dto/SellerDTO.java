@@ -20,6 +20,7 @@ public class SellerDTO {
 	private String managerPhone;
 	private String managerEmail;
 	private boolean isMarketing;
+	private String endDate;
 	
 	private long sales;
 	private long exportCnt;
