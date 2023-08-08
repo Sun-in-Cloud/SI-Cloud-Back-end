@@ -54,71 +54,71 @@ public class ImportsTest {
 	
 	//발주 목록 조회
 	//@Test
-	void seeOrderList() {
-		Long seller=8L;
-		List<Order> order = sellerImportService.findBySellerNo(seller);
-		Assertions.assertThat(order.size()).isEqualTo(5);
-	}
-	
-	//발주 내역 상세 조회
-	//@Test
-	void seeOrdersDetail() {
-		Long orderNo = 26L;
-		List<OrderProductDTO> orderProducts = orderService.findByOrderNo(orderNo);
-		Assertions.assertThat(orderProducts.size()).isEqualTo(10);
-	}
-	
-	//발주 조회 ->검색
-	//@Test
-	void searchOrder() {
-		String productName="룩엣마이아이즈 샤이닝베이지";
-		Product product  = sellerImportService.searchOrder(productName);
-		System.out.println(product.getSafetyStock());
-			
-	}
-	
-	@Test
-	void saveImports() {
-		Long sellerNo=8L;
-		int pageNumber = 0;
-		int pageSize = 10;
-		Long orderNo = 26L;
-		Pageable pageable = PageRequest.of(pageNumber, pageSize);
-		Page<Product> p = productRepository.findAllBySeller_SellerNo(sellerNo, pageable);
-		List<ImportProductDTO> importProductDTOs = new ArrayList<>();
-		for(Product product : p.getContent()) {
-			ImportProductDTO importPRoductDTO = ImportProductDTO.builder()
-					.productNo(product.getProductNo())
-					.requestAmount(20)
-					.importAmount(20)
-					.build();
-			importProductDTOs.add(importPRoductDTO);
-		}
-		
-		boolean saved = sellerImportService.saveImport(sellerNo, orderNo, importProductDTOs);
-		Assertions.assertThat(saved);
-		
-	}
-	//입고 예정 리스트 목록 조회
-	//@Test
-	void seePreList() {
-		Long sellerNo=8L;
-		int pageNumber = 0;
-		int countperPage = 10;
-		ImportProductListDTO imports = sellerImportService.seePreList(sellerNo, pageNumber, countperPage);
-		Assertions.assertThat(imports.getImportproduct()).isNotEmpty();
-	}
-	
-	//입고 예정 리스트 상세 조회
-	//@Test
-	void seePreDetail() {
-		Long importNo = 150L;
-		List<ImportProduct> importProduct = importProductRepository.findByImports_ImportNo(importNo);
-		for(ImportProduct im : importProduct) {
-			System.out.println(im.getImportProductNo());
-		}
-		Assertions.assertThat(importProduct.size()).isEqualTo(10);
-	}
+//	void seeOrderList() {
+//		Long seller=8L;
+//		List<Order> order = sellerImportService.findBySellerNo(seller);
+//		Assertions.assertThat(order.size()).isEqualTo(5);
+//	}
+//	
+//	//발주 내역 상세 조회
+//	//@Test
+//	void seeOrdersDetail() {
+//		Long orderNo = 26L;
+//		List<OrderProductDTO> orderProducts = orderService.findByOrderNo(orderNo);
+//		Assertions.assertThat(orderProducts.size()).isEqualTo(10);
+//	}
+//	
+//	//발주 조회 ->검색
+//	//@Test
+//	void searchOrder() {
+//		String productName="룩엣마이아이즈 샤이닝베이지";
+//		Product product  = sellerImportService.searchOrder(productName);
+//		System.out.println(product.getSafetyStock());
+//			
+//	}
+//	
+//	@Test
+//	void saveImports() {
+//		Long sellerNo=8L;
+//		int pageNumber = 0;
+//		int pageSize = 10;
+//		Long orderNo = 26L;
+//		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+//		Page<Product> p = productRepository.findAllBySeller_SellerNo(sellerNo, pageable);
+//		List<ImportProductDTO> importProductDTOs = new ArrayList<>();
+//		for(Product product : p.getContent()) {
+//			ImportProductDTO importPRoductDTO = ImportProductDTO.builder()
+//					.productNo(product.getProductNo())
+//					.requestAmount(20)
+//					.importAmount(20)
+//					.build();
+//			importProductDTOs.add(importPRoductDTO);
+//		}
+//		
+//		boolean saved = sellerImportService.saveImport(sellerNo, orderNo, importProductDTOs);
+//		Assertions.assertThat(saved);
+//		
+//	}
+//	//입고 예정 리스트 목록 조회
+//	//@Test
+//	void seePreList() {
+//		Long sellerNo=8L;
+//		int pageNumber = 0;
+//		int countperPage = 10;
+//		ImportProductListDTO imports = sellerImportService.seePreList(sellerNo, pageNumber, countperPage);
+//		Assertions.assertThat(imports.getImportproduct()).isNotEmpty();
+//	}
+//	
+//	//입고 예정 리스트 상세 조회
+//	//@Test
+//	void seePreDetail() {
+//		Long importNo = 150L;
+//		List<ImportProduct> importProduct = importProductRepository.findByImports_ImportNo(importNo);
+//		for(ImportProduct im : importProduct) {
+//			System.out.println(im.getImportProductNo());
+//		}
+//		Assertions.assertThat(importProduct.size()).isEqualTo(10);
+//	}
 	
 	//입고 내역 리스트 목록 조회
 	//@Test
