@@ -18,6 +18,8 @@ public interface ImportsRepository extends JpaRepository<Imports, Long> {
 
 	Page<Imports> findBySeller_SellerNoAndImportDateIsNotNull(Long sellerNo, PageRequest pageables);
 
+	List<Imports> findAllBySeller_SellerNo(Long sellerNo);
+
 	
 	//4.리턴값 List이고, Id로 입고 상세 내역 찾기
 	//List<Imports> findByImportNo(Long importNo);
