@@ -24,17 +24,17 @@ public class MarketingService {
 	 *   2-2. 시작일, 끝일을 기준으로 각 날짜의 매출 조회
 	 * 2. 이번달, 지난달, 작년 동월 기록(판매건수, 매출)
 	 * 3. 작년, 올해 기록(판매건수, 매출)
-	 * @param sellerNo
+	 * @param id(sellerNo or productNo)
 	 * 작성자: 손준범
 	 */
-	public <T> StatisticsDTO getStatisticsBySeller(Long sellerNo) {
+	public <T> StatisticsDTO getStatistics(T id) {
 		return StatisticsDTO.builder()
-				.numberOfSalesWeekly(getNumberOfSalesWeekly(sellerNo))
-				.numberOfSalesMonthly(getNumberOfSalesMonthly(sellerNo))
-				.numberOfSalesYearly(getNumberOfSalesYearly(sellerNo))
-				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
-				.totalSalesMonthly(getTotalSalesMonthly(sellerNo))
-				.totalSalesYearly(getTotalSalesYearly(sellerNo))
+				.numberOfSalesWeekly(getNumberOfSalesWeekly(id))
+				.numberOfSalesMonthly(getNumberOfSalesMonthly(id))
+				.numberOfSalesYearly(getNumberOfSalesYearly(id))
+				.totalSalesWeekly(getTotalSalesWeekly(id))
+				.totalSalesMonthly(getTotalSalesMonthly(id))
+				.totalSalesYearly(getTotalSalesYearly(id))
 				.build();
 	}
 	
@@ -61,27 +61,6 @@ public class MarketingService {
 			calendar.add(Calendar.DATE, 1);
 		}
 		return dates;
-	}
-
-	/**
-	 * 특정 상품에 대한 통계
-	 * 1. 최근 일주일의 기록 요청(판매건수, 매출)
-	 *   1-1. 시작일, 끝일을 기준으로 각 날짜의 판매 건수 조회
-	 *   2-2. 시작일, 끝일을 기준으로 각 날짜의 매출 조회
-	 * 2. 이번달, 지난달, 작년 동월 기록(판매건수, 매출)
-	 * 3. 작년, 올해 기록(판매건수, 매출)
-	 * @param sellerNo
-	 * 작성자: 손준범
-	 */
-	public StatisticsDTO getStatisticsOfProduct(String productNo) {
-		return StatisticsDTO.builder()
-				.numberOfSalesWeekly(getNumberOfSalesWeekly(productNo))
-				.numberOfSalesMonthly(getNumberOfSalesMonthly(productNo))
-				.numberOfSalesYearly(getNumberOfSalesYearly(productNo))
-				.totalSalesWeekly(getTotalSalesWeekly(productNo))
-				.totalSalesMonthly(getTotalSalesMonthly(productNo))
-				.totalSalesYearly(getTotalSalesYearly(productNo))
-				.build();
 	}
 	
 	/**
