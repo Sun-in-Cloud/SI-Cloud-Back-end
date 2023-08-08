@@ -64,6 +64,14 @@ public class ThreePL {
 	@Builder.Default
 	private Integer cntContracted = 0;
 	
+	/**
+	 * ThreePL -> ThreePLDTO
+	 * 상세 조회
+	 * @param endDate
+	 * @param exportCnt
+	 * @param matchings
+	 * @return
+	 */
 	public ThreePLDTO toThreePLDTO(String endDate, long exportCnt, List<MatchingDTO> matchings) {
 		return ThreePLDTO
 				.builder()
