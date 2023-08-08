@@ -49,28 +49,6 @@ public class MarketingService {
 	}
 	
 	/**
-	 * 금년, 작년 판매 건수 조회 메서드
-	 * @param sellerNo
-	 * @return 금년, 작년 판매 건수 List
-	 * 작성자: 손준범
-	 */
-	private List<NumberOfSalesDTO> getNumberOfSalesYearly(Long sellerNo) {
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		List<NumberOfSalesDTO> numberOfSalesYearly = new ArrayList<>();
-		int[] years = {year, year - 1};
-		Long[] counts = new Long[2];
-		for (int i = 0; i < 2; ++i) {
-			counts[i] = exportsService.getNumberOfSalesYearly(sellerNo, years[i]);
-			numberOfSalesYearly.add(NumberOfSalesDTO.builder()
-					.year(years[i])
-					.numberOfSales(counts[i])
-					.build());
-		}
-		return numberOfSalesYearly;
-	}
-	
-	/**
 	 * 일주일간의 일별 매출 조회 메서드
 	 * @param sellerNo
 	 * @return 7일간의 일별 매출 List
@@ -164,7 +142,7 @@ public class MarketingService {
 		return StatisticsDTO.builder()
 				.numberOfSalesWeekly(getNumberOfSalesOfProductWeekly(productNo))
 				.numberOfSalesMonthly(getNumberOfSalesMonthly(productNo))
-				.numberOfSalesYearly(getNumberOfSalesOfProductYearly(productNo))
+				.numberOfSalesYearly(getNumberOfSalesYearly(productNo))
 				.totalSalesWeekly(getTotalSalesOfProductWeekly(productNo))
 				.totalSalesMonthly(getTotalSalesOfProductMonthly(productNo))
 				.totalSalesYearly(getTotalSalesOfProductYearly(productNo))
@@ -179,28 +157,6 @@ public class MarketingService {
 	 */
 	private List<NumberOfSalesDTO> getNumberOfSalesOfProductWeekly(String productNo) {
 		return exportsService.getNumberOfSalesProductWeekly(getWeekDatesString(), productNo);
-	}
-	
-	/**
-	 * 금년, 작년 판매 건수 조회 메서드
-	 * @param productNo
-	 * @return 금년, 작년 판매 건수 List
-	 * 작성자: 손준범
-	 */
-	private List<NumberOfSalesDTO> getNumberOfSalesOfProductYearly(String productNo) {
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		List<NumberOfSalesDTO> numberOfSalesYearly = new ArrayList<>();
-		int[] years = {year, year - 1};
-		Long[] counts = new Long[2];
-		for (int i = 0; i < 2; ++i) {
-			counts[i] = exportsService.getNumberOfSalesOfProductYearly(productNo, years[i]);
-			numberOfSalesYearly.add(NumberOfSalesDTO.builder()
-					.year(years[i])
-					.numberOfSales(counts[i])
-					.build());
-		}
-		return numberOfSalesYearly;
 	}
 	
 	/**
@@ -289,5 +245,32 @@ public class MarketingService {
 					.build());
 		}
 		return numberOfSalesMonthly;
+	}
+	
+	/**
+	 * 금년, 작년 판매 건수 조회 메서드
+	 * T : String or Long
+	 * @param id
+	 * @return 금년, 작년 판매 건수 List
+	 * 작성자: 손준범
+	 */
+	private <T> List<NumberOfSalesDTO> getNumberOfSalesYearly(T id) {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		List<NumberOfSalesDTO> numberOfSalesYearly = new ArrayList<>();
+		int[] years = {year, year - 1};
+		Long[] counts = new Long[2];
+		for (int i = 0; i < 2; ++i) {
+			if (id instanceof Long) {
+				counts[i] = exportsService.getNumberOfSalesYearly((Long) id, years[i]);
+			} else if (id instanceof String) {
+				counts[i] = exportsService.getNumberOfSalesOfProductYearly((String) id, years[i]);
+			}
+			numberOfSalesYearly.add(NumberOfSalesDTO.builder()
+					.year(years[i])
+					.numberOfSales(counts[i])
+					.build());
+		}
+		return numberOfSalesYearly;
 	}
 }
