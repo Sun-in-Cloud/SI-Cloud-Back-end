@@ -258,7 +258,12 @@ public class MarketingService {
 		return totalSalesYearly;
 	}
 	
-	// String과 LongType만 와야 한다.
+	/**
+	 * 당월, 전월, 작년 동월 월별 판매 건수 조회
+	 * T : String or Long
+	 * @param id
+	 * @return
+	 */
 	private <T> List<NumberOfSalesDTO> getNumberOfSalesMonthly(T id) {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
