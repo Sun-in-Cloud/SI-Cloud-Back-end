@@ -14,11 +14,15 @@ public interface ImportsRepository extends JpaRepository<Imports, Long> {
 	//Imports findByImportProduct_ImportNo(Long sellerNo, Pageable pageable);
 	
 	//2. 입고 예정, 내역 리스트 목록 sellerNo로 찾기
-	Page<Imports> findBySeller_SellerNo(Long sellerNo, Pageable pageables);
+	//Page<Imports> findBySeller_SellerNo(Long sellerNo, Pageable pageables);
 
+	List<Imports> findAllBySeller_SellerNo(Long sellerNo, Pageable pageables);
+	
 	Page<Imports> findBySeller_SellerNoAndImportDateIsNotNull(Long sellerNo, PageRequest pageables);
 
 	List<Imports> findAllBySeller_SellerNo(Long sellerNo);
+
+	//Page<Imports> findByImportNo_SellerNo(Long sellerNo, PageRequest of);
 
 	
 	//4.리턴값 List이고, Id로 입고 상세 내역 찾기
