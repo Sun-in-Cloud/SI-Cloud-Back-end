@@ -4,6 +4,7 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.ProductRepository;
 import com.shinhan.sunInCloud.service.OrderService;
 import com.shinhan.sunInCloud.service.SellerImportService;
+import com.shinhan.sunInCloud.service.ThreePLImportService;
 
 @SpringBootTest
 public class ImportsTest {
@@ -51,6 +53,9 @@ public class ImportsTest {
 	@Autowired
 	ImportsRepository importsRepository;
 	
+	@Autowired
+	ThreePLImportService threePLImportService;
+	//판매자
 	
 	//발주 목록 조회
 	//@Test
@@ -77,7 +82,7 @@ public class ImportsTest {
 			
 	}
 	
-	@Test
+	//@Test
 	void saveImports() {
 		Long sellerNo=8L;
 		int pageNumber = 0;
@@ -122,7 +127,30 @@ public class ImportsTest {
 	
 	//입고 내역 리스트 목록 조회
 	//@Test
-	void seeImportList() {
+//	void seeImportList() {
+//		Long sellerNo = 8L;
+//		int pageNumber = 0;
+//		int countperPage = 10;
+//		List<Imports> importProduct = importsRepository.findAllBySeller_SellerNo(sellerNo);
+//		
+//		for(Imports im: importProduct) {
+//			System.out.println(im.getImportNo());
+//		}
+//		Assertions.assertThat(importProduct.size()).isEqualTo(expected);
+//		
+//	}
+	
+	//3pl
+	@Test
+	void goRegister() {
+		Long importNo = 150L;
+		int pageNum = 0;
+		int countPerPage = 10;
+		List<ImportProductDTO> im = threePLImportService.goRegister(importNo, pageNum, countPerPage);
+		for(ImportProductDTO i: im) {
+			System.out.println(i.getProductNo());
+		}
 		
 	}
+	
 }
