@@ -33,6 +33,7 @@ public class ImportProductDTO {
 				.importProductNo(importProductNo)
 				.product(product)
 				.importAmount(importAmount)
+				.requestAmount(requestAmount)
 				.importProductNo(importProductNo)
 				.imports(imports)
 				.build();
