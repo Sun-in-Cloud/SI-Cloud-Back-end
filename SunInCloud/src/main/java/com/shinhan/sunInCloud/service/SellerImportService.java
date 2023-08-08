@@ -1,6 +1,7 @@
 package com.shinhan.sunInCloud.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -124,20 +125,27 @@ public class SellerImportService {
 		 * @param pageSize
 		 * @return
 		 */
-		public ImportProductListDTO seePreList(Long sellerNo, int pageNumber, int countPerPage) {
+		   //내가 보여줄거 
+		public List<ImportProductListDTO> seePreList(Long sellerNo, int pageNumber, int countPerPage) {
+			//sellerNo가 있는 
 			List<ImportsDTO> importsDTOs = new ArrayList<>();
-			Page<Imports> im = importRepository.findBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, countPerPage));
+			List<Imports> im = importRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, countPerPage));
 			for(Imports imports : im) {
 				importsDTOs.add(ImportsDTO.builder().importDate(imports.getImportDate())
 						.importNo(imports.getImportNo())
 						.requestDate(imports.getRequestDate())
-						.sellerNo(imports.getSeller().getSellerNo())
 						.build());
 			}	
 			
 			Long count = orderRepository.countBySeller_SellerNo(sellerNo);
 			Long totalPage = calculatePageCount(count, countPerPage);
-			return ImportProductListDTO.builder().totalPage(totalPage).importproduct(importsDTOs).build();
+
+		    ImportProductListDTO importProductListDTO = ImportProductListDTO.builder()
+		            .totalPage(totalPage)
+		            .importproduct(importsDTOs)
+		            .build();
+
+		    return Collections.singletonList(importProductListDTO);
 		}
 
 		/**
