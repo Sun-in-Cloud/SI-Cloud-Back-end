@@ -196,19 +196,7 @@ public class ExportsService {
 	 * 작성자: 손준범
 	 */
 	public List<NumberOfSalesDTO> getNumberOfSalesOfSellerWeekly(List<String> dates, Long sellerNo) {
-		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(dates, sellerNo);
-		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
-		Map<String, Long> map = aggregateWeeklyData(dates, counts);
-		for (String date : dates) {
-			String[] arr = date.split("-");
-			numberOfSales.add(NumberOfSalesDTO.builder()
-					.year(Integer.parseInt(arr[0]))
-					.month(Integer.parseInt(arr[1]))
-					.day(Integer.parseInt(arr[2]))
-					.numberOfSales(map.get(date))
-					.build());
-		}
-		return numberOfSales;
+		return getNumberOfSalesWeekly(dates, exportProductRepository.getDailySalesCountForWeek(dates, sellerNo));
 	}
 	
 	/**
@@ -300,7 +288,16 @@ public class ExportsService {
 	 * 작성자: 손준범
 	 */
 	public List<NumberOfSalesDTO> getNumberOfSalesProductWeekly(List<String> dates, String productNo) {
-		List<Object[]> counts = exportProductRepository.getDailySalesCountOfProductForWeek(dates, productNo);
+		return getNumberOfSalesWeekly(dates, exportProductRepository.getDailySalesCountOfProductForWeek(dates, productNo));
+	}
+	
+	/**
+	 * 일주일간의 일일 판매건수
+	 * @param dates
+	 * @param counts
+	 * @return
+	 */
+	private List<NumberOfSalesDTO> getNumberOfSalesWeekly(List<String> dates, List<Object[]> counts) {
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
 		Map<String, Long> map = aggregateWeeklyData(dates, counts);
 		for (String date : dates) {
