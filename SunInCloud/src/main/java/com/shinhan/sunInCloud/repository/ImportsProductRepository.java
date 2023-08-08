@@ -7,6 +7,8 @@ import com.shinhan.sunInCloud.entity.ImportProduct;
 
 public interface ImportsProductRepository extends JpaRepository<ImportProduct, Long> {
 
-	ImportProduct findByImports_ImportNo(Long importNo);
+	List<ImportProduct> findByImports_ImportNo(Long importNo);
+	//List<ImportProduct> findByImports_ImportNo(Long importNo);
+	Long countByImports_ImportNo(Long importNo);
 	
 }

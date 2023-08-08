@@ -13,6 +13,7 @@ import com.shinhan.sunInCloud.dto.ImportProductListDTO;
 import com.shinhan.sunInCloud.dto.ImportProductPostDTO;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.service.SellerImportService;
+import com.shinhan.sunInCloud.service.ThreePLImportService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class ImportsController {
 	
 	private final SellerImportService sellerImportService;
+	private final ThreePLImportService threePLImportService;
 	
 	//발주 등록
 	@PostMapping(value= {"/seller/import/register"})
@@ -30,16 +32,30 @@ public class ImportsController {
 	
 	
 	//입고예정 리스트 상세 조회
-	@GetMapping(value= {"/seller/import/pre/detail/{importNo}"})
+	@GetMapping(value= {"/seller/import/pre/detail/{importNo}","/3pl/import/pre/{importNo}"})
 	public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, @PathVariable Long importNo) {
 		return sellerImportService.seePreDetail(importProductDTO, importNo);
 	}
 	//발주 상품 검색
 	@GetMapping(value= {"/seller/import/search"})
-	public List<Product> searchOrder(String productName) {
-		return sellerImportService.searchOrder(productName);
+	public List<Product> searchOrder(String productName, Long sellerNo) {
+		return sellerImportService.searchOrder(productName, sellerNo);
 	}
 	
+	@GetMapping(value= {"seller/import/list"})
+	public ImportProductListDTO seeList (Long sellerNo, int pageNum, int countPerPage) {
+		return sellerImportService.seeList(sellerNo, pageNum, countPerPage);
+	}
+	
+	@GetMapping(value= {"/3pl/import/register"})
+	public List<ImportProductDTO> goRegister(Long importNo, int pageNum, int countPerPage) {
+		return threePLImportService.goRegister(importNo, pageNum, countPerPage);
+	}
+	
+	@PostMapping(value=  {"/3pl/import/register"})
+	public boolean saveThreePLImport(@RequestBody ImportProductPostDTO dto) {
+		return threePLImportService.saveImport(dto.getSellerNo(), dto.getDtos());
+	}
 }
 
 

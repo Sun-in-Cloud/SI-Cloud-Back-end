@@ -44,7 +44,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 			+ ") "
 			+ ") and is_active = 1 and current_stock < safety_stock", nativeQuery = true)
 	List<Product> findByNeededToOrder(@Param("sellerNo") Long sellerNo);
-	List<Product> findByProductNameContaining(String productName);
+	@Query("SELECT p FROM Product p WHERE p.productName LIKE %:productName% AND p.seller.sellerNo = :sellerNo")
+	List<Product> findByProductNameContainingAndSellerNo(@Param("productName") String productName, @Param("sellerNo") Long sellerNo);
 	Long countBySeller_SellerNo(Long sellerNo);
 	boolean existsByProductNameAndSeller_SellerNo(String productName, Long sellerNo);
 	
