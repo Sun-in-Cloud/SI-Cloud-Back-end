@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
-import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
+import com.shinhan.sunInCloud.dto.MatchingListDTO;
 import com.shinhan.sunInCloud.service.MatchingService;
 import com.shinhan.sunInCloud.service.WarehouseService;
 
@@ -33,7 +33,12 @@ public class MatchingController {
 	}
 	
 	@GetMapping("/3pl/match/list")
-	public MatchingSellerListDTO searcingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
+	public MatchingListDTO searcingSellerByCondition(MatchingConditionDTO matchingConditionDTO) {
 		return matchingService.searchingSellerByCondition(matchingConditionDTO);
+	}
+	
+	@GetMapping("/seller/match/list")
+	public MatchingListDTO searchingThreePLByCondition(MatchingConditionDTO matchingConditionDTO) {
+		return matchingService.searchingThreePLByCondition(matchingConditionDTO);
 	}
 }
