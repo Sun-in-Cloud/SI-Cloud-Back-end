@@ -39,16 +39,6 @@ public class MarketingService {
 	}
 	
 	/**
-	 * 일주일간의 일별 매출 조회 메서드
-	 * @param sellerNo
-	 * @return 7일간의 일별 매출 List
-	 * 작성자: 손준범
-	 */
-	private List<TotalSalesDTO> getTotalSalesWeekly(Long sellerNo) {
-		return exportsService.getTotalSalesWeekly(getWeekDatesString(), sellerNo);
-	}
-	
-	/**
 	 * 최근 일주일의 날짜 String을 추출하는 메소드 분리
 	 * @return 최근7일간의 각 일자
 	 * 작성자: 손준범
@@ -88,25 +78,16 @@ public class MarketingService {
 				.numberOfSalesWeekly(getNumberOfSalesWeekly(productNo))
 				.numberOfSalesMonthly(getNumberOfSalesMonthly(productNo))
 				.numberOfSalesYearly(getNumberOfSalesYearly(productNo))
-				.totalSalesWeekly(getTotalSalesOfProductWeekly(productNo))
+				.totalSalesWeekly(getTotalSalesWeekly(productNo))
 				.totalSalesMonthly(getTotalSalesMonthly(productNo))
 				.totalSalesYearly(getTotalSalesYearly(productNo))
 				.build();
 	}
 	
 	/**
-	 * 일주일간의 일별 매출 조회 메서드
-	 * @param productNo
-	 * @return 7일간의 일별 매출 List
-	 * 작성자: 손준범
-	 */
-	private List<TotalSalesDTO> getTotalSalesOfProductWeekly(String productNo) {
-		return exportsService.getTotalSalesOfProductWeekly(getWeekDatesString(), productNo);
-	}
-	
-	/**
 	 * 일주일간의 일별 판매 건수 조회 메서드
-	 * @param productNo
+	 * T : String or Long
+	 * @param id
 	 * @return 해당 상품의 7일간의 일별 판매 건수 List
 	 * 작성자: 손준범
 	 */
@@ -178,6 +159,23 @@ public class MarketingService {
 					.build());
 		}
 		return numberOfSalesYearly;
+	}
+	
+	/**
+	 * 일주일간의 일별 매출 조회 메서드
+	 * T : String or Long
+	 * @param id
+	 * @return 7일간의 일별 매출 List
+	 * 작성자: 손준범
+	 */
+	private <T> List<TotalSalesDTO> getTotalSalesWeekly(T id) {
+		List<TotalSalesDTO> totalSalesWeekly = new ArrayList<>();
+		if (id instanceof Long) {
+			totalSalesWeekly = exportsService.getTotalSalesWeekly(getWeekDatesString(), (Long) id);
+		} else if (id instanceof String) {
+			totalSalesWeekly = exportsService.getTotalSalesOfProductWeekly(getWeekDatesString(), (String) id); 
+		}
+		return totalSalesWeekly; 
 	}
 	
 	/**
