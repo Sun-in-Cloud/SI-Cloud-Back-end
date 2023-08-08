@@ -68,7 +68,7 @@ public class Seller {
 				.productGroup(productGroup.getGroupName())
 				.companyName(companyName)
 				.endDate(matching == null ? null : TimestampUtil.convertTimestampToDate(matching.getEndDate()))
-				.location(matching.getWarehouse().getLocation())
+				.location(matching == null ? null : matching.getWarehouse().getLocation())
 				.sellerNo(sellerNo)
 				.build();
 	}
