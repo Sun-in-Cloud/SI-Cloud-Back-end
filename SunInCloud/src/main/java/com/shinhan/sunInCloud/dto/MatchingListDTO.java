@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MatchingSellerListDTO {
+public class MatchingListDTO {
 	private int totalPage;
 	private List<MatchingDTO> matchingCompanies;
 }
