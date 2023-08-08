@@ -114,34 +114,7 @@ public class SellerImportService {
 		         }
 		         return importSaved;
 		      }
-//		public boolean saveImport(Long sellerNo, Long orderNo, List<ImportProductDTO> importProductDTOs) {
-//	         // 입고 내역을 저장함 -> 화주사 번호 필요함
-//	         Seller seller = sellerService.findById(sellerNo);
-//	         //발주 번호로 발주내역 조회 ?
-//	         List<OrderProductDTO> orders = orderService.findByOrderNo(orderNo);
-//	         //그 발주 내역에 입고 번호 저장 ?
-//	         
-//	         Imports imports = importRepository.save(Imports.builder().seller(seller).build());
-//	         // 각 입고 상품에 입고 번호 부여 및 입고 내역과 관계 설정
-//	         List<ImportProduct> importProducts = new ArrayList<>();
-//	         for (ImportProductDTO importProductDTO : importProductDTOs) {
-//	            Product product = productService.findByProductNo(importProductDTO.getProductNo());
-//	            ImportProduct importProduct = ImportProduct.builder()
-//	                  .importAmount(importProductDTO.getImportAmount())
-//	                  .imports(imports) // 입고 내역과 관련된 입고 상품 설정
-//	                  .product(product)
-//	                  .importProductNo(importProductDTO.getImportProductNo())
-//	                  .requestAmount(importProductDTO.getRequestAmount())
-//	                  .build();
-//	            importProducts.add(importProduct);
-//	         }
-//
-//	         // 각 입고 상품 저장
-//	         importProductRepository.saveAll(importProducts);
-//
-//	         // 입고 내역과 입고 상품이 모두 저장되면 true 반환
-//	         return imports.getImportNo() != null;
-//	      }
+
 
 		/**3.입고 예정 리스트
 		 * 3.1 입고 예정 리스트 목록 조회
@@ -173,16 +146,17 @@ public class SellerImportService {
 		 * @param importNo
 		 * @return List<ImportProductDTO>
 		 */
-//		public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
-//			ImportProduct im= importProductRepository.findByImports_ImportNo(importNo);
-//			if(im==null) return null;
-//			return importsProductDTO.builder()
-//						.productNo(im.getProduct().getProductNo())
-//						.productName(im.getProduct().getProductName())
-//						.importAmount(im.getImportAmount())
-//						.build();
-//			
-//		}
+		public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
+			ImportProduct im= importProductRepository.findByImports_ImportNo(importNo);
+			if(im==null) return null;
+			return importProductDTO.builder()
+						.productNo(im.getProduct().getProductNo())
+						.productName(im.getProduct().getProductName())
+						.requestAmount(im.getRequestAmount())
+						.build();
+			
+		}
+		
 //      //4.입고 내역 리스트
 //      //4.1 목록
       public ImportProductListDTO seeList(Long sellerNo, int pageNum, int countPerPage){
