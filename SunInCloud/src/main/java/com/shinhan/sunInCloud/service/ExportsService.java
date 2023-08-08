@@ -327,12 +327,34 @@ public class ExportsService {
 
 	/**
 	 * 입력으로 주어진 년도에 해당하는 판매 건수 조회 메서드
-	 * @param sellerNo
+	 * @param productNo
 	 * @param year
 	 * @return 판매건수
 	 * 작성자: 손준범
 	 */
 	public Long getNumberOfSalesOfProductYearly(String productNo, int year) {
 		return exportProductRepository.getSalesCountOfProductOfYear(productNo, year);
+	}
+	
+	/**
+	 * 일주일간의 일별 매출 조회 메서드
+	 * @param productNo
+	 * @param dates
+	 * @return 7일간의 일별 매출 List
+	 */
+	public List<TotalSalesDTO> getTotalSalesOfProductWeekly(List<String> dates, String productNo) {
+		List<Object[]> totalSales = exportProductRepository.getDailySalesOfProductForWeek(dates, productNo);
+		List<TotalSalesDTO> totalSalesWeekly = new ArrayList<>();
+		Map<String, Long> map = aggregateWeeklyData(dates, totalSales);
+		for (String date : dates) {
+			String[] arr = date.split("-");
+			totalSalesWeekly.add(TotalSalesDTO.builder()
+					.year(Integer.parseInt(arr[0]))
+					.month(Integer.parseInt(arr[1]))
+					.day(Integer.parseInt(arr[2]))
+					.totalSales(map.get(date))
+					.build());
+		}
+		return totalSalesWeekly;
 	}
 }

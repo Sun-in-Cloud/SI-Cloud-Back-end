@@ -194,7 +194,7 @@ public class MarketingService {
 				.numberOfSalesWeekly(getNumberOfSalesOfProductWeekly(productNo))
 				.numberOfSalesMonthly(getNumberOfSalesOfProductMonthly(productNo))
 				.numberOfSalesYearly(getNumberOfSalesOfProductYearly(productNo))
-//				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
+				.totalSalesWeekly(getTotalSalesOfProductWeekly(productNo))
 //				.totalSalesMonthly(getTotalSalesMonthly(sellerNo))
 //				.totalSalesYearly(getTotalSalesYearly(sellerNo))
 				.build();
@@ -259,5 +259,15 @@ public class MarketingService {
 					.build());
 		}
 		return numberOfSalesYearly;
+	}
+	
+	/**
+	 * 일주일간의 일별 매출 조회 메서드
+	 * @param productNo
+	 * @return 7일간의 일별 매출 List
+	 * 작성자: 손준범
+	 */
+	private List<TotalSalesDTO> getTotalSalesOfProductWeekly(String productNo) {
+		return exportsService.getTotalSalesOfProductWeekly(getWeekDatesString(), productNo);
 	}
 }
