@@ -71,7 +71,7 @@ public class SellerImportService {
 		 */
 		public List<Product> searchOrder(String productName, Long sellerNo) {
 			//특정화주사를 조회하는 코드 추가
-			return productRepository.findByProductNameContaining(productName, sellerNo);
+			return productRepository.findByProductNameContainingAndSellerNo(productName, sellerNo);
 			
 		}
 		
