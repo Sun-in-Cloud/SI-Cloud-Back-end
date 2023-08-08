@@ -16,11 +16,11 @@ public class MarketingController {
 	
 	@GetMapping("/seller/marketing/statistics")
 	public StatisticsDTO getStatisticsBySeller(Long sellerNo) {
-		return marketingService.getStatisticsBySeller(sellerNo);
+		return marketingService.getStatistics(sellerNo);
 	}
 	
 	@GetMapping("/seller/marketing/product")
 	public StatisticsDTO getStatisticsOfProduct(String productNo) {
-		return marketingService.getStatisticsOfProduct(productNo);
+		return marketingService.getStatistics(productNo);
 	}
 }
