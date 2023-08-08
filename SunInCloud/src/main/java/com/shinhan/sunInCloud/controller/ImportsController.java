@@ -13,6 +13,7 @@ import com.shinhan.sunInCloud.dto.ImportProductListDTO;
 import com.shinhan.sunInCloud.dto.ImportProductPostDTO;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.service.SellerImportService;
+import com.shinhan.sunInCloud.service.ThreePLImportService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class ImportsController {
 	
 	private final SellerImportService sellerImportService;
+	private final ThreePLImportService threePLImportService;
 	
 	//발주 등록
 	@PostMapping(value= {"/seller/import/register"})
@@ -43,6 +45,11 @@ public class ImportsController {
 	@GetMapping(value= {"seller/import/list"})
 	public ImportProductListDTO seeList (Long sellerNo, int pageNum, int countPerPage) {
 		return sellerImportService.seeList(sellerNo, pageNum, countPerPage);
+	}
+	
+	@GetMapping(value= {"/3pl/import/register"})
+	public List<ImportProductDTO> goRegister(Long importNo, int pageNum, int countPerPage, Long sellerNo) {
+		return threePLImportService.goRegister(importNo, pageNum, countPerPage, sellerNo);
 	}
 }
 
