@@ -57,9 +57,9 @@ public class MatchingService {
 		// 창고가 없는 경우, 남은 자리가 없는 경우 실패
 		if(warehouse == null || (warehouse.getThreePL().getCntContracted() == warehouse.getThreePL().getCntTotal())) return false;
 		// 다른 사람과 계약된 경우 실패
-		if(tmpMatching == null) return false;
+		if(tmpMatching != null) return false;
 		// 나와 이미 계약된 경우 실패
-		if(tmpMatching.getSeller() == seller) return false;
+		if(tmpMatching != null && (tmpMatching.getSeller() == seller)) return false;
 		
 		Matching matching = Matching
 				.builder()
