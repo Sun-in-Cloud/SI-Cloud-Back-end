@@ -57,4 +57,15 @@ public class TimestampUtil {
 		
 		return result.format(date);
 	}
+	
+	/**
+	 * 작년 연도 얻기
+	 * @return
+	 */
+	public static int getLastYear() {
+		Date date = new Date();
+		SimpleDateFormat pattern = new SimpleDateFormat("yyyy");
+		
+		return Integer.parseInt(pattern.format(date)) - 1;
+	}
 }
