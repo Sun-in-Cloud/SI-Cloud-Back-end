@@ -290,4 +290,31 @@ public class ExportsService {
 		}
 		return map;
 	}
+
+	/**
+	 * 일주일간의 일별 판매 건수 조회 메서드
+	 * Map 사용
+	 * 1. 각 일자별 카운트를 0으로 초기화 한
+	 * 2. 데이터가 있는 날짜만 개수 변경
+	 * 3. 각 개수를 DTO로 변경
+	 * @param weekDatesString
+	 * @param productNo
+	 * @return NumberOfSalesDTO List
+	 * 작성자: 손준범
+	 */
+	public List<NumberOfSalesDTO> getNumberOfSalesProductWeekly(List<String> dates, String productNo) {
+		List<Object[]> counts = exportProductRepository.getDailySalesCountOfProductForWeek(dates, productNo);
+		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
+		Map<String, Long> map = aggregateWeeklyData(dates, counts);
+		for (String date : dates) {
+			String[] arr = date.split("-");
+			numberOfSales.add(NumberOfSalesDTO.builder()
+					.year(Integer.parseInt(arr[0]))
+					.month(Integer.parseInt(arr[1]))
+					.day(Integer.parseInt(arr[2]))
+					.numberOfSales(map.get(date))
+					.build());
+		}
+		return numberOfSales;
+	}
 }

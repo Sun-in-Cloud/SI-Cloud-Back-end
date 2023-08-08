@@ -72,4 +72,15 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "WHERE seller_seller_no = :sellerNo ) AND "
 			+ "YEAR(export_date) = :year", nativeQuery = true)
 	Long getYearlySales(@Param("sellerNo") Long sellerNo, @Param("year") int year);
+	
+	@Query(value = "SELECT Date(e.export_date) as exportDate, sum(amount) as exportCount "
+			+ "FROM export_product e "
+			+ "WHERE export_no in ( "
+			+ "SELECT export_no "
+			+ "FROM exports "
+			+ "WHERE product_no = :productNo ) "
+			+ " AND "
+			+ "export_date IS NOT NULL AND DATE_FORMAT(e.export_date, '%Y-%m-%d') IN (:dates) "
+			+ "GROUP BY Date(e.export_date)", nativeQuery = true)
+	List<Object[]> getDailySalesCountOfProductForWeek(@Param("dates") List<String> dates, @Param("productNo") String productNo);
 }
