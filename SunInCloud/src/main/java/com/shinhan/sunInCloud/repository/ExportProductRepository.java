@@ -121,4 +121,13 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "WHERE product_no = :productNo ) AND "
 			+ "YEAR(export_date) = :year AND MONTH(export_date) =:month", nativeQuery = true)
 	Long getMonthlySalesOfProduct(@Param("productNo") String productNo, @Param("year") int year, @Param("month") int month);
+	
+	@Query(value = "SELECT COALESCE(SUM(selling_price), 0) as totalSales "
+			+ "FROM export_product "
+			+ "WHERE export_no in ( "
+			+ "SELECT export_no "
+			+ "FROM exports "
+			+ "WHERE product_no = :productNo ) AND "
+			+ "YEAR(export_date) = :year", nativeQuery = true)
+	Long getYearlySalesOfProduct(@Param("productNo") String productNo, @Param("year") int year);
 }
