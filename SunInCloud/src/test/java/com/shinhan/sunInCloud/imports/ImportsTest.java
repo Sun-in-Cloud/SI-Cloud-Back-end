@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.dto.ImportProductListDTO;
 import com.shinhan.sunInCloud.dto.ImportsDTO;
@@ -55,6 +56,8 @@ public class ImportsTest {
 	
 	@Autowired
 	ThreePLImportService threePLImportService;
+	
+	
 	//판매자
 	
 	//발주 목록 조회
@@ -142,7 +145,7 @@ public class ImportsTest {
 //	}
 	
 	//3pl
-	@Test
+	//@Test
 	void goRegister() {
 		Long importNo = 150L;
 		int pageNum = 0;
@@ -152,6 +155,28 @@ public class ImportsTest {
 			System.out.println(i.getProductNo());
 		}
 		
+	}	
+	
+	//입고 등록
+	@Test
+	void isRegister() {
+		 Long sellerNo = 8L;
+		    List<ImportProductDTO> importProductDTOs = new ArrayList<>();
+		    
+		    ImportProductDTO importProductDTO = ImportProductDTO.builder()
+		            .importAmount(10)
+		            .productNo("1")
+		            .importNo(21L)
+		            .requestAmount(10)
+		            
+		            .productName("로손")
+		            .build();
+		    
+		    importProductDTOs.add(importProductDTO);
+		    
+		    boolean importProducts = threePLImportService.saveImport(sellerNo, importProductDTOs);
+		    Assertions.assertThat(importProducts).isTrue();
 	}
+	
 	
 }
