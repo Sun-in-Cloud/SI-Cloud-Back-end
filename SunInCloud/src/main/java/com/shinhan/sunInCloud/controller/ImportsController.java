@@ -48,8 +48,8 @@ public class ImportsController {
 	}
 	
 	@GetMapping(value= {"/3pl/import/register"})
-	public List<ImportProductDTO> goRegister(Long importNo, int pageNum, int countPerPage, Long sellerNo) {
-		return threePLImportService.goRegister(importNo, pageNum, countPerPage, sellerNo);
+	public List<ImportProductDTO> goRegister(Long importNo, int pageNum, int countPerPage) {
+		return threePLImportService.goRegister(importNo, pageNum, countPerPage);
 	}
 }
 
