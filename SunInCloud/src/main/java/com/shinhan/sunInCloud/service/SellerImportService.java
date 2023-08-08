@@ -69,9 +69,9 @@ public class SellerImportService {
 		 * @param productName
 		 * @return
 		 */
-		public List<Product> searchOrder(String productName) {
+		public List<Product> searchOrder(String productName, Long sellerNo) {
 			//특정화주사를 조회하는 코드 추가
-			return productRepository.findByProductNameContaining(productName);
+			return productRepository.findByProductNameContaining(productName, sellerNo);
 			
 		}
 		
@@ -147,7 +147,7 @@ public class SellerImportService {
 		 * @return List<ImportProductDTO>
 		 */
 		public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, Long importNo) {
-			ImportProduct im= importProductRepository.findByImports_ImportNo(importNo);
+			ImportProduct im= importProductRepository.findByImports_ImportNo(importNo).get(0);
 			if(im==null) return null;
 			return importProductDTO.builder()
 						.productNo(im.getProduct().getProductNo())
