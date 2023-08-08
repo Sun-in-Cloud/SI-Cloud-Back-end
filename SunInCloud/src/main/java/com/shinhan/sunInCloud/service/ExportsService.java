@@ -190,8 +190,7 @@ public class ExportsService {
 	 * 1. 각 일자별 카운트를 0으로 초기화 한
 	 * 2. 데이터가 있는 날짜만 개수 변경
 	 * 3. 각 개수를 DTO로 변경
-	 * @param startDate
-	 * @param endDate
+	 * @param dates
 	 * @param sellerNo
 	 * @return NumberOfSalesDTO List
 	 * 작성자: 손준범
@@ -238,8 +237,7 @@ public class ExportsService {
 	/**
 	 * 일주일간의 일별 매출 조회 메서드
 	 * @param startDate
-	 * @param endDate
-	 * @param sellerNo
+	 * @param dates
 	 * @return 7일간의 일별 매출 List
 	 */
 	public List<TotalSalesDTO> getTotalSalesWeekly(List<String> dates, Long sellerNo) {
@@ -273,7 +271,6 @@ public class ExportsService {
 	 * 입력으로 주어진 년도에 해당하는 매출 조회 메서드
 	 * @param sellerNo
 	 * @param year
-	 * @param month
 	 * @return 매출
 	 */
 	public Long getTotalSalesYearly(Long sellerNo, int year) {
@@ -298,7 +295,7 @@ public class ExportsService {
 	 * 2. 데이터가 있는 날짜만 개수 변경
 	 * 3. 각 개수를 DTO로 변경
 	 * @param weekDatesString
-	 * @param productNo
+	 * @param dates
 	 * @return NumberOfSalesDTO List
 	 * 작성자: 손준범
 	 */
