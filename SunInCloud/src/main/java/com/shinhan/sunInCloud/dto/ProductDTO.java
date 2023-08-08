@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Builder
 @Setter
@@ -34,6 +35,7 @@ public class ProductDTO {
 	 */
 	public Product toProduct(Seller seller, DetailProductGroup detailProductGroup) {
 		return Product.builder()
+				.productNo(productNo)
 				.seller(seller)
 				.productName(productName)
 				.safetyStock(safetyStock)
