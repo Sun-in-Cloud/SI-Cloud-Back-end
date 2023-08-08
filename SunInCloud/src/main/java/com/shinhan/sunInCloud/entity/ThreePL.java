@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,6 +65,14 @@ public class ThreePL {
 	@Builder.Default
 	private Integer cntContracted = 0;
 	
+	/**
+	 * ThreePL -> ThreePLDTO
+	 * 상세 조회
+	 * @param endDate
+	 * @param exportCnt
+	 * @param matchings
+	 * @return
+	 */
 	public ThreePLDTO toThreePLDTO(String endDate, long exportCnt, List<MatchingDTO> matchings) {
 		return ThreePLDTO
 				.builder()
@@ -82,6 +91,23 @@ public class ThreePL {
 				.leftContract(cntTotal - cntContracted)
 				.exportCnt(exportCnt)
 				.matchings(matchings)
+				.build();
+	}
+	
+	/**
+	 * ThreePL -> MatchingDTO
+	 * 매칭 검색시 보이는 정보
+	 * @param endDate
+	 * @return
+	 */
+	public MatchingDTO toMatchingThreePLDTO(String endDate) {
+		return MatchingDTO
+				.builder()
+				.productGroup(productGroup.getGroupName())
+				.companyName(companyName)
+				.endDate(endDate)
+				.threePLNo(threePLNo)
+				.leftLocation(cntTotal - cntContracted)
 				.build();
 	}
 }

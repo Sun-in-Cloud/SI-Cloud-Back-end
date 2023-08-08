@@ -20,7 +20,7 @@ public class MarketingTest {
 
 	@Test
 	void findStatisticsBySeller() {
-		StatisticsDTO statistics = marketingService.getStatisticsBySeller(8L);
+		StatisticsDTO statistics = marketingService.getStatistics(8L);
 		getNumberOfSalesMonthlyTest(statistics.getNumberOfSalesMonthly());
 		getNumberOfSalesYearlyTest(statistics.getNumberOfSalesYearly());
 		getTotalSalesMonthlyTest(statistics.getTotalSalesMonthly());
