@@ -67,8 +67,8 @@ public class SellerService {
 	public SellerDTO sellerDetail(Long sellerNo) {
 		Seller seller = sellerRepo.findById(sellerNo).orElse(null);
 		
-		Long sales = exportProductRepository.getYearlySales(sellerNo, Integer.parseInt(TimestampUtil.getPattern("yyyy")) - 1);
-		Long exportCnt = exportProductRepository.getSalesCountOfYear(sellerNo, Integer.parseInt(TimestampUtil.getPattern("yyyy")) - 1);
+		Long sales = exportProductRepository.getYearlySales(sellerNo, TimestampUtil.getLastYear());
+		Long exportCnt = exportProductRepository.getSalesCountOfYear(sellerNo, TimestampUtil.getLastYear());
 		Matching matching = matchingRepository.findBySeller_SellerNo(sellerNo);
 		
 		MatchingDTO matchingDTO = null;
