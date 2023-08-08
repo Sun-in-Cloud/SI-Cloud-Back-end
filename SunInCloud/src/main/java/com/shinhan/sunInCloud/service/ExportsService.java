@@ -190,26 +190,13 @@ public class ExportsService {
 	 * 1. 각 일자별 카운트를 0으로 초기화 한
 	 * 2. 데이터가 있는 날짜만 개수 변경
 	 * 3. 각 개수를 DTO로 변경
-	 * @param startDate
-	 * @param endDate
+	 * @param dates
 	 * @param sellerNo
 	 * @return NumberOfSalesDTO List
 	 * 작성자: 손준범
 	 */
-	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(List<String> dates, Long sellerNo) {
-		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(dates, sellerNo);
-		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
-		Map<String, Long> map = aggregateWeeklyData(dates, counts);
-		for (String date : dates) {
-			String[] arr = date.split("-");
-			numberOfSales.add(NumberOfSalesDTO.builder()
-					.year(Integer.parseInt(arr[0]))
-					.month(Integer.parseInt(arr[1]))
-					.day(Integer.parseInt(arr[2]))
-					.numberOfSales(map.get(date))
-					.build());
-		}
-		return numberOfSales;
+	public List<NumberOfSalesDTO> getNumberOfSalesOfSellerWeekly(List<String> dates, Long sellerNo) {
+		return getNumberOfSalesWeekly(dates, exportProductRepository.getDailySalesCountForWeek(dates, sellerNo));
 	}
 	
 	/**
@@ -220,7 +207,7 @@ public class ExportsService {
 	 * @return 판매건수
 	 * 작성자: 손준범
 	 */
-	public Long getNumberOfSalesMonthly(Long sellerNo, int year, int month) {
+	public Long getNumberOfSalesOfSellerMonthly(Long sellerNo, int year, int month) {
 		return exportProductRepository.getSalesCountOfMonth(sellerNo, year, month);
 	}
 
@@ -238,8 +225,7 @@ public class ExportsService {
 	/**
 	 * 일주일간의 일별 매출 조회 메서드
 	 * @param startDate
-	 * @param endDate
-	 * @param sellerNo
+	 * @param dates
 	 * @return 7일간의 일별 매출 List
 	 */
 	public List<TotalSalesDTO> getTotalSalesWeekly(List<String> dates, Long sellerNo) {
@@ -273,7 +259,6 @@ public class ExportsService {
 	 * 입력으로 주어진 년도에 해당하는 매출 조회 메서드
 	 * @param sellerNo
 	 * @param year
-	 * @param month
 	 * @return 매출
 	 */
 	public Long getTotalSalesYearly(Long sellerNo, int year) {
@@ -289,5 +274,54 @@ public class ExportsService {
 			map.put(String.valueOf(oneData[0]), ((BigDecimal)oneData[1]).longValue());
 		}
 		return map;
+	}
+
+	/**
+	 * 일주일간의 일별 판매 건수 조회 메서드
+	 * Map 사용
+	 * 1. 각 일자별 카운트를 0으로 초기화 한
+	 * 2. 데이터가 있는 날짜만 개수 변경
+	 * 3. 각 개수를 DTO로 변경
+	 * @param weekDatesString
+	 * @param dates
+	 * @return NumberOfSalesDTO List
+	 * 작성자: 손준범
+	 */
+	public List<NumberOfSalesDTO> getNumberOfSalesProductWeekly(List<String> dates, String productNo) {
+		return getNumberOfSalesWeekly(dates, exportProductRepository.getDailySalesCountOfProductForWeek(dates, productNo));
+	}
+	
+	/**
+	 * 일주일간의 일일 판매건수
+	 * @param dates
+	 * @param counts
+	 * @return
+	 */
+	private List<NumberOfSalesDTO> getNumberOfSalesWeekly(List<String> dates, List<Object[]> counts) {
+		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
+		Map<String, Long> map = aggregateWeeklyData(dates, counts);
+		for (String date : dates) {
+			String[] arr = date.split("-");
+			numberOfSales.add(NumberOfSalesDTO.builder()
+					.year(Integer.parseInt(arr[0]))
+					.month(Integer.parseInt(arr[1]))
+					.day(Integer.parseInt(arr[2]))
+					.numberOfSales(map.get(date))
+					.build());
+		}
+		return numberOfSales;
+	}
+	
+	/**
+	 * 입력으로 주어진 년, 월에 해당하는 판매 건수 조회 메서드
+	 * @param productNo
+	 * @param year
+	 * @param month
+	 * @return 판매건수
+	 * 작성자: 손준범
+	 */
+	
+	public Long getNumberOfSalesOfProductMonthly(String productNo, int year, int month) {
+		return exportProductRepository.getSalesCountOfProductOfMonth(productNo, year, month);
 	}
 }

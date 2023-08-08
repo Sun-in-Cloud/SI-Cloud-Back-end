@@ -68,6 +68,7 @@ public class Seller {
 				.productGroup(productGroup.getGroupName())
 				.companyName(companyName)
 				.endDate(matching == null ? null : TimestampUtil.convertTimestampToDate(matching.getEndDate()))
+				.location(matching.getWarehouse().getLocation())
 				.sellerNo(sellerNo)
 				.build();
 	}
@@ -93,6 +94,7 @@ public class Seller {
 				.sales(sales)
 				.exportCnt(exportCnt)
 				.matching(matchingDTO)
+				.endDate(matchingDTO == null ? null : matchingDTO.getEndDate())
 				.build();
 	}
 }

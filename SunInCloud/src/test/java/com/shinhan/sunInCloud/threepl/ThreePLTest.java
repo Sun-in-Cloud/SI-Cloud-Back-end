@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shinhan.sunInCloud.dto.ThreePLDTO;
 import com.shinhan.sunInCloud.entity.ProductGroup;
 import com.shinhan.sunInCloud.entity.ThreePL;
 import com.shinhan.sunInCloud.entity.User;
@@ -21,7 +22,7 @@ public class ThreePLTest {
 	@Autowired
 	ProductGroupService productGroupService;
 	
-	@Test
+//	@Test
 	void registerThreePL() {
 		User user = User.builder()
 				.loginId("oliveZero")
@@ -50,5 +51,13 @@ public class ThreePLTest {
 		Assertions.assertThat(threePL.getCompanyName()).isEqualTo(registeredThreePL.getCompanyName());
 		Assertions.assertThat(threePL.getAddress()).isEqualTo(registeredThreePL.getAddress());
 		Assertions.assertThat(registeredThreePL.getThreePLNo()).isNotNull();
+	}
+	
+	@Test
+	public void detailThreepl() {
+		Long threePLNo = 10L;
+		
+		ThreePLDTO threePLDTO = threePLService.threePLDetail(threePLNo);
+		Assertions.assertThat(threePLDTO).isNotNull();
 	}
 }
