@@ -195,7 +195,7 @@ public class ExportsService {
 	 * @return NumberOfSalesDTO List
 	 * 작성자: 손준범
 	 */
-	public List<NumberOfSalesDTO> getNumberOfSalesWeekly(List<String> dates, Long sellerNo) {
+	public List<NumberOfSalesDTO> getNumberOfSalesOfSellerWeekly(List<String> dates, Long sellerNo) {
 		List<Object[]> counts = exportProductRepository.getDailySalesCountForWeek(dates, sellerNo);
 		List<NumberOfSalesDTO> numberOfSales = new ArrayList<>();
 		Map<String, Long> map = aggregateWeeklyData(dates, counts);

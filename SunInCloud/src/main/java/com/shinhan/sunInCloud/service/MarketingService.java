@@ -29,7 +29,7 @@ public class MarketingService {
 	 */
 	public StatisticsDTO getStatisticsBySeller(Long sellerNo) {
 		return StatisticsDTO.builder()
-				.numberOfSalesWeekly(getNumberOfSalesWeekly(sellerNo))
+				.numberOfSalesWeekly(getNumberOfSalesOfSellerWeekly(sellerNo))
 				.numberOfSalesMonthly(getNumberOfSalesMonthly(sellerNo))
 				.numberOfSalesYearly(getNumberOfSalesYearly(sellerNo))
 				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
@@ -44,8 +44,8 @@ public class MarketingService {
 	 * @return 7일간의 일별 판매 건수 List
 	 * 작성자: 손준범
 	 */
-	private List<NumberOfSalesDTO> getNumberOfSalesWeekly(Long sellerNo) {
-		return exportsService.getNumberOfSalesWeekly(getWeekDatesString(), sellerNo);
+	private List<NumberOfSalesDTO> getNumberOfSalesOfSellerWeekly(Long sellerNo) {
+		return exportsService.getNumberOfSalesOfSellerWeekly(getWeekDatesString(), sellerNo);
 	}
 	
 	/**
