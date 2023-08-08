@@ -38,8 +38,8 @@ public class ImportsController {
 	}
 	//발주 상품 검색
 	@GetMapping(value= {"/seller/import/search"})
-	public List<Product> searchOrder(String productName) {
-		return sellerImportService.searchOrder(productName);
+	public List<Product> searchOrder(String productName, Long sellerNo) {
+		return sellerImportService.searchOrder(productName, sellerNo);
 	}
 	
 	@GetMapping(value= {"seller/import/list"})
@@ -50,6 +50,11 @@ public class ImportsController {
 	@GetMapping(value= {"/3pl/import/register"})
 	public List<ImportProductDTO> goRegister(Long importNo, int pageNum, int countPerPage) {
 		return threePLImportService.goRegister(importNo, pageNum, countPerPage);
+	}
+	
+	@PostMapping(value=  {"/3pl/import/register"})
+	public boolean saveThreePLImport(@RequestBody ImportProductPostDTO dto) {
+		return threePLImportService.saveImport(dto.getSellerNo(), dto.getDtos());
 	}
 }
 
