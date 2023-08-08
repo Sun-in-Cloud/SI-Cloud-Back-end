@@ -324,4 +324,15 @@ public class ExportsService {
 	public Long getNumberOfSalesOfProductMonthly(String productNo, int year, int month) {
 		return exportProductRepository.getSalesCountOfProductOfMonth(productNo, year, month);
 	}
+
+	/**
+	 * 입력으로 주어진 년도에 해당하는 판매 건수 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @return 판매건수
+	 * 작성자: 손준범
+	 */
+	public Long getNumberOfSalesOfProductYearly(String productNo, int year) {
+		return exportProductRepository.getSalesCountOfProductOfYear(productNo, year);
+	}
 }
