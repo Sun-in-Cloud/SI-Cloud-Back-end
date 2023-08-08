@@ -1,5 +1,7 @@
 package com.shinhan.sunInCloud.dto;
 
+import java.util.List;
+
 import com.shinhan.sunInCloud.entity.ProductGroup;
 import com.shinhan.sunInCloud.entity.ThreePL;
 import com.shinhan.sunInCloud.entity.User;
@@ -30,6 +32,11 @@ public class ThreePLDTO {
 	private int cntTotal;
 	private int cntContracted;
 	private UserType userType;
+	
+	private String endDate;
+	private int leftContract;
+	private long exportCnt;
+	private List<MatchingDTO> matchings;
 	
 	/**
 	 * ThreePLDTO -> User

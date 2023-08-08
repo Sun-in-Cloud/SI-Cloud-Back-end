@@ -29,7 +29,8 @@ public interface SellerRepository extends CrudRepository<Seller, Long>{
 			+ "	HAVING COUNT(*) >= :exportCnt) "
 			+ "AND product_group.group_name LIKE CONCAT('%', :groupName, '%') "
 			+ "AND seller.address LIKE CONCAT('%', :address, '%') "
-			+ "AND IFNULL(end_date, SYSDATE()) <= DATE_ADD(SYSDATE(), INTERVAL :contractPeriod MONTH)", nativeQuery = true)
+			+ "AND IFNULL(end_date, SYSDATE()) <= DATE_ADD(SYSDATE(), INTERVAL :contractPeriod MONTH) "
+			+ "ORDER BY end_date, company_name", nativeQuery = true)
 	public Page<Seller> findByMatchingCondition(@Param("groupName") String groupName, @Param("address")String address,
 			@Param("exportCnt")int exportCnt, @Param("contractPeriod")int contractPeriod, Pageable pageable);
 }

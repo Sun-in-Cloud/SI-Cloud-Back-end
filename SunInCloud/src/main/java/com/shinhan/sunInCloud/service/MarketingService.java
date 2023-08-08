@@ -29,8 +29,8 @@ public class MarketingService {
 	 */
 	public StatisticsDTO getStatisticsBySeller(Long sellerNo) {
 		return StatisticsDTO.builder()
-				.numberOfSalesWeekly(getNumberOfSalesWeekly(sellerNo))
-				.numberOfSalesMonthly(getNumberOfSalesMonthly(sellerNo))
+				.numberOfSalesWeekly(getNumberOfSalesOfSellerWeekly(sellerNo))
+				.numberOfSalesMonthly(getNumberOfSalesOfSellerMonthly(sellerNo))
 				.numberOfSalesYearly(getNumberOfSalesYearly(sellerNo))
 				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
 				.totalSalesMonthly(getTotalSalesMonthly(sellerNo))
@@ -44,8 +44,8 @@ public class MarketingService {
 	 * @return 7일간의 일별 판매 건수 List
 	 * 작성자: 손준범
 	 */
-	private List<NumberOfSalesDTO> getNumberOfSalesWeekly(Long sellerNo) {
-		return exportsService.getNumberOfSalesWeekly(getWeekDatesString(), sellerNo);
+	private List<NumberOfSalesDTO> getNumberOfSalesOfSellerWeekly(Long sellerNo) {
+		return exportsService.getNumberOfSalesOfSellerWeekly(getWeekDatesString(), sellerNo);
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class MarketingService {
 	 * @return 당월, 전월, 작년 동월 판매 건수 List
 	 * 작성자: 손준범
 	 */
-	private List<NumberOfSalesDTO> getNumberOfSalesMonthly(Long sellerNo) {
+	private List<NumberOfSalesDTO> getNumberOfSalesOfSellerMonthly(Long sellerNo) {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
@@ -67,7 +67,7 @@ public class MarketingService {
 			months[1] = 12;
 		}
 		for (int i = 0; i < 3; ++i) {
-			counts[i] = exportsService.getNumberOfSalesMonthly(sellerNo, years[i], months[i]);
+			counts[i] = exportsService.getNumberOfSalesOfSellerMonthly(sellerNo, years[i], months[i]);
 			numberOfSalesMonthly.add(NumberOfSalesDTO.builder()
 					.year(years[i])
 					.month(months[i])
@@ -177,5 +177,65 @@ public class MarketingService {
 			calendar.add(Calendar.DATE, 1);
 		}
 		return dates;
+	}
+
+	/**
+	 * 특정 상품에 대한 통계
+	 * 1. 최근 일주일의 기록 요청(판매건수, 매출)
+	 *   1-1. 시작일, 끝일을 기준으로 각 날짜의 판매 건수 조회
+	 *   2-2. 시작일, 끝일을 기준으로 각 날짜의 매출 조회
+	 * 2. 이번달, 지난달, 작년 동월 기록(판매건수, 매출)
+	 * 3. 작년, 올해 기록(판매건수, 매출)
+	 * @param sellerNo
+	 * 작성자: 손준범
+	 */
+	public StatisticsDTO getStatisticsOfProduct(String productNo) {
+		return StatisticsDTO.builder()
+				.numberOfSalesWeekly(getNumberOfSalesOfProductWeekly(productNo))
+				.numberOfSalesMonthly(getNumberOfSalesOfProductMonthly(productNo))
+//				.numberOfSalesYearly(getNumberOfSalesYearly(sellerNo))
+//				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
+//				.totalSalesMonthly(getTotalSalesMonthly(sellerNo))
+//				.totalSalesYearly(getTotalSalesYearly(sellerNo))
+				.build();
+	}
+	
+	/**
+	 * 일주일간의 일별 판매 건수 조회 메서드
+	 * @param productNo
+	 * @return 해당 상품의 7일간의 일별 판매 건수 List
+	 * 작성자: 손준범
+	 */
+	private List<NumberOfSalesDTO> getNumberOfSalesOfProductWeekly(String productNo) {
+		return exportsService.getNumberOfSalesProductWeekly(getWeekDatesString(), productNo);
+	}
+	
+	/**
+	 * 당월, 전월, 작년 동월 판매 건수 조회 메서드
+	 * @param productNo
+	 * @return 당월, 전월, 작년 동월 판매 건수 List
+	 * 작성자: 손준범
+	 */
+	private List<NumberOfSalesDTO> getNumberOfSalesOfProductMonthly(String productNo) {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		List<NumberOfSalesDTO> numberOfSalesMonthly = new ArrayList<>();
+		int[] years = {year, year, year - 1};
+		int[] months = {month + 1, month, month + 1};
+		Long[] counts = {0L, 0L, 0L};
+		if (month == 0) { // 당월이 1월인 경우, 전월을 전년 12월로 처리
+			--years[1];
+			months[1] = 12;
+		}
+		for (int i = 0; i < 3; ++i) {
+			counts[i] = exportsService.getNumberOfSalesOfProductMonthly(productNo, years[i], months[i]);
+			numberOfSalesMonthly.add(NumberOfSalesDTO.builder()
+					.year(years[i])
+					.month(months[i])
+					.numberOfSales(counts[i])
+					.build());
+		}
+		return numberOfSalesMonthly;
 	}
 }
