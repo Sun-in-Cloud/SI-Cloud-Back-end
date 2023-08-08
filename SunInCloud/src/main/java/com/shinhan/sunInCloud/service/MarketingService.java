@@ -30,7 +30,7 @@ public class MarketingService {
 	public StatisticsDTO getStatisticsBySeller(Long sellerNo) {
 		return StatisticsDTO.builder()
 				.numberOfSalesWeekly(getNumberOfSalesOfSellerWeekly(sellerNo))
-				.numberOfSalesMonthly(getNumberOfSalesOfSellerMonthly(sellerNo))
+				.numberOfSalesMonthly(getNumberOfSalesMonthly(sellerNo))
 				.numberOfSalesYearly(getNumberOfSalesYearly(sellerNo))
 				.totalSalesWeekly(getTotalSalesWeekly(sellerNo))
 				.totalSalesMonthly(getTotalSalesMonthly(sellerNo))
@@ -46,35 +46,6 @@ public class MarketingService {
 	 */
 	private List<NumberOfSalesDTO> getNumberOfSalesOfSellerWeekly(Long sellerNo) {
 		return exportsService.getNumberOfSalesOfSellerWeekly(getWeekDatesString(), sellerNo);
-	}
-	
-	/**
-	 * 당월, 전월, 작년 동월 판매 건수 조회 메서드
-	 * @param sellerNo
-	 * @return 당월, 전월, 작년 동월 판매 건수 List
-	 * 작성자: 손준범
-	 */
-	private List<NumberOfSalesDTO> getNumberOfSalesOfSellerMonthly(Long sellerNo) {
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH);
-		List<NumberOfSalesDTO> numberOfSalesMonthly = new ArrayList<>();
-		int[] years = {year, year, year - 1};
-		int[] months = {month + 1, month, month + 1};
-		Long[] counts = {0L, 0L, 0L};
-		if (month == 0) { // 당월이 1월인 경우, 전월을 전년 12월로 처리
-			--years[1];
-			months[1] = 12;
-		}
-		for (int i = 0; i < 3; ++i) {
-			counts[i] = exportsService.getNumberOfSalesOfSellerMonthly(sellerNo, years[i], months[i]);
-			numberOfSalesMonthly.add(NumberOfSalesDTO.builder()
-					.year(years[i])
-					.month(months[i])
-					.numberOfSales(counts[i])
-					.build());
-		}
-		return numberOfSalesMonthly;
 	}
 	
 	/**
@@ -192,7 +163,7 @@ public class MarketingService {
 	public StatisticsDTO getStatisticsOfProduct(String productNo) {
 		return StatisticsDTO.builder()
 				.numberOfSalesWeekly(getNumberOfSalesOfProductWeekly(productNo))
-				.numberOfSalesMonthly(getNumberOfSalesOfProductMonthly(productNo))
+				.numberOfSalesMonthly(getNumberOfSalesMonthly(productNo))
 				.numberOfSalesYearly(getNumberOfSalesOfProductYearly(productNo))
 				.totalSalesWeekly(getTotalSalesOfProductWeekly(productNo))
 				.totalSalesMonthly(getTotalSalesOfProductMonthly(productNo))
@@ -208,35 +179,6 @@ public class MarketingService {
 	 */
 	private List<NumberOfSalesDTO> getNumberOfSalesOfProductWeekly(String productNo) {
 		return exportsService.getNumberOfSalesProductWeekly(getWeekDatesString(), productNo);
-	}
-	
-	/**
-	 * 당월, 전월, 작년 동월 판매 건수 조회 메서드
-	 * @param productNo
-	 * @return 당월, 전월, 작년 동월 판매 건수 List
-	 * 작성자: 손준범
-	 */
-	private List<NumberOfSalesDTO> getNumberOfSalesOfProductMonthly(String productNo) {
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH);
-		List<NumberOfSalesDTO> numberOfSalesMonthly = new ArrayList<>();
-		int[] years = {year, year, year - 1};
-		int[] months = {month + 1, month, month + 1};
-		Long[] counts = {0L, 0L, 0L};
-		if (month == 0) { // 당월이 1월인 경우, 전월을 전년 12월로 처리
-			--years[1];
-			months[1] = 12;
-		}
-		for (int i = 0; i < 3; ++i) {
-			counts[i] = exportsService.getNumberOfSalesOfProductMonthly(productNo, years[i], months[i]);
-			numberOfSalesMonthly.add(NumberOfSalesDTO.builder()
-					.year(years[i])
-					.month(months[i])
-					.numberOfSales(counts[i])
-					.build());
-		}
-		return numberOfSalesMonthly;
 	}
 	
 	/**
@@ -314,5 +256,33 @@ public class MarketingService {
 					.build());
 		}
 		return totalSalesYearly;
+	}
+	
+	// String과 LongType만 와야 한다.
+	private <T> List<NumberOfSalesDTO> getNumberOfSalesMonthly(T id) {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		List<NumberOfSalesDTO> numberOfSalesMonthly = new ArrayList<>();
+		int[] years = {year, year, year - 1};
+		int[] months = {month + 1, month, month + 1};
+		Long[] counts = {0L, 0L, 0L};
+		if (month == 0) { // 당월이 1월인 경우, 전월을 전년 12월로 처리
+			--years[1];
+			months[1] = 12;
+		}
+		for (int i = 0; i < 3; ++i) {
+			if (id instanceof Long){
+				counts[i] = exportsService.getNumberOfSalesOfSellerMonthly((Long)id, years[i], months[i]);
+			} else if (id instanceof String) {
+				counts[i] = exportsService.getNumberOfSalesOfProductMonthly((String)id, years[i], months[i]);
+			} 
+			numberOfSalesMonthly.add(NumberOfSalesDTO.builder()
+					.year(years[i])
+					.month(months[i])
+					.numberOfSales(counts[i])
+					.build());
+		}
+		return numberOfSalesMonthly;
 	}
 }
