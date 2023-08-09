@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shinhan.sunInCloud.dto.SellerDTO;
+import com.shinhan.sunInCloud.dto.ThreePLDTO;
 import com.shinhan.sunInCloud.service.SellerService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,5 +18,10 @@ public class SellerController {
 	@GetMapping(value = {"/wms/seller/{sellerNo}", "/3pl/match/{sellerNo}", "/3pl/mypage/seller/{sellerNo}", "/seller/mypage/{sellerNo}"})
 	public SellerDTO sellerDetail(@PathVariable Long sellerNo) {
 		return sellerService.sellerDetail(sellerNo);
+	}
+	
+	@GetMapping("/seller/mypage/3pl/{sellerNo}")
+	public ThreePLDTO contractedThreePLDetail(@PathVariable Long sellerNo) {
+		return sellerService.contractedThreePLDetail(sellerNo);
 	}
 }
