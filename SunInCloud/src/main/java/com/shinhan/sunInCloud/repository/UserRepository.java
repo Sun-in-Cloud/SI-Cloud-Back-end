@@ -6,4 +6,5 @@ import com.shinhan.sunInCloud.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	public User findByLoginId(String loginId);
+	public User findByLoginIdAndLoginPassword(String loginId, String loginPassword);
 }

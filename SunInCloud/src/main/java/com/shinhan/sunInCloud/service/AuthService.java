@@ -7,12 +7,17 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.shinhan.sunInCloud.dto.LoginRequestDTO;
+import com.shinhan.sunInCloud.dto.LoginResponseDTO;
 import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.dto.UserDTO;
+import com.shinhan.sunInCloud.entity.Matching;
 import com.shinhan.sunInCloud.entity.ProductGroup;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.ThreePL;
 import com.shinhan.sunInCloud.entity.User;
+import com.shinhan.sunInCloud.entity.UserType;
 import com.shinhan.sunInCloud.entity.Warehouse;
 import com.shinhan.sunInCloud.repository.UserRepository;
 
@@ -25,6 +30,7 @@ public class AuthService {
 	private final WarehouseService warehouseService;
 	private final ProductGroupService productGroupService;
 	private final SellerService sellerService;
+	private final MatchingService matchingService;
 	private final UserRepository userRepository;
 	
 	
@@ -83,5 +89,40 @@ public class AuthService {
 		Seller savedSeller = sellerService.save(seller);
 		
 		return savedSeller != null;
+	}
+	
+	/**
+	 * WMS, 3PL, 화주사 로그인
+	 * @param loginRequestDTO
+	 * @return
+	 */
+	public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+		User user = userRepository.findByLoginIdAndLoginPassword(loginRequestDTO.getLoginId(), loginRequestDTO.getLoginPassword());
+		
+		if(user == null) return null;
+
+		LoginResponseDTO loginResponseDTO = LoginResponseDTO
+				.builder()
+				.userNo(user.getUserNo())
+				.userType(user.getUserType().toString())
+				.build();
+		
+		if(user.getUserType().equals(UserType.THREE_PL)) {
+			List<UserDTO> userDTOs = new ArrayList<>();
+			List<Matching> matchings = matchingService.findByThreePLNo(user.getUserNo());
+			
+			for(Matching matching : matchings) {
+				UserDTO userDTO = UserDTO
+						.builder()
+						.sellerNo(matching.getSeller().getSellerNo())
+						.companyName(matching.getSeller().getCompanyName())
+						.build();
+				userDTOs.add(userDTO);
+			}
+			
+			loginResponseDTO.setSellers(userDTOs);
+		}
+		
+		return loginResponseDTO;
 	}
 }
