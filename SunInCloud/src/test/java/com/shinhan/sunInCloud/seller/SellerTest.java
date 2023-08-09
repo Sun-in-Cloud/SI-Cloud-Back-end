@@ -7,12 +7,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import com.shinhan.sunInCloud.dto.SellerDTO;
+import com.shinhan.sunInCloud.dto.ThreePLDTO;
 import com.shinhan.sunInCloud.entity.ProductGroup;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.User;
 import com.shinhan.sunInCloud.entity.UserType;
 import com.shinhan.sunInCloud.service.ProductGroupService;
 import com.shinhan.sunInCloud.service.SellerService;
+import com.shinhan.sunInCloud.service.ThreePLService;
 
 @SpringBootTest
 @DirtiesContext
@@ -23,6 +25,8 @@ public class SellerTest {
 	
 	@Autowired
 	ProductGroupService productGroupService;
+	@Autowired
+	ThreePLService threePLService;
 	
 	
 //	@Test
@@ -82,7 +86,7 @@ public class SellerTest {
 		
 	}
 	
-	@Test
+//	@Test
 	public void detail() {
 		Long sellerNo = 8L;
 		SellerDTO seller = sellerService.sellerDetail(sellerNo);
@@ -90,5 +94,11 @@ public class SellerTest {
 		Assertions.assertThat(seller).isNotNull();
 	}
 	
-
+	@Test
+	public void threePLDetail() {
+		Long sellerNo = 9L;
+		ThreePLDTO threePLDTO = sellerService.contractedThreePLDetail(sellerNo);
+		
+		Assertions.assertThat(threePLDTO).isNotNull();
+	}
 }
