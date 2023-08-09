@@ -103,6 +103,12 @@ public class ThreePLService {
 		return matchingDTOs;
 	}
 	
+	/**
+	 * 모든 3PL 목록 조회
+	 * @param pageNum
+	 * @param countPerPage
+	 * @return
+	 */
 	public UserListDTO findAllThreePL(int pageNum, int countPerPage) {
 		Page<ThreePL> threePLs = threePLRepository.findAllByOrderByCompanyName(PageRequest.of(pageNum - 1, countPerPage));
 		List<UserDTO> userDTOs = new ArrayList<>();
@@ -117,5 +123,14 @@ public class ThreePLService {
 				.build();
 		
 		return userListDTO;
+	}
+	
+	/**
+	 * 3PL 사업자번호를 이용해 조회
+	 * @param businessNo
+	 * @return
+	 */
+	public ThreePL findByBusinessNo(String businessNo) {
+		return threePLRepository.findByBusinessNo(businessNo);
 	}
 }

@@ -28,4 +28,5 @@ public interface ThreePLRepository extends JpaRepository<ThreePL, Long>{
 			@Param("fee") long fee, @Param("contractPeriod") int contractPeriod, Pageable pageable);
 	
 	public Page<ThreePL> findAllByOrderByCompanyName(Pageable pageable);
+	public ThreePL findByBusinessNo(String businessNo);
 }
