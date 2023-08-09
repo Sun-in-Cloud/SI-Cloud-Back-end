@@ -63,4 +63,25 @@ public class AuthService {
 		
 		return savedWarehouses != null;
 	}
+	
+	/**
+	 * 화주사 회원가입하는 메서드
+	 * @param sellerDTO
+	 * @return
+	 */
+	@Transactional
+	public boolean registerSeller(SellerDTO sellerDTO) {
+		// 중복되는 아이디
+		if(userRepository.findByLoginId(sellerDTO.getLoginId()) != null) return false;
+		// 중복되는 사업자번호
+		if(sellerService.findByBusinessNo(sellerDTO.getBusinessNo()) != null) return false;
+		
+		User user = sellerDTO.toUser();
+		ProductGroup productGroup = productGroupService.findByGroupName(sellerDTO.getProductGroupName());
+		Seller seller = sellerDTO.toSeller(productGroup, user);
+		
+		Seller savedSeller = sellerService.save(seller);
+		
+		return savedSeller != null;
+	}
 }
