@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.dto.UserDTO;
+import com.shinhan.sunInCloud.dto.UserListDTO;
 import com.shinhan.sunInCloud.entity.Matching;
+import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.ThreePL;
 import com.shinhan.sunInCloud.repository.MatchingRepository;
 import com.shinhan.sunInCloud.repository.ThreePLRepository;
@@ -98,5 +101,36 @@ public class ThreePLService {
 		}
 		
 		return matchingDTOs;
+	}
+	
+	/**
+	 * 모든 3PL 목록 조회
+	 * @param pageNum
+	 * @param countPerPage
+	 * @return
+	 */
+	public UserListDTO findAllThreePL(int pageNum, int countPerPage) {
+		Page<ThreePL> threePLs = threePLRepository.findAllByOrderByCompanyName(PageRequest.of(pageNum - 1, countPerPage));
+		List<UserDTO> userDTOs = new ArrayList<>();
+		for(ThreePL threePL : threePLs) {
+			userDTOs.add(threePL.toUserDTO());
+		}
+		
+		UserListDTO userListDTO = UserListDTO
+				.builder()
+				.totalPage(threePLs.getTotalPages())
+				.companies(userDTOs)
+				.build();
+		
+		return userListDTO;
+	}
+	
+	/**
+	 * 3PL 사업자번호를 이용해 조회
+	 * @param businessNo
+	 * @return
+	 */
+	public ThreePL findByBusinessNo(String businessNo) {
+		return threePLRepository.findByBusinessNo(businessNo);
 	}
 }
