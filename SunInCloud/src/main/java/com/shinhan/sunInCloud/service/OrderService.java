@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.shinhan.sunInCloud.dto.OrderDTO;
 import com.shinhan.sunInCloud.dto.OrderListDTO;
@@ -68,6 +69,7 @@ public class OrderService {
 	 * @param sellerNo
 	 * @return 저장이 필요한 물품의 개수와 저장된 물품의 개수가 동일하다면 true, 아니면 false
 	 */
+	@Transactional
 	public boolean register(Long sellerNo) {
 		Seller seller = sellerService.findById(sellerNo);
 		Order order = orderRepository.save(Order.builder().seller(seller).build());
