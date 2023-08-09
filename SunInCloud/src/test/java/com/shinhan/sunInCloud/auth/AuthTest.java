@@ -34,4 +34,25 @@ public class AuthTest {
 		boolean result = authService.register3PL(threePL);
 		Assertions.assertThat(result).isTrue();
 	}
+	
+	@Test
+	public void registerSeller() {
+		SellerDTO seller = SellerDTO
+				.builder()
+				.address("서울특별시 중구 남대문로10길 29")
+				.businessNo("110-81-3482765")
+				.ceoName("유동욱")
+				.companyName("LG전자")
+				.loginId("test123")
+				.loginPassword("1234")
+				.managerEmail("shihanDS@gmail.com")
+				.managerName("홍길동")
+				.managerPhone("010-1111-1111")
+				.productGroupName("전자제품")
+				.isMarketing(true)
+				.build();
+		
+		boolean result = authService.registerSeller(seller);
+		Assertions.assertThat(result).isTrue();
+	}
 }
