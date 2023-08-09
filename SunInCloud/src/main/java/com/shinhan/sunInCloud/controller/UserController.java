@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.dto.UserListDTO;
 import com.shinhan.sunInCloud.service.SellerService;
 import com.shinhan.sunInCloud.service.ThreePLService;
 
@@ -38,5 +39,10 @@ public class UserController {
 	@GetMapping("/seller/mypage/3pl/{sellerNo}")
 	public ThreePLDTO contractedThreePLDetail(@PathVariable Long sellerNo) {
 		return sellerService.contractedThreePLDetail(sellerNo);
+	}
+	
+	@GetMapping("/wms/seller/list")
+	public UserListDTO allSellers(int pageNum, int countPerPage) {
+		return sellerService.findAllSeller(pageNum, countPerPage);
 	}
 }
