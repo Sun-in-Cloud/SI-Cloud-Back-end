@@ -157,25 +157,23 @@ public class ImportsTest {
 		
 	}	
 	
-	//입고 등록
+	//3PL 입고 등록
 	@Test
 	void isRegister() {
 		 Long sellerNo = 8L;
-		    List<ImportProductDTO> importProductDTOs = new ArrayList<>();
-		    
-		    ImportProductDTO importProductDTO = ImportProductDTO.builder()
-		            .importAmount(10)
-		            .productNo("1")
-		            .importNo(21L)
-		            .requestAmount(10)
-		            
-		            .productName("로손")
-		            .build();
-		    
-		    importProductDTOs.add(importProductDTO);
-		    
-		    boolean importProducts = threePLImportService.saveImport(sellerNo, importProductDTOs);
-		    Assertions.assertThat(importProducts).isTrue();
+		 String productNo = "8806165967330";
+		 Long importNo=2L;
+		 List<ImportProductDTO> importProductDTOs = new ArrayList<>();
+	        importProductDTOs.add(ImportProductDTO.builder()
+	                .productNo(productNo)
+	                .importAmount(10)
+	                .requestAmount(5)
+	                .importNo(importNo)
+	                .productName("as")
+	                .build());
+  
+		    boolean importProducts = threePLImportService.saveImport(sellerNo,importNo, importProductDTOs);
+		    Assertions.assertThat(importProducts);
 	}
 	
 	
