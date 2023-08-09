@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.shinhan.sunInCloud.dto.ImportsDTO;
 import com.shinhan.sunInCloud.dto.ProductDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +47,7 @@ public class Imports {
 	            .importDate(importDate)
 	            .importNo(importNo)
 	            .requestDate(requestDate)
+	            .localRequestDate(TimestampUtil.convertTimestampToString(requestDate))
 	            .sellerNo(seller.getSellerNo()).build();
 	}
 }
