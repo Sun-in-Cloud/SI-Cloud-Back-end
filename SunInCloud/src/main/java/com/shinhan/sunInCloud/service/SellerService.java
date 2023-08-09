@@ -1,5 +1,8 @@
 package com.shinhan.sunInCloud.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -8,6 +11,8 @@ import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.dto.UserDTO;
+import com.shinhan.sunInCloud.dto.UserListDTO;
 import com.shinhan.sunInCloud.entity.Matching;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.ThreePL;
@@ -104,6 +109,28 @@ public class SellerService {
 		ThreePL threePL = threePLRepository.findById(matching.getWarehouse().getThreePL().getThreePLNo()).orElse(null);
 		
 		return threePL.toThreePLDTO(TimestampUtil.convertTimestampToDate(matching.getEndDate()), 0, null);
+	}
+	
+	/**
+	 * 전체 화주사 목록 조회
+	 * @param pageNum
+	 * @param countPerPage
+	 * @return
+	 */
+	public UserListDTO findAllSeller(int pageNum, int countPerPage) {
+		Page<Seller> sellers = sellerRepo.findAll(PageRequest.of(pageNum - 1, countPerPage));
+		List<UserDTO> userDTOs = new ArrayList<>();
+		for(Seller seller : sellers) {
+			userDTOs.add(seller.toUserDTO());
+		}
+		
+		UserListDTO userListDTO = UserListDTO
+				.builder()
+				.totalPage(sellers.getTotalPages())
+				.companys(userDTOs)
+				.build();
+		
+		return userListDTO;
 	}
 }
 
