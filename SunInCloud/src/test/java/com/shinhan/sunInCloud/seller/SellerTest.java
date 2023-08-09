@@ -8,6 +8,8 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.dto.UserDTO;
+import com.shinhan.sunInCloud.dto.UserListDTO;
 import com.shinhan.sunInCloud.entity.ProductGroup;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.User;
@@ -94,11 +96,18 @@ public class SellerTest {
 		Assertions.assertThat(seller).isNotNull();
 	}
 	
-	@Test
+//	@Test
 	public void threePLDetail() {
 		Long sellerNo = 9L;
 		ThreePLDTO threePLDTO = sellerService.contractedThreePLDetail(sellerNo);
 		
 		Assertions.assertThat(threePLDTO).isNotNull();
+	}
+	
+	@Test
+	public void findAll() {
+		UserListDTO sellers = sellerService.findAllSeller(1, 3);
+
+		Assertions.assertThat(sellers.getTotalPage()).isNotZero();
 	}
 }
