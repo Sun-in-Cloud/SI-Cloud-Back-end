@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class ThreePLController {
 	private final ThreePLService threePLService;
 	
-	@GetMapping(value = {"/wms/3pl/{threePLNo}", "/seller/match/{threePLNo}"})
+	@GetMapping(value = {"/wms/3pl/{threePLNo}", "/seller/match/{threePLNo}", "/3pl/mypage/{threePLNo}"})
 	public ThreePLDTO detailThreePL(@PathVariable Long threePLNo) {
 		return threePLService.threePLDetail(threePLNo);
 	}
