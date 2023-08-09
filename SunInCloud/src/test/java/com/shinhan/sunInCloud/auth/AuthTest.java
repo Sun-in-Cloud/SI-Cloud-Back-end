@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shinhan.sunInCloud.dto.LoginRequestDTO;
+import com.shinhan.sunInCloud.dto.LoginResponseDTO;
+import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
 import com.shinhan.sunInCloud.service.AuthService;
 
@@ -54,5 +57,24 @@ public class AuthTest {
 		
 		boolean result = authService.registerSeller(seller);
 		Assertions.assertThat(result).isTrue();
+	}
+	
+	@Test
+	public void login() {
+		String threePLId = "oliveZero";
+		String sellerId = "samsung";
+		String wmsId = "admin";
+		String incorrectId = "idididid";
+		String password = "1234";
+		
+		LoginResponseDTO threePL = authService.login(new LoginRequestDTO().builder().loginId(threePLId).loginPassword(password).build());
+		LoginResponseDTO seller = authService.login(new LoginRequestDTO().builder().loginId(sellerId).loginPassword(password).build());
+		LoginResponseDTO wms = authService.login(new LoginRequestDTO().builder().loginId(wmsId).loginPassword(password).build());
+		LoginResponseDTO fail = authService.login(new LoginRequestDTO().builder().loginId(incorrectId).loginPassword(password).build());
+		
+		Assertions.assertThat(threePL).isNotNull();
+		Assertions.assertThat(seller).isNotNull();
+		Assertions.assertThat(wms).isNotNull();
+		Assertions.assertThat(fail).isNull();
 	}
 }
