@@ -155,7 +155,7 @@ public class SellerImportService {
 		 * @param importNo
 		 * @return List<ImportProductDTO>
 		 */
-		public List<ImportProductDTO> seePreDetail(Long importNo) {
+		public List<ImportProductDTO> seePreDetail(Long importNo) { 
 			List<ImportProduct> im= importProductRepository.findByImports_ImportNo(importNo);
 			List<ImportProductDTO> importProductDTOs = new ArrayList<>();
 			for(ImportProduct importProduct : im) {
@@ -165,6 +165,7 @@ public class SellerImportService {
 						.requestAmount(importProduct.getRequestAmount())
 						.build());
 			}
+			System.out.println(importProductDTOs.size());
 			return importProductDTOs;
 		
 		}
@@ -193,11 +194,19 @@ public class SellerImportService {
       }
 		
 		//4.2 상세
-//		public List<ImportsDTO> seeDetail(Long importNo){
-//			List<ImportsDTO> imports=new ArrayList<>();
-//			imports = importRepository.findByImportNo(importNo);
-//			return imports;	
-//		}
+      public List<ImportProductDTO> seeDetail(Long importNo){
+    		List<ImportProduct> im= importProductRepository.findByImports_ImportNo(importNo);
+			List<ImportProductDTO> importProductDTOs = new ArrayList<>();
+			for(ImportProduct importProduct : im) {
+				importProductDTOs.add(ImportProductDTO.builder()
+						.productNo(importProduct.getProduct().getProductNo())
+						.productName(importProduct.getProduct().getProductName())
+						.importAmount(importProduct.getImportAmount())
+						.build());
+			}
+		
+			return importProductDTOs;
+		}
 		
 		private Long calculatePageCount(Long count, int countPerPage) {
 			Long totalPage = count / countPerPage;

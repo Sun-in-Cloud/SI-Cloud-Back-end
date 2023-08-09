@@ -31,7 +31,7 @@ public class ImportsController {
 	}
 	
 	
-	//입고예정 리스트 상세 조회
+	//입고예정 리스트 상세 조회, 내역리스트 상세조회
 	@GetMapping(value= {"/seller/import/pre/detail/{importNo}","/3pl/import/pre/{importNo}"})
 	public List<ImportProductDTO>  seePreDetail( @PathVariable Long importNo) {
 		return sellerImportService.seePreDetail(importNo);
@@ -57,7 +57,10 @@ public class ImportsController {
 		return threePLImportService.saveImport(dto.getSellerNo(), dto.getImportNo(), dto.getDtos());
 	}
 	
-	
+	@GetMapping(value= {"/seller/import/{importNo}"})
+	public List<ImportProductDTO> seeDetail(@PathVariable Long importNo){
+		return sellerImportService.seeDetail(importNo);
+	}
 }
 
 
