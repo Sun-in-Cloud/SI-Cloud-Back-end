@@ -7,13 +7,16 @@ import org.springframework.stereotype.Service;
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.SellerDTO;
+import com.shinhan.sunInCloud.dto.ThreePLDTO;
 import com.shinhan.sunInCloud.entity.Matching;
 import com.shinhan.sunInCloud.entity.Seller;
+import com.shinhan.sunInCloud.entity.ThreePL;
 import com.shinhan.sunInCloud.repository.ExportProductRepository;
 import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.MatchingRepository;
 import com.shinhan.sunInCloud.repository.OrderRepository;
 import com.shinhan.sunInCloud.repository.SellerRepository;
+import com.shinhan.sunInCloud.repository.ThreePLRepository;
 import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ public class SellerService {
 	private final ImportsRepository importsRepo;
 	private final ExportProductRepository exportProductRepository;
 	private final MatchingRepository matchingRepository;
+	private final ThreePLRepository threePLRepository;
 	
 	//회원가입시 판매자 등록
 	public Seller save(Seller seller){
@@ -84,6 +88,22 @@ public class SellerService {
 		}
 		
 		return seller.toSellerDTO(matchingDTO, sales, exportCnt);
+	}
+	
+	/**
+	 * 계약된 3PL 상세 조회
+	 * @param threePLNo
+	 * @param sellerNo
+	 * @return
+	 */
+	public ThreePLDTO contractedThreePLDetail(Long sellerNo) {
+		Matching matching = matchingRepository.findBySeller_SellerNo(sellerNo);
+		
+		if(matching == null) return null;
+		
+		ThreePL threePL = threePLRepository.findById(matching.getWarehouse().getThreePL().getThreePLNo()).orElse(null);
+		
+		return threePL.toThreePLDTO(TimestampUtil.convertTimestampToDate(matching.getEndDate()), 0, null);
 	}
 }
 
