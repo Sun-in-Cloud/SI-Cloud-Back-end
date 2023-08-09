@@ -45,4 +45,9 @@ public class UserController {
 	public UserListDTO allSellers(int pageNum, int countPerPage) {
 		return sellerService.findAllSeller(pageNum, countPerPage);
 	}
+	
+	@GetMapping("/wms/3pl/list")
+	public UserListDTO allThreePLs(int pageNum, int countPerPage) {
+		return threePLService.findAllThreePL(pageNum, countPerPage);
+	}
 }

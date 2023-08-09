@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserListDTO {
-	private int totalPage;
-	private List<UserDTO> companies;
-	
+public class LoginResponseDTO {
+	private Long userNo;
+	private String userType;
+	private List<UserDTO> sellers;
 }
