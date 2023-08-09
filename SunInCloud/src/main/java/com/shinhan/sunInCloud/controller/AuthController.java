@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shinhan.sunInCloud.dto.LoginRequestDTO;
+import com.shinhan.sunInCloud.dto.LoginResponseDTO;
 import com.shinhan.sunInCloud.dto.SellerDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
 import com.shinhan.sunInCloud.service.AuthService;
@@ -24,4 +26,10 @@ public class AuthController {
 	public boolean registerSeller(@RequestBody SellerDTO sellerDTO) {
 		return authService.registerSeller(sellerDTO);
 	}
+	
+	@PostMapping("/auth/login")
+	public LoginResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO) {
+		return authService.login(loginRequestDTO);
+	}
+	
 }
