@@ -48,6 +48,7 @@ public class Imports {
 	            .importNo(importNo)
 	            .requestDate(requestDate)
 	            .localRequestDate(TimestampUtil.convertTimestampToString(requestDate))
+	            .localRequestDate(TimestampUtil.convertTimestampToString(importDate))
 	            .sellerNo(seller.getSellerNo()).build();
 	}
 }
