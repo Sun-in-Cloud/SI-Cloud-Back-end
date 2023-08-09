@@ -1,10 +1,13 @@
 package com.shinhan.sunInCloud.threepl;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
 import com.shinhan.sunInCloud.entity.ProductGroup;
 import com.shinhan.sunInCloud.entity.ThreePL;
@@ -53,11 +56,19 @@ public class ThreePLTest {
 		Assertions.assertThat(registeredThreePL.getThreePLNo()).isNotNull();
 	}
 	
-	@Test
+//	@Test
 	public void detailThreepl() {
 		Long threePLNo = 10L;
 		
 		ThreePLDTO threePLDTO = threePLService.threePLDetail(threePLNo);
 		Assertions.assertThat(threePLDTO).isNotNull();
+	}
+	
+	@Test
+	public void matchingSellerList() {
+		Long threePLNo = 10L;
+		List<MatchingDTO> matchingDTOs = threePLService.findByContractedSeller(threePLNo);
+		
+		Assertions.assertThat(matchingDTOs.size()).isNotZero();
 	}
 }

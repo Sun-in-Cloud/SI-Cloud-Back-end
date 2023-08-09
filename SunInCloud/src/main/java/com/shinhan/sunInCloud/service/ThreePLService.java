@@ -83,4 +83,20 @@ public class ThreePLService {
 				matchingConditionDTO.getNumValue(), matchingConditionDTO.getContractPeriod(), 
 				PageRequest.of(matchingConditionDTO.getPageNum() - 1, matchingConditionDTO.getCountPerPage()));
 	}
+	
+	/**
+	 * 계약된 화주사 목록 조회
+	 * @param threePLNo
+	 * @return
+	 */
+	public List<MatchingDTO> findByContractedSeller(Long threePLNo) {
+		List<Matching> matchings = matchingRepository.findByWarehouse_ThreePL_ThreePLNo(threePLNo);
+		List<MatchingDTO> matchingDTOs = new ArrayList<>();
+		
+		for(Matching matching : matchings) {
+			matchingDTOs.add(matching.toMatchingDTO());
+		}
+		
+		return matchingDTOs;
+	}
 }
