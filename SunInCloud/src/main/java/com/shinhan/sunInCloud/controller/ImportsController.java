@@ -33,8 +33,8 @@ public class ImportsController {
 	
 	//입고예정 리스트 상세 조회
 	@GetMapping(value= {"/seller/import/pre/detail/{importNo}","/3pl/import/pre/{importNo}"})
-	public ImportProductDTO seePreDetail(ImportProductDTO importProductDTO, @PathVariable Long importNo) {
-		return sellerImportService.seePreDetail(importProductDTO, importNo);
+	public List<ImportProductDTO>  seePreDetail( @PathVariable Long importNo) {
+		return sellerImportService.seePreDetail(importNo);
 	}
 	//발주 상품 검색
 	@GetMapping(value= {"/seller/import/search"})
@@ -44,18 +44,20 @@ public class ImportsController {
 	
 	@GetMapping(value= {"seller/import/list"})
 	public ImportProductListDTO seeList (Long sellerNo, int pageNum, int countPerPage) {
-		return sellerImportService.seeList(sellerNo, pageNum, countPerPage);
+		return sellerImportService.seeList(sellerNo, pageNum - 1, countPerPage);
 	}
 	
 	@GetMapping(value= {"/3pl/import/register"})
 	public List<ImportProductDTO> goRegister(Long importNo, int pageNum, int countPerPage) {
-		return threePLImportService.goRegister(importNo, pageNum, countPerPage);
+		return threePLImportService.goRegister(importNo, pageNum - 1 , countPerPage);
 	}
 	
 	@PostMapping(value=  {"/3pl/import/register"})
 	public boolean saveThreePLImport(@RequestBody ImportProductPostDTO dto) {
-		return threePLImportService.saveImport(dto.getSellerNo(), dto.getImportNo(),dto.getDtos());
+		return threePLImportService.saveImport(dto.getSellerNo(), dto.getImportNo(), dto.getDtos());
 	}
+	
+	
 }
 
 
