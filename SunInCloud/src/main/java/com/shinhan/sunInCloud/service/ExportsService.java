@@ -15,12 +15,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.shinhan.sunInCloud.dto.ChannelSalesDTO;
 import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportProductListDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
 import com.shinhan.sunInCloud.dto.ExportsListDTO;
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
+import com.shinhan.sunInCloud.dto.ProductSalesDTO;
 import com.shinhan.sunInCloud.dto.ShoppingDTO;
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
 import com.shinhan.sunInCloud.dto.TotalSalesDTO;
@@ -40,6 +42,9 @@ public class ExportsService {
 	private final ExportProductRepository exportProductRepository;
 	private final SellerService sellerService;
 	private final ProductService productService;
+	
+	private int TOP3 = 3;
+	private int TOP5 = 5;
 
 	/**
 	 * 쇼핑몰에 주문건 요청해 출고 목록에 추가하는 메서드
@@ -377,5 +382,17 @@ public class ExportsService {
 	 */
 	public Long getTotalSalesOfProductYearly(String productNo, int year) {
 		return exportProductRepository.getYearlySalesOfProduct(productNo, year);
+	}
+
+	public List<ChannelSalesDTO> findTopChannels(Long sellerNo, int year) {
+		List<ChannelSalesDTO> topChannels = exportsRepository.findTopChannels(sellerNo, year, PageRequest.of(0, TOP3));
+		for (ChannelSalesDTO topChannel : topChannels) {
+			topChannel.setYear(year);
+		}
+		return topChannels;
+	}
+	
+	public List<ProductSalesDTO> findTopProductsOfChannel(Long sellerNo, int year, String channelName) {
+		return exportsRepository.findTopProductsOfChannel(sellerNo, year, channelName, PageRequest.of(0, TOP5));
 	}
 }

@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.shinhan.sunInCloud.entity.ImportProduct;
 import com.shinhan.sunInCloud.entity.Imports;
 
 public interface ImportsRepository extends JpaRepository<Imports, Long> {
@@ -18,7 +20,7 @@ public interface ImportsRepository extends JpaRepository<Imports, Long> {
 
 	List<Imports> findAllBySeller_SellerNo(Long sellerNo, Pageable pageables);
 	
-	Page<Imports> findBySeller_SellerNoAndImportDateIsNotNull(Long sellerNo, PageRequest pageables);
+	List<Imports> findBySeller_SellerNoAndImportDateIsNotNull(Long sellerNo, PageRequest pageables);
 
 	List<Imports> findAllBySeller_SellerNo(Long sellerNo);
 
