@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserListDTO {
 	private int totalPage;
-	private List<UserDTO> companys;
+	private List<UserDTO> companies;
 	
 }

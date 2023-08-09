@@ -127,7 +127,7 @@ public class SellerService {
 		UserListDTO userListDTO = UserListDTO
 				.builder()
 				.totalPage(sellers.getTotalPages())
-				.companys(userDTOs)
+				.companies(userDTOs)
 				.build();
 		
 		return userListDTO;
