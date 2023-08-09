@@ -100,7 +100,7 @@ public class Seller {
 	}
 	
 	/**
-	 * Seller -> UserSellerThreePLDTO
+	 * Seller -> UserDTO
 	 * 목록 조회시 나오는 간단한 정보들
 	 * @return
 	 */

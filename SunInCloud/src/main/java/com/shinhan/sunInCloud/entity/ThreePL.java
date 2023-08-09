@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.dto.UserDTO;
 import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
@@ -108,6 +109,22 @@ public class ThreePL {
 				.endDate(endDate)
 				.threePLNo(threePLNo)
 				.leftLocation(cntTotal - cntContracted)
+				.build();
+	}
+	
+	/**
+	 * ThreePL -> UserDTO
+	 * 목록 조회시 나오는 간단한 정보들
+	 * @return
+	 */
+	public UserDTO toUserDTO() {
+		return UserDTO
+				.builder()
+				.businessNo(businessNo)
+				.companyName(companyName)
+				.productGroup(productGroup.getGroupName())
+				.leftContract(cntTotal - cntContracted)
+				.threePLNo(threePLNo)
 				.build();
 	}
 }

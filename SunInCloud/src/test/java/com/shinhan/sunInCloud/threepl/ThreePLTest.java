@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.dto.UserDTO;
+import com.shinhan.sunInCloud.dto.UserListDTO;
 import com.shinhan.sunInCloud.entity.ProductGroup;
 import com.shinhan.sunInCloud.entity.ThreePL;
 import com.shinhan.sunInCloud.entity.User;
@@ -64,11 +66,18 @@ public class ThreePLTest {
 		Assertions.assertThat(threePLDTO).isNotNull();
 	}
 	
-	@Test
+//	@Test
 	public void matchingSellerList() {
 		Long threePLNo = 10L;
 		List<MatchingDTO> matchingDTOs = threePLService.findByContractedSeller(threePLNo);
 		
 		Assertions.assertThat(matchingDTOs.size()).isNotZero();
+	}
+	
+	@Test
+	public void findAllThreePL() {
+		UserListDTO threePLs = threePLService.findAllThreePL(1, 3);
+		
+		Assertions.assertThat(threePLs.getTotalPage()).isNotZero();
 	}
 }

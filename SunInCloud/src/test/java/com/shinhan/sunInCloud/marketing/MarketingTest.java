@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shinhan.sunInCloud.dto.ChannelSalesDTO;
+import com.shinhan.sunInCloud.dto.ChannelSalesListDTO;
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.StatisticsDTO;
 import com.shinhan.sunInCloud.dto.TotalSalesDTO;
@@ -83,5 +85,18 @@ public class MarketingTest {
 				Assertions.assertThat(sales).isEqualTo(0L);
 			}
 		}
+	}
+	
+	@Test
+	void findSalesOfChannels() {
+		Long sellerNo = 8L;
+		ChannelSalesListDTO channelSalesDTO = marketingService.getTotalSalesOfChannelsBySeller(sellerNo);
+		List<ChannelSalesDTO> thisYearSales = channelSalesDTO.getTotalSalesThisYear();
+		List<ChannelSalesDTO> lastYearSales = channelSalesDTO.getTotalSalesLastYear();
+		Assertions.assertThat(thisYearSales.size()).isEqualTo(1);
+		Assertions.assertThat(lastYearSales.size()).isEqualTo(0);
+		Assertions.assertThat(thisYearSales.get(0).getChannelName()).isEqualTo("11번가");
+		Assertions.assertThat(thisYearSales.get(0).getTopSalesProducts().size()).isEqualTo(5);
+		Assertions.assertThat(thisYearSales.get(0).getTotalSales()).isEqualTo(290380L);
 	}
 }

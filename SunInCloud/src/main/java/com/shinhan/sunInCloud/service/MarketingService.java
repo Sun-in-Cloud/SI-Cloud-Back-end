@@ -6,9 +6,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.shinhan.sunInCloud.dto.ChannelSalesDTO;
+import com.shinhan.sunInCloud.dto.ChannelSalesListDTO;
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.StatisticsDTO;
 import com.shinhan.sunInCloud.dto.TotalSalesDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -215,5 +218,19 @@ public class MarketingService {
 					.build());
 		}
 		return totalSalesYearly;
+	}
+	
+	public ChannelSalesListDTO getTotalSalesOfChannelsBySeller(Long sellerNo) {
+		List<ChannelSalesDTO> thisYearSales = getYearlySalesByChannels(sellerNo, TimestampUtil.getLastYear() + 1);
+		List<ChannelSalesDTO> lastYearSales = getYearlySalesByChannels(sellerNo, TimestampUtil.getLastYear());
+		return ChannelSalesListDTO.builder().totalSalesThisYear(thisYearSales).totalSalesLastYear(lastYearSales).build();
+	}
+	
+	private List<ChannelSalesDTO> getYearlySalesByChannels(Long sellerNo, int year) {
+		List<ChannelSalesDTO> yearlySalesOfChannels = exportsService.findTopChannels(sellerNo, year);
+		for (ChannelSalesDTO channelSales : yearlySalesOfChannels) {			
+			channelSales.setTopSalesProducts(exportsService.findTopProductsOfChannel(sellerNo, year, channelSales.getChannelName()));
+		}
+		return yearlySalesOfChannels;
 	}
 }
