@@ -49,7 +49,7 @@ public class ImportsController {
 	
 	@GetMapping(value= {"/3pl/import/register"})
 	public List<ImportProductDTO> goRegister(Long importNo, int pageNum, int countPerPage) {
-		return threePLImportService.goRegister(importNo, pageNum, countPerPage);
+		return threePLImportService.goRegister(importNo, pageNum - 1 , countPerPage);
 	}
 	
 	@PostMapping(value=  {"/3pl/import/register"})
