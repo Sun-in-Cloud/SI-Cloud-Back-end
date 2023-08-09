@@ -118,7 +118,7 @@ public class SellerService {
 	 * @return
 	 */
 	public UserListDTO findAllSeller(int pageNum, int countPerPage) {
-		Page<Seller> sellers = sellerRepo.findAll(PageRequest.of(pageNum - 1, countPerPage));
+		Page<Seller> sellers = sellerRepo.findAllByOrderByCompanyName(PageRequest.of(pageNum - 1, countPerPage));
 		List<UserDTO> userDTOs = new ArrayList<>();
 		for(Seller seller : sellers) {
 			userDTOs.add(seller.toUserDTO());

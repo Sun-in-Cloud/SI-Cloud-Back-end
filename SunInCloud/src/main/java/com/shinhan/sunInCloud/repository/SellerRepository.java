@@ -34,5 +34,5 @@ public interface SellerRepository extends CrudRepository<Seller, Long>{
 	public Page<Seller> findByMatchingCondition(@Param("groupName") String groupName, @Param("address")String address,
 			@Param("exportCnt")int exportCnt, @Param("contractPeriod")int contractPeriod, Pageable pageable);
 	
-	public Page<Seller> findAll(Pageable pageable);
+	public Page<Seller> findAllByOrderByCompanyName(Pageable pageable);
 }
