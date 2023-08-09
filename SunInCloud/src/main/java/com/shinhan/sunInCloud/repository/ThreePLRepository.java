@@ -26,4 +26,6 @@ public interface ThreePLRepository extends JpaRepository<ThreePL, Long>{
 			+ "ORDER BY end_date, company_name", nativeQuery = true)
 	public Page<ThreePL> findByMatchingCondition(@Param("productGroup") String productGroup, @Param("address") String address,
 			@Param("fee") long fee, @Param("contractPeriod") int contractPeriod, Pageable pageable);
+	
+	public Page<ThreePL> findAllByOrderByCompanyName(Pageable pageable);
 }

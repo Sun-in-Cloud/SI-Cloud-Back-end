@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.dto.UserDTO;
+import com.shinhan.sunInCloud.dto.UserListDTO;
 import com.shinhan.sunInCloud.entity.Matching;
+import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.entity.ThreePL;
 import com.shinhan.sunInCloud.repository.MatchingRepository;
 import com.shinhan.sunInCloud.repository.ThreePLRepository;
@@ -98,5 +101,21 @@ public class ThreePLService {
 		}
 		
 		return matchingDTOs;
+	}
+	
+	public UserListDTO findAllThreePL(int pageNum, int countPerPage) {
+		Page<ThreePL> threePLs = threePLRepository.findAllByOrderByCompanyName(PageRequest.of(pageNum - 1, countPerPage));
+		List<UserDTO> userDTOs = new ArrayList<>();
+		for(ThreePL threePL : threePLs) {
+			userDTOs.add(threePL.toUserDTO());
+		}
+		
+		UserListDTO userListDTO = UserListDTO
+				.builder()
+				.totalPage(threePLs.getTotalPages())
+				.companies(userDTOs)
+				.build();
+		
+		return userListDTO;
 	}
 }
