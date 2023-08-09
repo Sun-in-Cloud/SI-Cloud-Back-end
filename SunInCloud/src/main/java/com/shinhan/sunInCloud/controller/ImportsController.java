@@ -54,7 +54,7 @@ public class ImportsController {
 	
 	@PostMapping(value=  {"/3pl/import/register"})
 	public boolean saveThreePLImport(@RequestBody ImportProductPostDTO dto) {
-		return threePLImportService.saveImport(dto.getSellerNo(), dto.getDtos());
+		return threePLImportService.saveImport(dto.getSellerNo(), dto.getImportNo(),dto.getDtos());
 	}
 }
 
