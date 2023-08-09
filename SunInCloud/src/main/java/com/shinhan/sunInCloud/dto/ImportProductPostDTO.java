@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class ImportProductPostDTO {
 	Long sellerNo;
 	Long orderNo;
+	Long importNo;
 	List<ImportProductDTO> dtos;
 }
