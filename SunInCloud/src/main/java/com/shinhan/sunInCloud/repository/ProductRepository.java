@@ -15,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	@Query(value = "SELECT * FROM PRODUCT WHERE seller_no = :sellerNo and "
 			+ "product_no not in (SELECT product_no "
 			+ "from order_product "
-			+ "where order_no not in ( "
+			+ "where order_no in ( "
 			+ "select order_no "
 			+ "from orders "
 			+ "where import_no is null "
