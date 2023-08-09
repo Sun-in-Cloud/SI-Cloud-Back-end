@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class SellerController {
 	private final SellerService sellerService;
 	
-	@GetMapping(value = {"/wms/seller/{sellerNo}", "/3pl/match/{sellerNo}"})
+	@GetMapping(value = {"/wms/seller/{sellerNo}", "/3pl/match/{sellerNo}", "/3pl/mypage/seller/{sellerNo}", "/seller/mypage/{sellerNo}"})
 	public SellerDTO sellerDetail(@PathVariable Long sellerNo) {
 		return sellerService.sellerDetail(sellerNo);
 	}
