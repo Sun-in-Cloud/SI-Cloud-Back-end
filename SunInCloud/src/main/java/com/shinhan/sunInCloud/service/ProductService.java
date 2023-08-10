@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ProductDTO;
 import com.shinhan.sunInCloud.dto.ProductListDTO;
+import com.shinhan.sunInCloud.dto.SimpleProductDTO;
 import com.shinhan.sunInCloud.entity.DetailProductGroup;
 import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
@@ -173,5 +174,26 @@ public class ProductService {
 	 */
 	public Long countNeededToOrder(Long sellerNo) {
 		return productRepository.countNeededToOrder(sellerNo);
+	}
+	
+	/**
+	 * 화주사의 모든 상품 번호, 가격을 가져오는 메서드
+	 * 쇼핑몰 주문 랜덤 생성을 위함
+	 * @param sellerNo
+	 * @return
+	 */
+	public List<SimpleProductDTO> findByAllProductSimpledata(Long sellerNo) {
+		List<Object[]> objects = productRepository.findByAllProductSimpledata(sellerNo);
+		List<SimpleProductDTO> simpleProductDTOs = new ArrayList<>();
+		
+		for(Object[] object : objects) {
+			SimpleProductDTO simpleProductDTO = SimpleProductDTO
+					.builder()
+					.productNo((String) object[0])
+					.consumerPrice((int) object[1])
+					.build();
+			simpleProductDTOs.add(simpleProductDTO);
+		}
+		return simpleProductDTOs;
 	}
 }

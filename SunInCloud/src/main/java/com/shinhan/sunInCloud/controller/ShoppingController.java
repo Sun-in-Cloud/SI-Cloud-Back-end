@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shinhan.sunInCloud.dto.ShoppingDTO;
@@ -19,9 +18,9 @@ import lombok.RequiredArgsConstructor;
 public class ShoppingController {
 	private final ShoppingService shoppingService;
 	
-	@PostMapping("/shop/order")
-	public boolean register(@RequestBody ShoppingDTO shoppingDTO) {
-		return shoppingService.register(shoppingDTO.getSellerNo(), shoppingDTO.getOrderedProducts());
+	@PostMapping("/shop/order/{sellerNo}")
+	public List<ShoppingProductDTO> register(@PathVariable Long sellerNo) {
+		return shoppingService.register(sellerNo);
 	}
 	
 	@GetMapping("/shop/order/send/{sellerNo}")
