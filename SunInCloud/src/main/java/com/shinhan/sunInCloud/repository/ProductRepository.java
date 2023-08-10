@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import com.shinhan.sunInCloud.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
-	Page<Product> findAllBySeller_SellerNoAndIsActive(Long sellerNo, Pageable pageable, Boolean isActive);
+	Page<Product> findAllBySeller_SellerNoAndIsActiveOrderByProductName(Long sellerNo, Pageable pageable, Boolean isActive);
 	@Query(value = "SELECT * FROM PRODUCT WHERE seller_no = :sellerNo and "
 			+ "product_no not in (SELECT product_no "
 			+ "from order_product "

@@ -77,7 +77,7 @@ public class ProductService {
 	 */
 	public ProductListDTO findProductBySellerNo(Long sellerNo, int pageNumber, int pageSize) {
 		List<ProductDTO> productDTOs = new ArrayList<>();
-		Page<Product> products = productRepository.findAllBySeller_SellerNoAndIsActive(sellerNo, PageRequest.of(pageNumber, pageSize), true);
+		Page<Product> products = productRepository.findAllBySeller_SellerNoAndIsActiveOrderByProductName(sellerNo, PageRequest.of(pageNumber, pageSize), true);
 		for (Product product : products) {
 			productDTOs.add(ProductDTO.builder().productNo(product.getProductNo())
 					.productGroup(product.getDetailProductGroup().getGroupName())
