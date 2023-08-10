@@ -20,6 +20,7 @@ import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.OrderProductRepository;
 import com.shinhan.sunInCloud.repository.OrderRepository;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -107,7 +108,7 @@ public class OrderService {
 		List<OrderDTO> orderDTOs = new ArrayList<>();
 		for (Order order : orders) {
 			orderDTOs.add(OrderDTO.builder()
-					.orderDate(order.getOrderDate())
+					.orderDate(TimestampUtil.convertTimestampToString(order.getOrderDate()))
 					.orderNo(order.getOrderNo())
 					.importNo(order.getImports() == null ? null : order.getImports().getImportNo())
 					.isImported(order.getImports() == null ? false : true)
