@@ -23,7 +23,7 @@ public interface ExportsRepository extends JpaRepository<Exports, Long>{
 			+ "order by totalSales desc ")
 	List<ChannelSalesDTO> findTopChannels(@Param("sellerNo") Long sellerNo, @Param("year") int year, Pageable pageable);
 	
-	@Query("select new com.shinhan.sunInCloud.dto.ProductSalesDTO(p.productName, sum(ep.sellingPrice) as totalSales, p.detailProductGroup.groupName)"
+	@Query("select new com.shinhan.sunInCloud.dto.ProductSalesDTO(p.productName, sum(ep.sellingPrice) as totalSales, p.detailProductGroup.groupName) "
 			+ "from Product p inner join ExportProduct ep on p.productNo = ep.product.productNo inner join Exports e on e.exportNo = ep.exports.exportNo "
 			+ "where e.seller.sellerNo = :sellerNo and ep.exportDate is not null and e.salesChannel = :channelName and year(ep.exportDate) = :year "
 			+ "group by p.productName "
