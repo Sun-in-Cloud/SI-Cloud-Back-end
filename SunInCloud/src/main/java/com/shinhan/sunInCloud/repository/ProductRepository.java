@@ -49,4 +49,12 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	Long countBySeller_SellerNo(Long sellerNo);
 	boolean existsByProductNameAndSeller_SellerNo(String productName, Long sellerNo);
 	
+//	@Query("select p from Product as p "
+//			+ "where p.sellerNo = :sellerNo")
+//	List<SimpleProductDTO> findByAllProductSimpledata(@Param("sellerNo") Long sellerNo);
+	
+	@Query(value = "SELECT product_no, consumer_price "
+			+ "FROM product "
+			+ "WHERE seller_no = :sellerNo", nativeQuery = true)
+	List<Object[]> findByAllProductSimpledata(@Param("sellerNo") Long sellerNo);
 }
