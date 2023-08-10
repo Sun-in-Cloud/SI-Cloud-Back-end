@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.shinhan.sunInCloud.dto.ChannelSalesDTO;
+import com.shinhan.sunInCloud.dto.DangerousProductDTO;
 import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportProductListDTO;
@@ -394,5 +395,14 @@ public class ExportsService {
 	
 	public List<ProductSalesDTO> findTopProductsOfChannel(Long sellerNo, int year, String channelName) {
 		return exportsRepository.findTopProductsOfChannel(sellerNo, year, channelName, PageRequest.of(0, TOP5));
+	}
+
+	/**
+	 * 위험 상품 5개 조회 메서드
+	 * @param sellerNo
+	 * @return 발주한지 가장 오래된 상품 5개
+	 */
+	public List<DangerousProductDTO> getDangerousProducts(Long sellerNo) {
+		return exportsRepository.getDangerousProducts(sellerNo, PageRequest.of(0, TOP5));
 	}
 }
