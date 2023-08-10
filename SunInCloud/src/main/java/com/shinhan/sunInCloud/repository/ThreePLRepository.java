@@ -22,7 +22,7 @@ public interface ThreePLRepository extends JpaRepository<ThreePL, Long>{
 			+ "WHERE product_group.group_name LIKE CONCAT('%', :productGroup, '%')	 "
 			+ "AND threepl.address LIKE CONCAT('%', :address, '%') "
 			+ "AND threepl.fee <= :fee "
-			+ "AND end_date <= DATE_ADD(SYSDATE(), INTERVAL :contractPeriod MONTH) "
+			+ "AND (end_date <= DATE_ADD(SYSDATE(), INTERVAL :contractPeriod MONTH) OR (cnt_total - cnt_contracted > 0)) "
 			+ "ORDER BY end_date, company_name", nativeQuery = true)
 	public Page<ThreePL> findByMatchingCondition(@Param("productGroup") String productGroup, @Param("address") String address,
 			@Param("fee") long fee, @Param("contractPeriod") int contractPeriod, Pageable pageable);
