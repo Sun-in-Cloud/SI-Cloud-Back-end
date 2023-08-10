@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.shinhan.sunInCloud.dto.ChannelSalesDTO;
+import com.shinhan.sunInCloud.dto.DangerousProductDTO;
 import com.shinhan.sunInCloud.dto.ProductSalesDTO;
 import com.shinhan.sunInCloud.entity.Exports;
 
@@ -28,4 +29,11 @@ public interface ExportsRepository extends JpaRepository<Exports, Long>{
 			+ "group by p.productName "
 			+ "order by totalSales desc")
 	List<ProductSalesDTO> findTopProductsOfChannel(@Param("sellerNo") Long sellerNo, @Param("year") int year, @Param("channelName") String channelName, Pageable pageable);
+	
+	@Query("select new com.shinhan.sunInCloud.dto.DangerousProductDTO(p.productName, p.productNo, p.currentStock, p.importPrice, p.consumerPrice, max(o.orderDate) AS orderDate) "
+			+ "from Product p join OrderProduct op on p.productNo = op.product.productNo join Order o on op.order.orderNo = o.orderNo "
+			+ "where p.seller.sellerNo = :sellerNo "
+			+ "group by p.productNo "
+			+ "order by max(o.orderDate)")
+	List<DangerousProductDTO> getDangerousProducts(@Param("sellerNo") Long sellerNo, Pageable pageable);
 }
