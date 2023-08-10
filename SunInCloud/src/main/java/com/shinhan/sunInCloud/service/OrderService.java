@@ -111,7 +111,7 @@ public class OrderService {
 					.orderDate(TimestampUtil.convertTimestampToString(order.getOrderDate()))
 					.orderNo(order.getOrderNo())
 					.importNo(order.getImports() == null ? null : order.getImports().getImportNo())
-					.isImported(order.getImports() == null ? false : true)
+					.isImported(order.getImports() == null ? false : order.getImports().getImportDate() == null ? false : true)
 					.build());
 		}
 		Long count = orderRepository.countBySeller_SellerNo(sellerNo);
