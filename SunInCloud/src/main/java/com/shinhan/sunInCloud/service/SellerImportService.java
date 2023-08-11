@@ -196,7 +196,8 @@ public class SellerImportService {
 		
 		//4.2 상세
       public List<ImportProductDTO> seeDetail(Long importNo){
-    		List<ImportProduct> im= importProductRepository.findByImports_ImportNo(importNo);
+    		List<ImportProduct> im= importProductRepository.findByImports_ImportNoAndImportAmountIsNotNull(importNo);
+    		System.out.println(im.size());
 			List<ImportProductDTO> importProductDTOs = new ArrayList<>();
 			for(ImportProduct importProduct : im) {
 				importProductDTOs.add(ImportProductDTO.builder()
