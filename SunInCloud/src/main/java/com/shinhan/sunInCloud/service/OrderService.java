@@ -157,4 +157,23 @@ public class OrderService {
 			orderRepository.save(order);
 		
 	}
+
+	/**
+	 * 입고 처리되지 않은 발주만 조회
+	 * @param sellerNo
+	 * @param pageNum
+	 * @param countPerPage
+	 * return 입고처리 되지 않은 발주 list
+	 */
+	public List<OrderDTO> findNotImportedOrdersBySeller(Long sellerNo, int pageNum, int countPerPage) {
+		Page<Order> orders = orderRepository.findBySeller_SellerNoAndImportsIsNull(sellerNo, PageRequest.of(pageNum, countPerPage));
+		List<OrderDTO> orderDTOs = new ArrayList<>();
+		for (Order order : orders) {
+			orderDTOs.add(OrderDTO.builder()
+					.orderNo(order.getOrderNo())
+					.orderDate(TimestampUtil.convertTimestampToString(order.getOrderDate()))
+					.build());
+		}
+		return orderDTOs;
+	}
 }
