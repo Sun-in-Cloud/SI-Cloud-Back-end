@@ -150,7 +150,7 @@ public class ImportsTest {
 		Long importNo = 150L;
 		int pageNum = 0;
 		int countPerPage = 10;
-		List<ImportProductDTO> im = threePLImportService.goRegister(importNo, pageNum, countPerPage);
+		List<ImportProductDTO> im = threePLImportService.goRegister(importNo);
 		for(ImportProductDTO i: im) {
 			System.out.println(i.getProductNo());
 		}
