@@ -249,7 +249,7 @@ public class MarketingService {
 			dangerousProduct.setLastOrderDate(TimestampUtil.convertTimestampToString(new Timestamp(dangerousProduct.getOrderDate().getTime())));
 			
 			int randomDanger = new Random().nextInt(41)+40;
-			dangerousProduct.setRandomDanger(randomDanger);
+			dangerousProduct.setDangerDegree(randomDanger);
 		}
 		return dangerousProducts;
 	}

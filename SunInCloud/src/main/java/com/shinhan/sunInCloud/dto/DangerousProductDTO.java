@@ -22,6 +22,7 @@ public class DangerousProductDTO {
 	private Integer consumerPrice;
 	private Date orderDate;
 	private String lastOrderDate;
+	private Integer dangerDegree;
 	
 	public DangerousProductDTO(String productName, String productNo, Integer currentStock, Integer importPrice,
 			Integer consumerPrice, Date orderDate) {
