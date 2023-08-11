@@ -180,11 +180,13 @@ public class SellerImportService {
     	 List<ImportsDTO> importDTO =new ArrayList<>();
          Long count = importRepository.countBySeller_SellerNoAndImportDateIsNotNull(sellerNo);
          Long totalPage = calculatePageCount(count, countPerPage);
-    	 List<Imports> imports = importRepository.findBySeller_SellerNoAndImportDateIsNotNull(sellerNo, PageRequest.of(pageNum, countPerPage));
+    	 List<Imports> imports = importRepository.findBySeller_SellerNoAndImportDateIsNotNullOrderByImportDateDesc(sellerNo, PageRequest.of(pageNum, countPerPage));
  
          for(Imports im: imports){
             importDTO.add(ImportsDTO.builder().importNo(im.getImportNo())
-                  .localRequestDate(TimestampUtil.convertTimestampToString(im.getRequestDate())).build());
+                  .localRequestDate(TimestampUtil.convertTimestampToString(im.getRequestDate()))
+                  .localImportDate(TimestampUtil.convertTimestampToString(im.getImportDate()))
+                  .build());
          }  
          ImportProductListDTO productListDTO = ImportProductListDTO.builder()
                .importproduct(importDTO)
