@@ -27,7 +27,7 @@ public class ImportsController {
 	//발주 등록
 	@PostMapping(value= {"/seller/import/register"})
 	public boolean saveImport(@RequestBody ImportProductPostDTO dto) {
-		return sellerImportService.saveImport(dto.getSellerNo(), dto.getOrderNo(), dto.getDtos());
+		return sellerImportService.saveImport(dto.getSellerNo(), dto.getOrderNo(), dto.getImportList());
 	}
 	
 	
