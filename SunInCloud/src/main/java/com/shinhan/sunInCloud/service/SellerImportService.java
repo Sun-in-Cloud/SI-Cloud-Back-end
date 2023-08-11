@@ -229,7 +229,6 @@ public class SellerImportService {
 		List<Imports> preImports = importRepository.findBySeller_SellerNoOrderByRequestDateDesc(sellerNo, PageRequest.of(pageNum, countPerPage));
 		List<ImportsDTO> preImportDTOs = new ArrayList<>();
 		for (Imports preImport : preImports) {
-			System.out.println(preImport.getRequestDate());
 			preImportDTOs.add(ImportsDTO.builder()
 					.importNo(preImport.getImportNo())
 					.requestDate(preImport.getRequestDate())
