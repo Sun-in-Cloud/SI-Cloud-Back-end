@@ -13,5 +13,5 @@ public class ImportProductPostDTO {
 	Long sellerNo;
 	Long orderNo;
 	Long importNo;
-	List<ImportProductDTO> dtos;
+	List<ImportProductDTO> importList;
 }

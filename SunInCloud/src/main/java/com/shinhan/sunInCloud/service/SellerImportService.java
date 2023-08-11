@@ -23,6 +23,7 @@ import com.shinhan.sunInCloud.repository.ImportsRepository;
 import com.shinhan.sunInCloud.repository.OrderProductRepository;
 import com.shinhan.sunInCloud.repository.OrderRepository;
 import com.shinhan.sunInCloud.repository.ProductRepository;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -132,9 +133,9 @@ public class SellerImportService {
 			List<ImportsDTO> importsDTOs = new ArrayList<>();
 			List<Imports> im = importRepository.findAllBySeller_SellerNo(sellerNo, PageRequest.of(pageNumber, countPerPage));
 			for(Imports imports : im) {
-				importsDTOs.add(ImportsDTO.builder().importDate(imports.getImportDate())
+				importsDTOs.add(ImportsDTO.builder().localImportDate(TimestampUtil.convertTimestampToString(imports.getImportDate()))
 						.importNo(imports.getImportNo())
-						.requestDate(imports.getRequestDate())
+						.localRequestDate(TimestampUtil.convertTimestampToString(imports.getRequestDate()))
 						.build());
 			}	
 			
@@ -184,7 +185,7 @@ public class SellerImportService {
  
          for(Imports im: imports){
             importDTO.add(ImportsDTO.builder().importNo(im.getImportNo())
-                  .importDate(im.getImportDate()).build());
+                  .localRequestDate(TimestampUtil.convertTimestampToString(im.getRequestDate())).build());
          }  
          ImportProductListDTO productListDTO = ImportProductListDTO.builder()
                .importproduct(importDTO)
@@ -195,7 +196,8 @@ public class SellerImportService {
 		
 		//4.2 상세
       public List<ImportProductDTO> seeDetail(Long importNo){
-    		List<ImportProduct> im= importProductRepository.findByImports_ImportNo(importNo);
+    		List<ImportProduct> im= importProductRepository.findByImports_ImportNoAndImportAmountIsNotNull(importNo);
+    		System.out.println(im.size());
 			List<ImportProductDTO> importProductDTOs = new ArrayList<>();
 			for(ImportProduct importProduct : im) {
 				importProductDTOs.add(ImportProductDTO.builder()

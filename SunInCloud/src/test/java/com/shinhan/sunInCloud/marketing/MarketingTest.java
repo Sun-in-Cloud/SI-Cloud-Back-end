@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.shinhan.sunInCloud.dto.ChannelSalesDTO;
 import com.shinhan.sunInCloud.dto.ChannelSalesListDTO;
+import com.shinhan.sunInCloud.dto.DangerousProductDTO;
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.StatisticsDTO;
 import com.shinhan.sunInCloud.dto.TotalSalesDTO;
@@ -98,5 +99,12 @@ public class MarketingTest {
 		Assertions.assertThat(thisYearSales.get(0).getChannelName()).isEqualTo("11번가");
 		Assertions.assertThat(thisYearSales.get(0).getTopSalesProducts().size()).isEqualTo(5);
 		Assertions.assertThat(thisYearSales.get(0).getTotalSales()).isEqualTo(290380L);
+	}
+	
+	@Test
+	void findDangerousProducts() {
+		Long sellerNo = 8L;
+		List<DangerousProductDTO> dangerousProducts = marketingService.getDangerousProducts(sellerNo);
+		Assertions.assertThat(dangerousProducts.size()).isEqualTo(5);
 	}
 }
