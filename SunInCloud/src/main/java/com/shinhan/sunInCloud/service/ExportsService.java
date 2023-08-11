@@ -47,6 +47,7 @@ public class ExportsService {
 	
 	private int TOP3 = 3;
 	private int TOP5 = 5;
+	private int TOP10 = 10;
 	
 	@Value("${aws.address}")
 	private String path;
@@ -408,6 +409,6 @@ public class ExportsService {
 	 * @return 발주한지 가장 오래된 상품 5개
 	 */
 	public List<DangerousProductDTO> getDangerousProducts(Long sellerNo) {
-		return exportsRepository.getDangerousProducts(sellerNo, PageRequest.of(0, TOP5));
+		return exportsRepository.getDangerousProducts(sellerNo, PageRequest.of(0, TOP10));
 	}
 }
