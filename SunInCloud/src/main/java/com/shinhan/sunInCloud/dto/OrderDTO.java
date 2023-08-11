@@ -20,14 +20,15 @@ import lombok.Setter;
 public class OrderDTO {
 
 	private Long orderNo;
-	private Timestamp orderDate;
+	private Timestamp orderDateTimeStamp;
+	private String orderDate;
 	private Long importNo;
 	private Boolean isImported;
 	
 	public Order toOrder(Seller seller, Imports imports) {
 		return Order.builder()
 				.orderNo(orderNo)
-				.orderDate(orderDate)
+				.orderDate(orderDateTimeStamp)
 				.imports(imports)
 				.build();
 	}

@@ -29,42 +29,13 @@ public class ShoppingService {
 	private final SellerService sellerService;
 	
 	/**
-	 * 주문 생성하는 메서드
-	 * 
+	 * 주문 자동 생성하는 메서드
 	 * @param sellerNo
-	 * @param shoppingProductDTOs
 	 * @return
 	 */
 	@Transactional
-	public boolean register(Long sellerNo, List<ShoppingProductDTO> shoppingProductDTOs) {
-		// 수집된 주문이 없는 경우
-		if(shoppingProductDTOs.size() == 0) return false;
-		
-		List<ShoppingProduct> shoppingProducts = new ArrayList<>();
-		Seller seller = sellerService.findById(sellerNo);
-		StringBuilder exportNo = new StringBuilder("S");
-		exportNo.append(sellerNo);
-		exportNo.append("-");
-		exportNo.append(new Date().getTime() % 10000000);
-		
-		Shopping shopping = shoppingProductDTOs.get(0)
-				.toShopping(exportNo.toString(), "11번가", seller); 
-		
-		Shopping savedShopping = shoppingRepository.save(shopping);
-
-		for(ShoppingProductDTO shoppingProductDTO: shoppingProductDTOs) {
-			Product findedProduct = productService.findByProductNo(shoppingProductDTO.getProductNo());
-			shoppingProducts.add(shoppingProductDTO.toShoppingProduct(findedProduct, savedShopping));
-		}
-		
-		List<ShoppingProduct> savedProduct = shoppingProductRepository.saveAll(shoppingProducts);
-		
-		return (savedShopping != null && savedProduct != null);
-	}
-	
-	@Transactional
-	public void register(Long sellerNo) {
-		List<SimpleProductDTO> products = null;
+	public List<ShoppingProductDTO> register(Long sellerNo) {
+		List<SimpleProductDTO> products = productService.findByAllProductSimpledata(sellerNo);
 		String[] addresses = {"서울 강남구 개포동 190", "서울 용산구 서빙고로 17", "서울 용산구 독서당로 111", "서울 성북구 숭인로8길 80",
 				"경기 파주시 심학산로 385", "경기 의정부시 용민로 10", "경기 수원시 팔달구 인계동 847-3", "경기 평택시 세교동 845",
 				"강원 춘천시 동면 만천로 242", "강원 춘천시 안마산로 133", "강원 원주시 가곡로 120", "강원 강릉시 성덕포남로 39",
@@ -77,18 +48,67 @@ public class ShoppingService {
 		String[] channels = {"11번가", "스마트스토어", "G마켓", "카카오선물하기", "SSG닷컴", "옥션"};
 		String[] orderers = {"임시아", "장원우", "고서준", "문민경", "오진아", "강다운", "정다운", "문하나", "임새롬", "이남규",
 				"이재섭", "오혜린", "이혜림", "박유리", "신가영", "손민서", "김민지", "김지수", "이준혁"};
+		double[] sellingPct = {1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4}; 
 		
+		List<ShoppingProductDTO> shoppingProductDTOs = new ArrayList<>();
+		List<String> productNos = new ArrayList<>();
+		List<ShoppingProduct> shoppingProducts = new ArrayList<>();
+		
+		// 주소, 판매채널, 주문자명 랜덤 설정
 		String address = addresses[getRandomNumber(addresses.length)];
 		String channel = channels[getRandomNumber(channels.length)];
 		String orderer = orderers[getRandomNumber(orderers.length)];
 		
+		// 주문 목록 생성
+		Seller seller = sellerService.findById(sellerNo);
+		StringBuilder exportNo = new StringBuilder("S");
+		exportNo.append(sellerNo);
+		exportNo.append("-");
+		exportNo.append(new Date().getTime() % 10000000);
+		Shopping shopping = Shopping
+				.builder()
+				.exportNo(exportNo.toString())
+				.seller(seller)
+				.salesChannel(channel)
+				.address(address)
+				.orderName(orderer)
+				.build();
+		Shopping savedShopping = shoppingRepository.save(shopping);
+		
+		// 주문 상품 개수 1~5 랜덤 설정
 		int numOfProduct = getRandomNumber(5) + 1;
 		
-		List<ShoppingProductDTO> shoppingProductDTOs = new ArrayList<>();
-		
 		while(shoppingProductDTOs.size() < numOfProduct) {
+			// 상품, 수량 1~10 랜덤 설정
+			int idx = getRandomNumber(products.size());
+			int amount = getRandomNumber(10) + 1;
+			double pct = sellingPct[getRandomNumber(sellingPct.length)];
 			
+			while(productNos.indexOf(products.get(idx).getProductNo()) != -1) {
+				idx = getRandomNumber(products.size());
+			}
+			
+			productNos.add(products.get(idx).getProductNo());
+			ShoppingProductDTO shoppingProductDTO = ShoppingProductDTO
+					.builder()
+					.productNo(products.get(idx).getProductNo())
+					.amount(amount)
+					.sellingPrice((int) (products.get(idx).getConsumerPrice() * amount * pct))
+					.build();
+			shoppingProductDTOs.add(shoppingProductDTO);
 		}
+		
+		
+		for(ShoppingProductDTO shoppingProductDTO: shoppingProductDTOs) {
+			Product findedProduct = productService.findByProductNo(shoppingProductDTO.getProductNo());
+			shoppingProducts.add(shoppingProductDTO.toShoppingProduct(findedProduct, savedShopping));
+		}
+		
+		List<ShoppingProduct> savedProduct = shoppingProductRepository.saveAll(shoppingProducts);
+		
+		if(savedProduct == null || savedShopping == null) return null;
+		
+		return findShoppings(sellerNo);
 	}
 	
 	/**
@@ -143,6 +163,11 @@ public class ShoppingService {
 		return shoppingRepository.findBySeller_SellerNoAndIsCollected(sellerNo, false);
 	}
 	
+	/**
+	 * 특정 화주사의 모든 주문 내역 조회
+	 * @param sellerNo
+	 * @return
+	 */
 	public List<ShoppingProductDTO> findShoppings(Long sellerNo) {
 		List<ShoppingProductDTO> shoppingProductDTOs = new ArrayList<>();
 		List<ShoppingProduct> shoppingProducts = shoppingProductRepository

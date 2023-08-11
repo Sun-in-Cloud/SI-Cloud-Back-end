@@ -1,5 +1,6 @@
 package com.shinhan.sunInCloud.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ChannelSalesDTO;
 import com.shinhan.sunInCloud.dto.ChannelSalesListDTO;
+import com.shinhan.sunInCloud.dto.DangerousProductDTO;
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.StatisticsDTO;
 import com.shinhan.sunInCloud.dto.TotalSalesDTO;
@@ -232,5 +234,18 @@ public class MarketingService {
 			channelSales.setTopSalesProducts(exportsService.findTopProductsOfChannel(sellerNo, year, channelSales.getChannelName()));
 		}
 		return yearlySalesOfChannels;
+	}
+
+	/**
+	 * 위험 상품 5개 조회 메서드
+	 * @param sellerNo
+	 * @return 발주한지 가장 오래된 상품 5개
+	 */
+	public List<DangerousProductDTO> getDangerousProducts(Long sellerNo) {
+		List<DangerousProductDTO> dangerousProducts = exportsService.getDangerousProducts(sellerNo);
+		for (DangerousProductDTO dangerousProduct : dangerousProducts) {
+			dangerousProduct.setLastOrderDate(TimestampUtil.convertTimestampToString(new Timestamp(dangerousProduct.getOrderDate().getTime())));
+		}
+		return dangerousProducts;
 	}
 }
