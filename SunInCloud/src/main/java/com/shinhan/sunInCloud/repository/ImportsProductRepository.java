@@ -14,5 +14,5 @@ public interface ImportsProductRepository extends JpaRepository<ImportProduct, L
 	Imports save(Imports build);
 	List<ImportProduct> findAllByImportProductNo(Long importNo);
 	List<ImportProduct> findByImports_ImportNoAndImportAmountIsNotNull(Long importNo);
-	
+	ImportProduct findByImports_ImportNoAndProduct_ProductNo(Long importNo, String productNo);
 }
