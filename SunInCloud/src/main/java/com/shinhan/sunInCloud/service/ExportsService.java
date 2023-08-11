@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +47,9 @@ public class ExportsService {
 	
 	private int TOP3 = 3;
 	private int TOP5 = 5;
+	
+	@Value("${aws.address}")
+	private String path;
 
 	/**
 	 * 쇼핑몰에 주문건 요청해 출고 목록에 추가하는 메서드
@@ -58,7 +62,8 @@ public class ExportsService {
 	public ExportsListDTO register(Long sellerNo, int pageNum, int countPerPage) {
 		Seller seller = sellerService.findById(sellerNo);
 		
-		WebClient webClient = WebClient.create("http://localhost:4885");
+		
+		WebClient webClient = WebClient.create(path);
 		List<ShoppingDTO> shoppingDTOs = webClient.get()
 			.uri("/shop/order/send/" + sellerNo)
 			.retrieve()
