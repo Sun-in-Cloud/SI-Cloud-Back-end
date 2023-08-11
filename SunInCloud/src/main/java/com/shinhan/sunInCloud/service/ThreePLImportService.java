@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
@@ -54,45 +56,39 @@ public class ThreePLImportService {
 	//그 입고 번호로 입고 상품을 찾기 ?
 	//실제 입고 수량을 설정해주기 ?
 	 */
-	   public boolean saveImport(Long sellerNo, Long importNo, List<ImportProductDTO> importProductDTOs) {
-		   // sellerNo을 가지고 있는 입고 내역 찾기 ㅇ
-	       //importNo를 가지고 있는 입고 상품들 찾기
-		    Seller seller = sellerService.findById(sellerNo);
-		    Imports imports = importRepository.findByImportNo(importNo);
-		    //입고내역에 판매자와 입고일짜 추가해줌
-		    imports = importRepository.save(Imports.builder().seller(seller).importDate(new Timestamp(System.currentTimeMillis())).build());
+	@Transactional
+	public boolean saveImport(Long sellerNo, Long importNo, List<ImportProductDTO> importProductDTOs) {
+		// sellerNo을 가지고 있는 입고 내역 찾기 ㅇ
+	    //importNo를 가지고 있는 입고 상품들 찾기
+		Seller seller = sellerService.findById(sellerNo);
+		Imports imports = importRepository.findByImportNo(importNo);
+		//입고내역에 판매자와 입고일짜 추가해줌
+		imports.setSeller(seller);
+		imports.setImportDate(new Timestamp(System.currentTimeMillis()));
+		//입고 상품에 실제 입고 수량 추가하기!    
+		List<ImportProduct> importProducts = importProductRepository.findByImports_ImportNo(importNo);
 		    
-		    //입고 상품에 실제 입고 수량 추가하기!
-		    
-		    
-		    List<ImportProduct> importProducts = new ArrayList<>();
-		    
-		    //importNo를 가진 입고상품을 찾기
-		    importProducts=importProductRepository.findByImports_ImportNo(importNo);
-		  //입고 내역에 입고 일자 추가
-	         for (ImportProductDTO importProductDTO : importProductDTOs) {
-	            Product product = productService.findByProductNo(importProductDTO.getProductNo());
-	            System.out.println(importProductDTO.getProductNo());
-	            System.out.println(product);
-	            System.out.println(imports);
-	            ImportProduct importProduct = ImportProduct.builder()
-	                  .imports(imports) // 입고 내역과 관련된 입고 상품 설정
-	                  .product(product)
-	                  .requestAmount(importProductDTO.getRequestAmount())
-	                  .importAmount(importProductDTO.getImportAmount())
-	                  .build();
-	            importProducts.add(importProduct);
-	         }
-	             
-	        	 
-		    // 각 입고 상품 저장
-		    importProductRepository.saveAll(importProducts);
-
-		    // 입고 내역과 입고 상품이 모두 저장되면 true 반환
-		    return !importProducts.isEmpty();
-		}
-
-	
+		//importNo를 가진 입고상품을 찾기
+		//입고 내역에 입고 일자 추가
+		//입고 내역에 있는 상품 / 없는 상품 구분
+	    for (ImportProductDTO importProductDTO : importProductDTOs) {
+	    	ImportProduct importProduct = importProductRepository.findByImports_ImportNoAndProduct_ProductNo(importNo, importProductDTO.getProductNo());
+	    	if (importProduct == null) { // 입고 예정 리스트에 없는 상품
+	    		Product product = productService.findByProductNo(importProductDTO.getProductNo());
+	    		importProduct = ImportProduct.builder()
+		        		.imports(imports) // 입고 내역과 관련된 입고 상품 설정
+		                .product(product)
+		                .requestAmount(importProductDTO.getRequestAmount())
+		                .importAmount(importProductDTO.getImportAmount())
+		                .build();
+	    		importProducts.add(importProductRepository.save(importProduct));
+	    	} else { // 입고 예정 리스트에 있는 상품
+	    		importProduct.setImportAmount(importProductDTO.getImportAmount());
+	    	}
+	    }
+		// 입고 내역과 입고 상품이 모두 저장되면 true 반환
+		return !importProducts.isEmpty();
+	}
 	//5.입고내역 리스트 -목록 조회
 	
 	//6.입고내역리스트 - 상세 조회
