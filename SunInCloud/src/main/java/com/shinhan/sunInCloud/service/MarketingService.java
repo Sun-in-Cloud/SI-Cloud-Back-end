@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
@@ -243,8 +244,12 @@ public class MarketingService {
 	 */
 	public List<DangerousProductDTO> getDangerousProducts(Long sellerNo) {
 		List<DangerousProductDTO> dangerousProducts = exportsService.getDangerousProducts(sellerNo);
+		//Random random ;
 		for (DangerousProductDTO dangerousProduct : dangerousProducts) {
 			dangerousProduct.setLastOrderDate(TimestampUtil.convertTimestampToString(new Timestamp(dangerousProduct.getOrderDate().getTime())));
+			
+			int randomDanger = new Random().nextInt(41)+40;
+			dangerousProduct.setRandomDanger(randomDanger);
 		}
 		return dangerousProducts;
 	}
