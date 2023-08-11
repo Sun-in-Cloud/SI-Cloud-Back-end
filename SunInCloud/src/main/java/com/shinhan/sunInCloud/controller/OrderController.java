@@ -42,7 +42,7 @@ public class OrderController {
 	}
 	
 	@GetMapping("/seller/import/pre-order")
-	public List<OrderDTO> findNotImportedOrdersBySeller(Long sellerNo, int pageNum, int countPerPage) {
+	public OrderListDTO findNotImportedOrdersBySeller(Long sellerNo, int pageNum, int countPerPage) {
 		return orderService.findNotImportedOrdersBySeller(sellerNo, pageNum - 1, countPerPage);
 	}
 }

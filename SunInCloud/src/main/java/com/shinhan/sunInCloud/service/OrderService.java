@@ -165,7 +165,7 @@ public class OrderService {
 	 * @param countPerPage
 	 * return 입고처리 되지 않은 발주 list
 	 */
-	public List<OrderDTO> findNotImportedOrdersBySeller(Long sellerNo, int pageNum, int countPerPage) {
+	public OrderListDTO findNotImportedOrdersBySeller(Long sellerNo, int pageNum, int countPerPage) {
 		Page<Order> orders = orderRepository.findBySeller_SellerNoAndImportsIsNull(sellerNo, PageRequest.of(pageNum, countPerPage));
 		List<OrderDTO> orderDTOs = new ArrayList<>();
 		for (Order order : orders) {
@@ -174,6 +174,8 @@ public class OrderService {
 					.orderDate(TimestampUtil.convertTimestampToString(order.getOrderDate()))
 					.build());
 		}
-		return orderDTOs;
+		Long count = orderRepository.countBySeller_SellerNoAndImportsIsNull(sellerNo);
+		Long totalPage = calculatePageCount(count, countPerPage);
+		return OrderListDTO.builder().totalPage(totalPage).orders(orderDTOs).build();
 	}
 }
