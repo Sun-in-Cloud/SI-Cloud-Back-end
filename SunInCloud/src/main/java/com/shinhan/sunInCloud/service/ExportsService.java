@@ -46,6 +46,7 @@ public class ExportsService {
 	
 	private int TOP3 = 3;
 	private int TOP5 = 5;
+	private int TOP10 = 10;
 
 	/**
 	 * 쇼핑몰에 주문건 요청해 출고 목록에 추가하는 메서드
@@ -403,6 +404,6 @@ public class ExportsService {
 	 * @return 발주한지 가장 오래된 상품 5개
 	 */
 	public List<DangerousProductDTO> getDangerousProducts(Long sellerNo) {
-		return exportsRepository.getDangerousProducts(sellerNo, PageRequest.of(0, TOP5));
+		return exportsRepository.getDangerousProducts(sellerNo, PageRequest.of(0, TOP10));
 	}
 }
