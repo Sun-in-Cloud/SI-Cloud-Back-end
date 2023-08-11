@@ -22,6 +22,7 @@ public class ImportsDTO {
 	private Timestamp requestDate;
 	private Timestamp importDate;
 	private String localRequestDate;
+	private String localImportDate;
 	
 	public Imports toImport(Seller seller) {
 		return Imports.builder()

@@ -44,11 +44,9 @@ public class Imports {
 	
 	public ImportsDTO toImportsDTO() {
 	    return ImportsDTO.builder()
-	            .importDate(importDate)
 	            .importNo(importNo)
-	            .requestDate(requestDate)
 	            .localRequestDate(TimestampUtil.convertTimestampToString(requestDate))
-	            .localRequestDate(TimestampUtil.convertTimestampToString(importDate))
+	            .localImportDate(TimestampUtil.convertTimestampToString(importDate))
 	            .sellerNo(seller.getSellerNo()).build();
 	}
 }
