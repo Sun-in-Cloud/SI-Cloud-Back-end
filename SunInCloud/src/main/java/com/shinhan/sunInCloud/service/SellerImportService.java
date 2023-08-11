@@ -178,11 +178,9 @@ public class SellerImportService {
       //importDate가 null이 아니면 조회 가능 출고 목록 조회와 로직이 같음
          //입고 번호, 리스트 작성 일자
     	 List<ImportsDTO> importDTO =new ArrayList<>();
-         Long count = orderRepository.countBySeller_SellerNo(sellerNo);
+         Long count = importRepository.countBySeller_SellerNoAndImportDateIsNotNull(sellerNo);
          Long totalPage = calculatePageCount(count, countPerPage);
     	 List<Imports> imports = importRepository.findBySeller_SellerNoAndImportDateIsNotNull(sellerNo, PageRequest.of(pageNum, countPerPage));
-
-    	 System.out.println(imports.size());
  
          for(Imports im: imports){
             importDTO.add(ImportsDTO.builder().importNo(im.getImportNo())

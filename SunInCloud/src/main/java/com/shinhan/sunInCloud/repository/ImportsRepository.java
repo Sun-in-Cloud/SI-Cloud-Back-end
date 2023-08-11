@@ -28,6 +28,8 @@ public interface ImportsRepository extends JpaRepository<Imports, Long> {
 	List<Imports> findAllBySeller_SellerNo(Long sellerNo);
 
 	Imports findByImportNo(Long importNo);
+	
+	Long countBySeller_SellerNoAndImportDateIsNotNull(Long sellerNo);
 
 	//Page<Imports> findByImportNo_SellerNo(Long sellerNo, PageRequest of);
 
