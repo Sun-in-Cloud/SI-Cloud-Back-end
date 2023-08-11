@@ -27,19 +27,16 @@ public class ThreePLImportService {
 	private final ImportsRepository importRepository;
 	private final ProductService productService;
 	
-	//3.입고 - 등록 패이지로 이동
-	public List<ImportProductDTO> goRegister(Long importNo, int pageNum, int countPerPage) {
+	//3.입고 - 등록 페이지로 이동
+	public List<ImportProductDTO> goRegister(Long importNo) {
 		   List<ImportProductDTO> importProductDTOs = new ArrayList<>();
 		   List<ImportProduct> imports =  importProductRepository.findByImports_ImportNo(importNo);
 		   for(ImportProduct im: imports) {
 			   importProductDTOs.add(ImportProductDTO.builder().productNo(im.getProduct().getProductNo())
-					   .productName(im.getProduct().getProductName()).importAmount(im.getImportAmount()).
-					   requestAmount(im.getRequestAmount())
+					   .productName(im.getProduct().getProductName()).importAmount(im.getImportAmount())
+					   .requestAmount(im.getRequestAmount())
 					   .build());
 		   }
-		   
-		   Long count = importProductRepository.countByImports_ImportNo(importNo);
-	       Long totalPage = calculatePageCount(count, countPerPage);     
 		   return importProductDTOs;
 	}
 	

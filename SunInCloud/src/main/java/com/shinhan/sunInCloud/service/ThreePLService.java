@@ -54,7 +54,7 @@ public class ThreePLService {
 	 */
 	public ThreePLDTO threePLDetail(Long threePLNo) {
 		ThreePL threepl = threePLRepository.findById(threePLNo).orElse(null);
-		List<Matching> matchings = matchingRepository.findByWarehouse_ThreePL_ThreePLNo(threePLNo);
+		List<Matching> matchings = matchingRepository.findByWarehouse_ThreePL_ThreePLNoOrderBySeller_CompanyName(threePLNo);
 		List<MatchingDTO> matchingDTOs = new ArrayList<>();
 		long exportCnt = 0;
 		Timestamp endDate = null;
@@ -93,7 +93,7 @@ public class ThreePLService {
 	 * @return
 	 */
 	public List<MatchingDTO> findByContractedSeller(Long threePLNo) {
-		List<Matching> matchings = matchingRepository.findByWarehouse_ThreePL_ThreePLNo(threePLNo);
+		List<Matching> matchings = matchingRepository.findByWarehouse_ThreePL_ThreePLNoOrderBySeller_CompanyName(threePLNo);
 		List<MatchingDTO> matchingDTOs = new ArrayList<>();
 		
 		for(Matching matching : matchings) {

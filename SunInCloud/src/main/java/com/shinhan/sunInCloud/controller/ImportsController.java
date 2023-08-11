@@ -27,7 +27,7 @@ public class ImportsController {
 	//발주 등록
 	@PostMapping(value= {"/seller/import/register"})
 	public boolean saveImport(@RequestBody ImportProductPostDTO dto) {
-		return sellerImportService.saveImport(dto.getSellerNo(), dto.getOrderNo(), dto.getDtos());
+		return sellerImportService.saveImport(dto.getSellerNo(), dto.getOrderNo(), dto.getImportList());
 	}
 	
 	
@@ -48,13 +48,13 @@ public class ImportsController {
 	}
 	
 	@GetMapping(value= {"/3pl/import/register"})
-	public List<ImportProductDTO> goRegister(Long importNo, int pageNum, int countPerPage) {
-		return threePLImportService.goRegister(importNo, pageNum - 1 , countPerPage);
+	public List<ImportProductDTO> goRegister(Long importNo) {
+		return threePLImportService.goRegister(importNo);
 	}
 	
 	@PostMapping(value=  {"/3pl/import/register"})
 	public boolean saveThreePLImport(@RequestBody ImportProductPostDTO dto) {
-		return threePLImportService.saveImport(dto.getSellerNo(), dto.getImportNo(), dto.getDtos());
+		return threePLImportService.saveImport(dto.getSellerNo(), dto.getImportNo(), dto.getImportList());
 	}
 	
 	@GetMapping(value= {"/seller/import/{importNo}"})
