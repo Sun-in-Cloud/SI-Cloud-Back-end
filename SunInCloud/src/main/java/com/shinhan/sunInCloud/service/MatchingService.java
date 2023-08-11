@@ -33,7 +33,7 @@ public class MatchingService {
 	 * @return
 	 */
 	public List<Matching> findByThreePLNo(Long threePLNo) {
-		return matchingRepository.findByWarehouse_ThreePL_ThreePLNo(threePLNo);
+		return matchingRepository.findByWarehouse_ThreePL_ThreePLNoOrderBySeller_CompanyName(threePLNo);
 	}
 	
 	/**
@@ -108,7 +108,7 @@ public class MatchingService {
 		Page<ThreePL> findedThreePLs = threePLService.findByMatchingCondition(matchingConditionDTO);
 		
 		for(ThreePL findedThreePL : findedThreePLs) {
-			List<Matching> matchings = matchingRepository.findByWarehouse_ThreePL_ThreePLNo(findedThreePL.getThreePLNo());
+			List<Matching> matchings = matchingRepository.findByWarehouse_ThreePL_ThreePLNoOrderBySeller_CompanyName(findedThreePL.getThreePLNo());
 			Timestamp endDate = null;
 			
 			for(Matching matching : matchings) {
