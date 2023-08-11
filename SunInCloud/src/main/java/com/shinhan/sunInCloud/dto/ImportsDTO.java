@@ -29,7 +29,6 @@ public class ImportsDTO {
 				.importNo(importNo)
 				.seller(seller)
 				.importDate(importDate)
-				.importNo(importNo)
 				.requestDate(requestDate)
 				.build();
 	}
