@@ -21,6 +21,9 @@ public interface ImportsRepository extends JpaRepository<Imports, Long> {
 	List<Imports> findAllBySeller_SellerNo(Long sellerNo, Pageable pageables);
 	
 	List<Imports> findBySeller_SellerNoAndImportDateIsNotNull(Long sellerNo, PageRequest pageables);
+	
+	List<Imports> findBySeller_SellerNoOrderByRequestDateDesc(Long sellerNo, Pageable pageable);
+	Long countBySeller_SellerNo(Long sellerNo);
 
 	List<Imports> findAllBySeller_SellerNo(Long sellerNo);
 

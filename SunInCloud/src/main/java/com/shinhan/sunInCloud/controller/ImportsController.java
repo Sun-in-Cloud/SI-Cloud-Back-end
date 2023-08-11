@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shinhan.sunInCloud.dto.ImportListDTO;
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.dto.ImportProductListDTO;
 import com.shinhan.sunInCloud.dto.ImportProductPostDTO;
@@ -40,6 +41,11 @@ public class ImportsController {
 	@GetMapping(value= {"/seller/import/search"})
 	public List<Product> searchOrder(String productName, Long sellerNo) {
 		return sellerImportService.searchOrder(productName, sellerNo);
+	}
+	
+	@GetMapping("/seller/import/pre/list")
+	public ImportListDTO getPreImportList(Long sellerNo, int pageNum, int countPerPage) {
+		return sellerImportService.findPreImportList(sellerNo, pageNum - 1, countPerPage);
 	}
 	
 	@GetMapping(value= {"seller/import/list"})

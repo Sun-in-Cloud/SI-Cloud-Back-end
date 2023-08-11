@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.shinhan.sunInCloud.dto.ImportListDTO;
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.dto.ImportProductListDTO;
 import com.shinhan.sunInCloud.dto.ImportsDTO;
@@ -218,6 +219,27 @@ public class SellerImportService {
 			return totalPage;
 		}
 
-
+	/**
+	 * 입고 예정 리스트 조회
+	 * @param sellerNo
+	 * @param pageNum
+	 * @param countPerPage
+	 */
+	public ImportListDTO findPreImportList(Long sellerNo, int pageNum, int countPerPage) {
+		List<Imports> preImports = importRepository.findBySeller_SellerNoOrderByRequestDateDesc(sellerNo, PageRequest.of(pageNum, countPerPage));
+		List<ImportsDTO> preImportDTOs = new ArrayList<>();
+		for (Imports preImport : preImports) {
+			System.out.println(preImport.getRequestDate());
+			preImportDTOs.add(ImportsDTO.builder()
+					.importNo(preImport.getImportNo())
+					.requestDate(preImport.getRequestDate())
+					.localRequestDate(TimestampUtil.convertTimestampToString(preImport.getRequestDate()))
+					.isImported(preImport.getImportDate() == null ? false : true)
+					.build());
+		}
+		Long count = importRepository.countBySeller_SellerNo(sellerNo);
+		Long totalPage = calculatePageCount(count, countPerPage);
+		return ImportListDTO.builder().preImports(preImportDTOs).totalPage(totalPage).build();
+	}
 }
 
