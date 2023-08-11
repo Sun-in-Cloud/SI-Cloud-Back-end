@@ -23,6 +23,7 @@ public class ImportsDTO {
 	private Timestamp importDate;
 	private String localRequestDate;
 	private String localImportDate;
+	private Boolean isImported;
 	
 	public Imports toImport(Seller seller) {
 		return Imports.builder()
