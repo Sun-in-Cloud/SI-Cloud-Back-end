@@ -13,7 +13,7 @@ public class TimestampUtil {
 	 */
 	public static String convertTimestampToString(Timestamp timestamp) {
 		Date date = new Date(timestamp.getTime());
-		SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 		return pattern.format(date);
 	}
