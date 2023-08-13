@@ -402,6 +402,10 @@ public class ExportsService {
 	public List<ProductSalesDTO> findTopProductsOfChannel(Long sellerNo, int year, String channelName) {
 		return exportsRepository.findTopProductsOfChannel(sellerNo, year, channelName, PageRequest.of(0, TOP5));
 	}
+	
+	public Long getYearlySalesAmountOfseller(Long sellerNo, int year) {
+		return exportProductRepository.getYearlySales(sellerNo, year);
+	}
 
 	/**
 	 * 위험 상품 5개 조회 메서드

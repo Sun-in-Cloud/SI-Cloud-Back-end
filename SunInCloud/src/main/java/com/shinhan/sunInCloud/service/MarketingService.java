@@ -224,15 +224,19 @@ public class MarketingService {
 	}
 	
 	public ChannelSalesListDTO getTotalSalesOfChannelsBySeller(Long sellerNo) {
-		List<ChannelSalesDTO> thisYearSales = getYearlySalesByChannels(sellerNo, TimestampUtil.getLastYear() + 1);
-		List<ChannelSalesDTO> lastYearSales = getYearlySalesByChannels(sellerNo, TimestampUtil.getLastYear());
-		return ChannelSalesListDTO.builder().totalSalesThisYear(thisYearSales).totalSalesLastYear(lastYearSales).build();
+		Long thisYearSalesAmount = exportsService.getYearlySalesAmountOfseller(sellerNo, TimestampUtil.getLastYear() + 1);
+		Long lastYearSalesAmount = exportsService.getYearlySalesAmountOfseller(sellerNo, TimestampUtil.getLastYear());
+		List<ChannelSalesDTO> thisYearSales = getYearlySalesByChannels(sellerNo, TimestampUtil.getLastYear() + 1, thisYearSalesAmount);
+		List<ChannelSalesDTO> lastYearSales = getYearlySalesByChannels(sellerNo, TimestampUtil.getLastYear(), lastYearSalesAmount);
+		return ChannelSalesListDTO.builder().totalSalesAmountThisYear(thisYearSalesAmount).totalSalesThisYear(thisYearSales)
+				.totalSalesAmountLastYear(lastYearSalesAmount).totalSalesLastYear(lastYearSales).build();
 	}
 	
-	private List<ChannelSalesDTO> getYearlySalesByChannels(Long sellerNo, int year) {
+	private List<ChannelSalesDTO> getYearlySalesByChannels(Long sellerNo, int year, Long yearlySalesAmount) {
 		List<ChannelSalesDTO> yearlySalesOfChannels = exportsService.findTopChannels(sellerNo, year);
 		for (ChannelSalesDTO channelSales : yearlySalesOfChannels) {			
 			channelSales.setTopSalesProducts(exportsService.findTopProductsOfChannel(sellerNo, year, channelSales.getChannelName()));
+			channelSales.setSalesPercentage(Math.round((double)channelSales.getTotalSales() / yearlySalesAmount * 10000) / 100.0);
 		}
 		return yearlySalesOfChannels;
 	}

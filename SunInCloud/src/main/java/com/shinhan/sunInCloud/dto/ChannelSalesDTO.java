@@ -18,6 +18,7 @@ public class ChannelSalesDTO {
 	private String channelName;
 	private Long totalSales;
 	private Integer year;
+	private Double salesPercentage;
 	List<ProductSalesDTO> topSalesProducts;
 	
 	public ChannelSalesDTO(String channelName, Long totalSales) {

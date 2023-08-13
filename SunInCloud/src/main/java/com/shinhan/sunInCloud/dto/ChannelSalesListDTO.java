@@ -14,7 +14,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChannelSalesListDTO {
-
+	private Long totalSalesAmountThisYear;
+	private Long totalSalesAmountLastYear;
 	private List<ChannelSalesDTO> totalSalesThisYear;
 	private List<ChannelSalesDTO> totalSalesLastYear;
 }
