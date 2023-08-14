@@ -16,4 +16,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	Long countBySeller_SellerNo(Long sellerNo);
 	//진경
 	Optional<Order> findById(Long orderNo);
+	Page<Order> findBySeller_SellerNoAndImportsIsNull(Long sellerNo, Pageable pageable);
+	Long countBySeller_SellerNoAndImportsIsNull(Long sellerNo);
 }

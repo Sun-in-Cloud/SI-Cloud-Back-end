@@ -21,13 +21,15 @@ public class ImportsDTO {
 	private Long sellerNo;
 	private Timestamp requestDate;
 	private Timestamp importDate;
+	private String localRequestDate;
+	private String localImportDate;
+	private Boolean isImported;
 	
 	public Imports toImport(Seller seller) {
 		return Imports.builder()
 				.importNo(importNo)
 				.seller(seller)
 				.importDate(importDate)
-				.importNo(importNo)
 				.requestDate(requestDate)
 				.build();
 	}

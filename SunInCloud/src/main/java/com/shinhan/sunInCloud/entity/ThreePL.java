@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
 
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.ThreePLDTO;
+import com.shinhan.sunInCloud.dto.UserDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,6 +66,14 @@ public class ThreePL {
 	@Builder.Default
 	private Integer cntContracted = 0;
 	
+	/**
+	 * ThreePL -> ThreePLDTO
+	 * 상세 조회
+	 * @param endDate
+	 * @param exportCnt
+	 * @param matchings
+	 * @return
+	 */
 	public ThreePLDTO toThreePLDTO(String endDate, long exportCnt, List<MatchingDTO> matchings) {
 		return ThreePLDTO
 				.builder()
@@ -82,6 +92,39 @@ public class ThreePL {
 				.leftContract(cntTotal - cntContracted)
 				.exportCnt(exportCnt)
 				.matchings(matchings)
+				.build();
+	}
+	
+	/**
+	 * ThreePL -> MatchingDTO
+	 * 매칭 검색시 보이는 정보
+	 * @param endDate
+	 * @return
+	 */
+	public MatchingDTO toMatchingThreePLDTO(String endDate) {
+		return MatchingDTO
+				.builder()
+				.productGroup(productGroup.getGroupName())
+				.companyName(companyName)
+				.endDate(endDate)
+				.threePLNo(threePLNo)
+				.leftLocation(cntTotal - cntContracted)
+				.build();
+	}
+	
+	/**
+	 * ThreePL -> UserDTO
+	 * 목록 조회시 나오는 간단한 정보들
+	 * @return
+	 */
+	public UserDTO toUserDTO() {
+		return UserDTO
+				.builder()
+				.businessNo(businessNo)
+				.companyName(companyName)
+				.productGroup(productGroup.getGroupName())
+				.leftContract(cntTotal - cntContracted)
+				.threePLNo(threePLNo)
 				.build();
 	}
 }

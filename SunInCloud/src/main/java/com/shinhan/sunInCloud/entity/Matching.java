@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.shinhan.sunInCloud.dto.MatchingDTO;
+import com.shinhan.sunInCloud.util.TimestampUtil;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,4 +43,20 @@ public class Matching {
 	
 	@NotNull
 	private Timestamp endDate;
+	
+	/**
+	 * Matching -> MatchingDTO
+	 * 매칭 정보를 계약 화주사 목록으로 변환
+	 * @return
+	 */
+	public MatchingDTO toMatchingDTO() {
+		return MatchingDTO
+				.builder()
+				.businessNo(seller.getBusinessNo())
+				.companyName(seller.getCompanyName())
+				.productGroup(seller.getProductGroup().getGroupName())
+				.location(warehouse.getLocation())
+				.endDate(TimestampUtil.convertTimestampToDate(endDate))
+				.build();
+	}
 }

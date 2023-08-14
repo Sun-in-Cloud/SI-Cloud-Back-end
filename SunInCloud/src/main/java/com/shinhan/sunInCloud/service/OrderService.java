@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.shinhan.sunInCloud.dto.OrderDTO;
 import com.shinhan.sunInCloud.dto.OrderListDTO;
@@ -19,6 +20,7 @@ import com.shinhan.sunInCloud.entity.Product;
 import com.shinhan.sunInCloud.entity.Seller;
 import com.shinhan.sunInCloud.repository.OrderProductRepository;
 import com.shinhan.sunInCloud.repository.OrderRepository;
+import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -68,6 +70,7 @@ public class OrderService {
 	 * @param sellerNo
 	 * @return 저장이 필요한 물품의 개수와 저장된 물품의 개수가 동일하다면 true, 아니면 false
 	 */
+	@Transactional
 	public boolean register(Long sellerNo) {
 		Seller seller = sellerService.findById(sellerNo);
 		Order order = orderRepository.save(Order.builder().seller(seller).build());
@@ -105,10 +108,10 @@ public class OrderService {
 		List<OrderDTO> orderDTOs = new ArrayList<>();
 		for (Order order : orders) {
 			orderDTOs.add(OrderDTO.builder()
-					.orderDate(order.getOrderDate())
+					.orderDate(TimestampUtil.convertTimestampToString(order.getOrderDate()))
 					.orderNo(order.getOrderNo())
 					.importNo(order.getImports() == null ? null : order.getImports().getImportNo())
-					.isImported(order.getImports() == null ? false : true)
+					.isImported(order.getImports() == null ? false : order.getImports().getImportDate() == null ? false : true)
 					.build());
 		}
 		Long count = orderRepository.countBySeller_SellerNo(sellerNo);
@@ -153,5 +156,26 @@ public class OrderService {
 			order.setImports(imports);
 			orderRepository.save(order);
 		
+	}
+
+	/**
+	 * 입고 처리되지 않은 발주만 조회
+	 * @param sellerNo
+	 * @param pageNum
+	 * @param countPerPage
+	 * return 입고처리 되지 않은 발주 list
+	 */
+	public OrderListDTO findNotImportedOrdersBySeller(Long sellerNo, int pageNum, int countPerPage) {
+		Page<Order> orders = orderRepository.findBySeller_SellerNoAndImportsIsNull(sellerNo, PageRequest.of(pageNum, countPerPage));
+		List<OrderDTO> orderDTOs = new ArrayList<>();
+		for (Order order : orders) {
+			orderDTOs.add(OrderDTO.builder()
+					.orderNo(order.getOrderNo())
+					.orderDate(TimestampUtil.convertTimestampToString(order.getOrderDate()))
+					.build());
+		}
+		Long count = orderRepository.countBySeller_SellerNoAndImportsIsNull(sellerNo);
+		Long totalPage = calculatePageCount(count, countPerPage);
+		return OrderListDTO.builder().totalPage(totalPage).orders(orderDTOs).build();
 	}
 }

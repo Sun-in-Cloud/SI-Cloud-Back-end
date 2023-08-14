@@ -53,7 +53,6 @@ public class ImportProduct {
 		return ImportProductDTO.builder()
 				.importAmount(importAmount)
 				.importNo(imports.getImportNo())
-				.importProductNo(importProductNo)
 				.productNo(product.getProductNo())
 				.requestAmount(requestAmount)
 				.build();

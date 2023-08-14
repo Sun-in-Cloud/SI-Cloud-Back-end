@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shinhan.sunInCloud.dto.OrderDTO;
 import com.shinhan.sunInCloud.dto.OrderListDTO;
 import com.shinhan.sunInCloud.dto.OrderProductDTO;
 import com.shinhan.sunInCloud.dto.OrderProductListDTO;
@@ -30,7 +31,7 @@ public class OrderController {
 		return orderService.register(sellerNo);
 	}
 	//발주 목록 조회 url 추가
-	@GetMapping(value = {"/3pl/order/list", "/seller/order/list","/seller/import/pre/list","/seller/import/pre","3pl/import/pre/list"}) 
+	@GetMapping(value = {"/3pl/order/list", "/seller/order/list", "3pl/import/pre/list"}) 
 	public OrderListDTO findOrders(Long sellerNo, int pageNum, int countPerPage) {
 		return orderService.findOrders(sellerNo, pageNum - 1, countPerPage);
 	}
@@ -38,5 +39,10 @@ public class OrderController {
 	@GetMapping(value = {"/3pl/order/{orderNo}", "/seller/order/{orderNo}","/seller/import/pre/{orderNo}","/seller/import/order/detail/{orderNo}"})
 	public List<OrderProductDTO> findByOrderNo(@PathVariable Long orderNo) {
 		return orderService.findByOrderNo(orderNo);
+	}
+	
+	@GetMapping("/seller/import/pre-order")
+	public OrderListDTO findNotImportedOrdersBySeller(Long sellerNo, int pageNum, int countPerPage) {
+		return orderService.findNotImportedOrdersBySeller(sellerNo, pageNum - 1, countPerPage);
 	}
 }

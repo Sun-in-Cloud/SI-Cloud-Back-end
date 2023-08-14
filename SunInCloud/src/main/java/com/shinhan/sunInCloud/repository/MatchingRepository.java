@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.shinhan.sunInCloud.entity.Matching;
 
 public interface MatchingRepository extends JpaRepository<Matching, Long>{
-	public List<Matching> findByWarehouse_ThreePL_ThreePLNo(Long threePLNo);
+	public List<Matching> findByWarehouse_ThreePL_ThreePLNoOrderBySeller_CompanyName(Long threePLNo);
 	public Matching findBySeller_SellerNo(Long sellerNo);
 	
 	@Query(value = "SELECT seller_no FROM matching\r\n"

@@ -11,11 +11,11 @@ import org.springframework.data.repository.query.Param;
 import com.shinhan.sunInCloud.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
-	Page<Product> findAllBySeller_SellerNoAndIsActive(Long sellerNo, Pageable pageable, Boolean isActive);
+	Page<Product> findAllBySeller_SellerNoAndIsActiveOrderByProductName(Long sellerNo, Pageable pageable, Boolean isActive);
 	@Query(value = "SELECT * FROM PRODUCT WHERE seller_no = :sellerNo and "
 			+ "product_no not in (SELECT product_no "
 			+ "from order_product "
-			+ "where order_no not ( "
+			+ "where order_no in ( "
 			+ "select order_no "
 			+ "from orders "
 			+ "where import_no is null "
@@ -49,4 +49,12 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 	Long countBySeller_SellerNo(Long sellerNo);
 	boolean existsByProductNameAndSeller_SellerNo(String productName, Long sellerNo);
 	
+//	@Query("select p from Product as p "
+//			+ "where p.sellerNo = :sellerNo")
+//	List<SimpleProductDTO> findByAllProductSimpledata(@Param("sellerNo") Long sellerNo);
+	
+	@Query(value = "SELECT product_no, consumer_price "
+			+ "FROM product "
+			+ "WHERE seller_no = :sellerNo", nativeQuery = true)
+	List<Object[]> findByAllProductSimpledata(@Param("sellerNo") Long sellerNo);
 }

@@ -18,4 +18,6 @@ public class MatchingDTO {
 	private String companyName;
 	private String productGroup;
 	private int leftLocation;
+	
+	private String businessNo;
 }

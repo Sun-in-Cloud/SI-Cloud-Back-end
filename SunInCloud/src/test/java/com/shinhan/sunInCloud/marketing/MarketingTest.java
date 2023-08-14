@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.shinhan.sunInCloud.dto.ChannelSalesDTO;
+import com.shinhan.sunInCloud.dto.ChannelSalesListDTO;
+import com.shinhan.sunInCloud.dto.DangerousProductDTO;
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
 import com.shinhan.sunInCloud.dto.StatisticsDTO;
 import com.shinhan.sunInCloud.dto.TotalSalesDTO;
@@ -20,7 +23,7 @@ public class MarketingTest {
 
 	@Test
 	void findStatisticsBySeller() {
-		StatisticsDTO statistics = marketingService.getStatisticsBySeller(8L);
+		StatisticsDTO statistics = marketingService.getStatistics(8L);
 		getNumberOfSalesMonthlyTest(statistics.getNumberOfSalesMonthly());
 		getNumberOfSalesYearlyTest(statistics.getNumberOfSalesYearly());
 		getTotalSalesMonthlyTest(statistics.getTotalSalesMonthly());
@@ -83,5 +86,25 @@ public class MarketingTest {
 				Assertions.assertThat(sales).isEqualTo(0L);
 			}
 		}
+	}
+	
+	@Test
+	void findSalesOfChannels() {
+		Long sellerNo = 8L;
+		ChannelSalesListDTO channelSalesDTO = marketingService.getTotalSalesOfChannelsBySeller(sellerNo);
+		List<ChannelSalesDTO> thisYearSales = channelSalesDTO.getTotalSalesThisYear();
+		List<ChannelSalesDTO> lastYearSales = channelSalesDTO.getTotalSalesLastYear();
+		Assertions.assertThat(thisYearSales.size()).isEqualTo(1);
+		Assertions.assertThat(lastYearSales.size()).isEqualTo(0);
+		Assertions.assertThat(thisYearSales.get(0).getChannelName()).isEqualTo("11번가");
+		Assertions.assertThat(thisYearSales.get(0).getTopSalesProducts().size()).isEqualTo(5);
+		Assertions.assertThat(thisYearSales.get(0).getTotalSales()).isEqualTo(290380L);
+	}
+	
+	@Test
+	void findDangerousProducts() {
+		Long sellerNo = 8L;
+		List<DangerousProductDTO> dangerousProducts = marketingService.getDangerousProducts(sellerNo);
+		Assertions.assertThat(dangerousProducts.size()).isEqualTo(5);
 	}
 }

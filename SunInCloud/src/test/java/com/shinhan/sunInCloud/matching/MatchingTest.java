@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.shinhan.sunInCloud.dto.MatchingConditionDTO;
 import com.shinhan.sunInCloud.dto.MatchingDTO;
-import com.shinhan.sunInCloud.dto.MatchingSellerListDTO;
+import com.shinhan.sunInCloud.dto.MatchingListDTO;
 import com.shinhan.sunInCloud.service.MatchingService;
 import com.shinhan.sunInCloud.service.SellerService;
 import com.shinhan.sunInCloud.service.WarehouseService;
@@ -46,7 +46,7 @@ public class MatchingTest {
 		Assertions.assertThat(contract).isTrue();
 	}
 	
-	@Test
+//	@Test
 	public void searchSeller() {
 		String productGroup = "화장품";
 		String address = "서울";
@@ -63,7 +63,29 @@ public class MatchingTest {
 				.countPerPage(10)
 				.build();
 		
-		MatchingSellerListDTO sellers = matchingService.searchingSellerByCondition(condition);
+		MatchingListDTO sellers = matchingService.searchingSellerByCondition(condition);
 		System.out.println(sellers);
+	}
+	
+	@Test
+	public void searchThreePL() {
+		String productGroup = "";
+		String address = "서울";
+		int numValue = 500000;
+		int contractPeriod = 0;
+		
+		MatchingConditionDTO condition = MatchingConditionDTO
+				.builder()
+				.productGroup(productGroup)
+				.numValue(numValue)
+				.address(address)
+				.contractPeriod(contractPeriod)
+				.pageNum(1)
+				.countPerPage(10)
+				.build();
+		
+		MatchingListDTO threePLs = matchingService.searchingThreePLByCondition(condition);
+
+		Assertions.assertThat(threePLs.getMatchingCompanies().size()).isNotZero();
 	}
 }

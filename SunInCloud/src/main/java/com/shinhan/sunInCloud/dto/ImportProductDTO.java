@@ -30,11 +30,9 @@ public class ImportProductDTO {
 	
 	public ImportProduct toImportsProduct(Imports imports, Product product) {
 		return ImportProduct.builder()
-				.importProductNo(importProductNo)
 				.product(product)
 				.importAmount(importAmount)
 				.requestAmount(requestAmount)
-				.importProductNo(importProductNo)
 				.imports(imports)
 				.build();
 

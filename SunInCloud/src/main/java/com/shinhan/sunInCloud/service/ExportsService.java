@@ -9,18 +9,22 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.shinhan.sunInCloud.dto.ChannelSalesDTO;
+import com.shinhan.sunInCloud.dto.DangerousProductDTO;
 import com.shinhan.sunInCloud.dto.ExportInvoiceDTO;
 import com.shinhan.sunInCloud.dto.ExportProductDTO;
 import com.shinhan.sunInCloud.dto.ExportProductListDTO;
 import com.shinhan.sunInCloud.dto.ExportsDTO;
 import com.shinhan.sunInCloud.dto.ExportsListDTO;
 import com.shinhan.sunInCloud.dto.NumberOfSalesDTO;
+import com.shinhan.sunInCloud.dto.ProductSalesDTO;
 import com.shinhan.sunInCloud.dto.ShoppingDTO;
 import com.shinhan.sunInCloud.dto.ShoppingProductDTO;
 import com.shinhan.sunInCloud.dto.TotalSalesDTO;
@@ -40,6 +44,13 @@ public class ExportsService {
 	private final ExportProductRepository exportProductRepository;
 	private final SellerService sellerService;
 	private final ProductService productService;
+	
+	private int TOP3 = 3;
+	private int TOP5 = 5;
+	private int TOP10 = 10;
+	
+	@Value("${aws.address}")
+	private String path;
 
 	/**
 	 * 쇼핑몰에 주문건 요청해 출고 목록에 추가하는 메서드
@@ -52,7 +63,8 @@ public class ExportsService {
 	public ExportsListDTO register(Long sellerNo, int pageNum, int countPerPage) {
 		Seller seller = sellerService.findById(sellerNo);
 		
-		WebClient webClient = WebClient.create("http://localhost:4885");
+		
+		WebClient webClient = WebClient.create(path);
 		List<ShoppingDTO> shoppingDTOs = webClient.get()
 			.uri("/shop/order/send/" + sellerNo)
 			.retrieve()
@@ -323,5 +335,84 @@ public class ExportsService {
 	
 	public Long getNumberOfSalesOfProductMonthly(String productNo, int year, int month) {
 		return exportProductRepository.getSalesCountOfProductOfMonth(productNo, year, month);
+	}
+
+	/**
+	 * 입력으로 주어진 년도에 해당하는 판매 건수 조회 메서드
+	 * @param productNo
+	 * @param year
+	 * @return 판매건수
+	 * 작성자: 손준범
+	 */
+	public Long getNumberOfSalesOfProductYearly(String productNo, int year) {
+		return exportProductRepository.getSalesCountOfProductOfYear(productNo, year);
+	}
+	
+	/**
+	 * 일주일간의 일별 매출 조회 메서드
+	 * @param productNo
+	 * @param dates
+	 * @return 7일간의 일별 매출 List
+	 */
+	public List<TotalSalesDTO> getTotalSalesOfProductWeekly(List<String> dates, String productNo) {
+		List<Object[]> totalSales = exportProductRepository.getDailySalesOfProductForWeek(dates, productNo);
+		List<TotalSalesDTO> totalSalesWeekly = new ArrayList<>();
+		Map<String, Long> map = aggregateWeeklyData(dates, totalSales);
+		for (String date : dates) {
+			String[] arr = date.split("-");
+			totalSalesWeekly.add(TotalSalesDTO.builder()
+					.year(Integer.parseInt(arr[0]))
+					.month(Integer.parseInt(arr[1]))
+					.day(Integer.parseInt(arr[2]))
+					.totalSales(map.get(date))
+					.build());
+		}
+		return totalSalesWeekly;
+	}
+	
+	/**
+	 * 입력으로 주어진 년, 월에 해당하는 매출 조회 메서드
+	 * @param productNo
+	 * @param year
+	 * @param month
+	 * @return 매출
+	 */
+	public Long getTotalSalesOfProductMonthly(String productNo, int year, int month) {
+		return exportProductRepository.getMonthlySalesOfProduct(productNo, year, month);
+	}
+	
+	/**
+	 * 입력으로 주어진 년도에 해당하는 매출 조회 메서드
+	 * @param sellerNo
+	 * @param year
+	 * @return 매출
+	 */
+	public Long getTotalSalesOfProductYearly(String productNo, int year) {
+		return exportProductRepository.getYearlySalesOfProduct(productNo, year);
+	}
+
+	public List<ChannelSalesDTO> findTopChannels(Long sellerNo, int year) {
+		List<ChannelSalesDTO> topChannels = exportsRepository.findTopChannels(sellerNo, year, PageRequest.of(0, TOP3));
+		for (ChannelSalesDTO topChannel : topChannels) {
+			topChannel.setYear(year);
+		}
+		return topChannels;
+	}
+	
+	public List<ProductSalesDTO> findTopProductsOfChannel(Long sellerNo, int year, String channelName) {
+		return exportsRepository.findTopProductsOfChannel(sellerNo, year, channelName, PageRequest.of(0, TOP5));
+	}
+	
+	public Long getYearlySalesAmountOfseller(Long sellerNo, int year) {
+		return exportProductRepository.getYearlySales(sellerNo, year);
+	}
+
+	/**
+	 * 위험 상품 5개 조회 메서드
+	 * @param sellerNo
+	 * @return 발주한지 가장 오래된 상품 5개
+	 */
+	public List<DangerousProductDTO> getDangerousProducts(Long sellerNo) {
+		return exportsRepository.getDangerousProducts(sellerNo, PageRequest.of(0, TOP10));
 	}
 }

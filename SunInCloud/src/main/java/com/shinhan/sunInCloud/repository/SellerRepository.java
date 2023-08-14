@@ -33,4 +33,6 @@ public interface SellerRepository extends CrudRepository<Seller, Long>{
 			+ "ORDER BY end_date, company_name", nativeQuery = true)
 	public Page<Seller> findByMatchingCondition(@Param("groupName") String groupName, @Param("address")String address,
 			@Param("exportCnt")int exportCnt, @Param("contractPeriod")int contractPeriod, Pageable pageable);
+	
+	public Page<Seller> findAllByOrderByCompanyName(Pageable pageable);
 }

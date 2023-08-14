@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import com.shinhan.sunInCloud.dto.MatchingDTO;
 import com.shinhan.sunInCloud.dto.SellerDTO;
+import com.shinhan.sunInCloud.dto.UserDTO;
 import com.shinhan.sunInCloud.util.TimestampUtil;
 
 import lombok.AllArgsConstructor;
@@ -68,7 +69,7 @@ public class Seller {
 				.productGroup(productGroup.getGroupName())
 				.companyName(companyName)
 				.endDate(matching == null ? null : TimestampUtil.convertTimestampToDate(matching.getEndDate()))
-				.location(matching.getWarehouse().getLocation())
+				.location(matching == null ? null : matching.getWarehouse().getLocation())
 				.sellerNo(sellerNo)
 				.build();
 	}
@@ -95,6 +96,22 @@ public class Seller {
 				.exportCnt(exportCnt)
 				.matching(matchingDTO)
 				.endDate(matchingDTO == null ? null : matchingDTO.getEndDate())
+				.build();
+	}
+	
+	/**
+	 * Seller -> UserDTO
+	 * 목록 조회시 나오는 간단한 정보들
+	 * @return
+	 */
+	public UserDTO toUserDTO() {
+		return UserDTO
+				.builder()
+				.businessNo(businessNo)
+				.companyName(companyName)
+				.productGroup(productGroup.getGroupName())
+				.isMarketing(isMarketing)
+				.sellerNo(sellerNo)
 				.build();
 	}
 }
