@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.shinhan.sunInCloud.dto.ImportListDTO;
 import com.shinhan.sunInCloud.dto.ImportProductDTO;
 import com.shinhan.sunInCloud.dto.ImportProductListDTO;
 import com.shinhan.sunInCloud.dto.ImportsDTO;
@@ -177,15 +178,15 @@ public class SellerImportService {
       //importDate가 null이 아니면 조회 가능 출고 목록 조회와 로직이 같음
          //입고 번호, 리스트 작성 일자
     	 List<ImportsDTO> importDTO =new ArrayList<>();
-         Long count = orderRepository.countBySeller_SellerNo(sellerNo);
+         Long count = importRepository.countBySeller_SellerNoAndImportDateIsNotNull(sellerNo);
          Long totalPage = calculatePageCount(count, countPerPage);
-    	 List<Imports> imports = importRepository.findBySeller_SellerNoAndImportDateIsNotNull(sellerNo, PageRequest.of(pageNum, countPerPage));
-
-    	 System.out.println(imports.size());
+    	 List<Imports> imports = importRepository.findBySeller_SellerNoAndImportDateIsNotNullOrderByImportDateDesc(sellerNo, PageRequest.of(pageNum, countPerPage));
  
          for(Imports im: imports){
             importDTO.add(ImportsDTO.builder().importNo(im.getImportNo())
-                  .localRequestDate(TimestampUtil.convertTimestampToString(im.getRequestDate())).build());
+                  .localRequestDate(TimestampUtil.convertTimestampToString(im.getRequestDate()))
+                  .localImportDate(TimestampUtil.convertTimestampToString(im.getImportDate()))
+                  .build());
          }  
          ImportProductListDTO productListDTO = ImportProductListDTO.builder()
                .importproduct(importDTO)
@@ -218,6 +219,26 @@ public class SellerImportService {
 			return totalPage;
 		}
 
-
+	/**
+	 * 입고 예정 리스트 조회
+	 * @param sellerNo
+	 * @param pageNum
+	 * @param countPerPage
+	 */
+	public ImportListDTO findPreImportList(Long sellerNo, int pageNum, int countPerPage) {
+		List<Imports> preImports = importRepository.findBySeller_SellerNoOrderByRequestDateDesc(sellerNo, PageRequest.of(pageNum, countPerPage));
+		List<ImportsDTO> preImportDTOs = new ArrayList<>();
+		for (Imports preImport : preImports) {
+			preImportDTOs.add(ImportsDTO.builder()
+					.importNo(preImport.getImportNo())
+					.requestDate(preImport.getRequestDate())
+					.localRequestDate(TimestampUtil.convertTimestampToString(preImport.getRequestDate()))
+					.isImported(preImport.getImportDate() == null ? false : true)
+					.build());
+		}
+		Long count = importRepository.countBySeller_SellerNo(sellerNo);
+		Long totalPage = calculatePageCount(count, countPerPage);
+		return ImportListDTO.builder().preImports(preImportDTOs).totalPage(totalPage).build();
+	}
 }
 

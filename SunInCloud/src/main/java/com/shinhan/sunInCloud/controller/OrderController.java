@@ -31,7 +31,7 @@ public class OrderController {
 		return orderService.register(sellerNo);
 	}
 	//발주 목록 조회 url 추가
-	@GetMapping(value = {"/3pl/order/list", "/seller/order/list","/seller/import/pre/list","3pl/import/pre/list"}) 
+	@GetMapping(value = {"/3pl/order/list", "/seller/order/list", "3pl/import/pre/list"}) 
 	public OrderListDTO findOrders(Long sellerNo, int pageNum, int countPerPage) {
 		return orderService.findOrders(sellerNo, pageNum - 1, countPerPage);
 	}
@@ -42,7 +42,7 @@ public class OrderController {
 	}
 	
 	@GetMapping("/seller/import/pre-order")
-	public List<OrderDTO> findNotImportedOrdersBySeller(Long sellerNo, int pageNum, int countPerPage) {
+	public OrderListDTO findNotImportedOrdersBySeller(Long sellerNo, int pageNum, int countPerPage) {
 		return orderService.findNotImportedOrdersBySeller(sellerNo, pageNum - 1, countPerPage);
 	}
 }
