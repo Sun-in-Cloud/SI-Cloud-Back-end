@@ -26,7 +26,7 @@ public interface SellerRepository extends CrudRepository<Seller, Long>{
 			+ "		ON exports.seller_seller_no = seller.seller_no "
 			+ " 	WHERE IFNULL(order_status, '') LIKE if(:exportCnt > 0, '출고완료', '%') "
 			+ "	GROUP BY seller.seller_no "
-			+ "	HAVING SUM(amount) >= :exportCnt) "
+			+ "	HAVING SUM(IFNULL(amount, 0)) >= :exportCnt) "
 			+ "AND product_group.group_name LIKE CONCAT('%', :groupName, '%') "
 			+ "AND seller.address LIKE CONCAT('%', :address, '%') "
 			+ "AND IFNULL(end_date, SYSDATE()) <= DATE_ADD(SYSDATE(), INTERVAL :contractPeriod MONTH) "
