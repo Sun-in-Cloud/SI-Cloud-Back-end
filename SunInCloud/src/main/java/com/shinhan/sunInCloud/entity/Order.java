@@ -34,6 +34,7 @@ public class Order {
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="seller_no")
 	private Seller seller;
 	
 	@CreationTimestamp
