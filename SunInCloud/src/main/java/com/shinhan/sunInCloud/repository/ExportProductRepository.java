@@ -20,7 +20,7 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "WHERE export_no in ( "
 			+ "SELECT export_no "
 			+ "FROM exports "
-			+ "WHERE seller_seller_no = :sellerNo ) "
+			+ "WHERE seller_no = :sellerNo ) "
 			+ " AND "
 			+ "export_date IS NOT NULL AND DATE_FORMAT(e.export_date, '%Y-%m-%d') IN (:dates) "
 			+ "GROUP BY Date(e.export_date)", nativeQuery = true)
@@ -31,7 +31,7 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "WHERE export_no in ( "
 			+ "SELECT export_no "
 			+ "FROM exports "
-			+ "WHERE seller_seller_no = :sellerNo ) AND "
+			+ "WHERE seller_no = :sellerNo ) AND "
 			+ "YEAR(export_date) = :year AND MONTH(export_date) =:month", nativeQuery = true)
 	Long getSalesCountOfMonth(@Param("sellerNo") Long sellerNo, @Param("year") int year, @Param("month") int month);
 	
@@ -40,7 +40,7 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "WHERE export_no in ( "
 			+ "SELECT export_no "
 			+ "FROM exports "
-			+ "WHERE seller_seller_no = :sellerNo ) AND "
+			+ "WHERE seller_no = :sellerNo ) AND "
 			+ "YEAR(export_date) = :year", nativeQuery = true)
 	Long getSalesCountOfYear(@Param("sellerNo") Long sellerNo, @Param("year") int year);
 	
@@ -49,7 +49,7 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "WHERE export_no in ( "
 			+ "SELECT export_no "
 			+ "FROM exports "
-			+ "WHERE seller_seller_no = :sellerNo ) "
+			+ "WHERE seller_no = :sellerNo ) "
 			+ " AND "
 			+ "export_date IS NOT NULL AND Date(e.export_date) IN (:dates) "
 			+ "GROUP BY Date(e.export_date)", nativeQuery = true)
@@ -60,7 +60,7 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "WHERE export_no in ( "
 			+ "SELECT export_no "
 			+ "FROM exports "
-			+ "WHERE seller_seller_no = :sellerNo ) AND "
+			+ "WHERE seller_no = :sellerNo ) AND "
 			+ "YEAR(export_date) = :year AND MONTH(export_date) =:month", nativeQuery = true)
 	Long getMonthlySales(@Param("sellerNo") Long sellerNo, @Param("year") int year, @Param("month") int month);
 	
@@ -69,7 +69,7 @@ public interface ExportProductRepository extends JpaRepository<ExportProduct, Lo
 			+ "WHERE export_no in ( "
 			+ "SELECT export_no "
 			+ "FROM exports "
-			+ "WHERE seller_seller_no = :sellerNo ) AND "
+			+ "WHERE seller_no = :sellerNo ) AND "
 			+ "YEAR(export_date) = :year", nativeQuery = true)
 	Long getYearlySales(@Param("sellerNo") Long sellerNo, @Param("year") int year);
 	

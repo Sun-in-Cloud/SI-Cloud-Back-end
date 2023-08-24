@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -30,6 +31,7 @@ public class Exports {
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="seller_no")
 	private Seller seller;
 	
 	@NotNull
