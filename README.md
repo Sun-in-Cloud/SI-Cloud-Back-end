@@ -56,3 +56,6 @@
 * 상품 별 통계
 * 상품 별 위험군 판단
 * 판매 채널별 분석
+
+## Fix
+* 2023-08-24 DB에 저장된 컬럼명 seller_seller_no -> seller_no로 변경, 이에 따라 Entity 및 Repository Query 수정
