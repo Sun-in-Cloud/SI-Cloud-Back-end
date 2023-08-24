@@ -23,7 +23,7 @@ public interface SellerRepository extends CrudRepository<Seller, Long>{
 			+ "		JOIN export_product "
 			+ "		ON exports.export_no = export_product.export_no "
 			+ "		RIGHT OUTER JOIN seller "
-			+ "		ON exports.seller_seller_no = seller.seller_no "
+			+ "		ON exports.seller_no = seller.seller_no "
 			+ " 	WHERE IFNULL(order_status, '') LIKE if(:exportCnt > 0, '출고완료', '%') "
 			+ "	GROUP BY seller.seller_no "
 			+ "	HAVING SUM(IFNULL(amount, 0)) >= :exportCnt) "
