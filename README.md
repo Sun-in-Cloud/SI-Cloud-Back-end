@@ -59,3 +59,4 @@
 
 ## Fix
 * 2023-08-24 DB에 저장된 컬럼명 seller_seller_no -> seller_no로 변경, 이에 따라 Entity 및 Repository Query 수정
+* 2023-08-26 Swagger UI 사용을 위해 의존성 추가 및 Controller 수정
