@@ -29,11 +29,21 @@
 |프론트엔드 개발자|프론트엔드 개발자|기획자|
 
 # 프로젝트 소개
-**[API Sheet](https://sustaining-eel-c8a.notion.site/2f4d305a31a54ce5bea31020ae9d9f5c?v=75654fd58e884ae08f740661f811c143)** - API 정리 문서
+**[API Sheet](https://sustaining-eel-c8a.notion.site/2f4d305a31a54ce5bea31020ae9d9f5c?v=75654fd58e884ae08f740661f811c143)** - API 정리 문서 Link
+![image](https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/22bfd678-f895-4ccd-807c-c42123865675)
 
 **[프로젝트 소개 PPT](https://www.miricanvas.com/v/12a4tlo)**
 
-프로젝트 시작일 - 2023-07-24~
+프로젝트 기간 - 2023-07-24 ~ 2023-08-17
+
+## ERD
+### System Tables
+![siCloud_core_erd](https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/1700afa0-15d3-49bb-b477-7b00f81069b1)
+
+### History Tables
+![siCloud_history_erd](https://github.com/Sun-in-Cloud/SI-Cloud-Back-end/assets/89973303/a8da4370-af8f-4886-8007-36659fd2ff1f)
+
+
 ## 개요
 3PL에서 기존에 사용하는 WMS를 추가로 개발하였습니다.
 ### 3PL이란?
